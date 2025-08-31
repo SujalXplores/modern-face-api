@@ -62168,7 +62168,7 @@ return a / b;`;
         let requireFsError = '';
         if (!fs) {
             try {
-                fs = require('fs');
+                fs = require('node:fs');
             }
             catch (err) {
                 requireFsError = err.toString();

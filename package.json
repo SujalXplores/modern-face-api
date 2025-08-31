@@ -6,8 +6,8 @@
   "main": "./build/commonjs/index.js",
   "typings": "./build/commonjs/index.d.ts",
   "scripts": {
-    "rollup-min": "rollup -c rollup.config.js --environment minify:true",
-    "rollup": "rollup -c rollup.config.js",
+    "rollup-min": "rollup -c rollup.config.mjs --environment minify:true",
+    "rollup": "rollup -c rollup.config.mjs",
     "tsc": "tsc",
     "tsc-es6": "tsc --p tsconfig.es6.json",
     "build": "npx rimraf build dist && npm run rollup && npm run rollup-min && npm run tsc && npm run tsc-es6",
