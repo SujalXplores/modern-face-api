@@ -4,18 +4,19 @@ import { Box } from './Box';
 import type { IRect } from './Rect';
 
 export class LabeledBox extends Box<LabeledBox> {
-  public static assertIsValidLabeledBox(box: any, callee: string) {
+  public static assertIsValidLabeledBox(box: unknown, callee: string) {
     Box.assertIsValidBox(box, callee);
 
-    if (!isValidNumber(box.label)) {
-      throw new Error(`${callee} - expected property label (${box.label}) to be a number`);
+    const boxRecord = box as Record<string, unknown>;
+    if (!isValidNumber(boxRecord.label)) {
+      throw new Error(`${callee} - expected property label (${boxRecord.label}) to be a number`);
     }
   }
 
   private _label: number;
 
-  constructor(box: IBoundingBox | IRect | any, label: number) {
-    super(box);
+  constructor(box: IBoundingBox | IRect | unknown, label: number) {
+    super(box as IBoundingBox | IRect);
     this._label = label;
   }
 

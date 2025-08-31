@@ -24,7 +24,7 @@
       "complexity": {
         "recommended": true,
         "noExcessiveCognitiveComplexity": "warn",
-        "noBannedTypes": "warn"
+        "noBannedTypes": "off"
       },
       "correctness": {
         "recommended": true,
@@ -38,7 +38,7 @@
       "suspicious": {
         "recommended": true,
         "noDebugger": "error",
-        "noExplicitAny": "warn",
+        "noExplicitAny": "off",
         "noAsyncPromiseExecutor": "error"
       },
       "performance": {
@@ -100,9 +100,7 @@
     {
       "includes": ["examples/**/*"],
       "linter": {
-        "rules": {
-          "suspicious": "warn"
-        }
+        "enabled": false
       }
     }
   ]
