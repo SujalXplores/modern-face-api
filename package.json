@@ -1,6 +1,6 @@
 {
   "name": "modern-face-api",
-  "version": "0.22.3",
+  "version": "0.22.4",
   "description": "JavaScript API for face detection and face recognition in the browser with tensorflow.js",
   "module": "./build/es6/index.js",
   "main": "./build/commonjs/index.js",
@@ -52,6 +52,14 @@
     "tf"
   ],
   "author": "SujalXplores",
+  "bugs": {
+    "url": "https://github.com/SujalXplores/modern-face-api/issues"
+  },
+  "repository": {
+    "url": "https://github.com/SujalXplores/modern-face-api",
+    "type": "git"
+  },
+  "sideEffects": false,
   "license": "MIT",
   "dependencies": {
     "@tensorflow/tfjs-core": "4.22.0",
