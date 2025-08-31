@@ -90,7 +90,7 @@ export class DrawTextField {
   }
 
   draw(canvasArg: string | HTMLCanvasElement | CanvasRenderingContext2D) {
-    const canvas = resolveInput(canvasArg);
+    const canvas = resolveInput(canvasArg) as HTMLCanvasElement;
     const ctx = getContext2dOrThrow(canvas);
 
     const { backgroundColor, fontColor, fontSize, fontStyle, padding } = this.options;

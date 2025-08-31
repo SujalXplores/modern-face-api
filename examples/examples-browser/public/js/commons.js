@@ -162,3 +162,20 @@ function _renderOption(parent, text, value) {
   option.value = value;
   parent.appendChild(option);
 }
+
+// Global wrapper functions
+function renderNavBar(navbarId, exampleUri) {
+  return _renderNavBar(navbarId, exampleUri);
+}
+
+function renderSelectList(selectListId, onChange, initialValue, renderChildren) {
+  return _renderSelectList(selectListId, onChange, initialValue, renderChildren);
+}
+
+function renderOption(parent, text, value) {
+  return _renderOption(parent, text, value);
+}
+
+function requestExternalImage(imageUrl) {
+  return _requestExternalImage(imageUrl);
+}

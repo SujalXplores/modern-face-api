@@ -45,7 +45,7 @@ export class ComputeAllFaceDescriptorsTask<
           )
         ),
       null,
-      parentResult => parentResult.landmarks.align(null, { useDlibAlignment: true })
+      parentResult => parentResult.landmarks.align(null, { useDlibAlignment: true }) as any
     );
 
     return descriptors.map((descriptor, i) =>
@@ -78,7 +78,7 @@ export class ComputeSingleFaceDescriptorTask<
       this.input,
       face => nets.faceRecognitionNet.computeFaceDescriptor(face) as Promise<Float32Array>,
       null,
-      parentResult => parentResult.landmarks.align(null, { useDlibAlignment: true })
+      parentResult => parentResult.landmarks.align(null, { useDlibAlignment: true }) as any
     );
 
     return extendWithFaceDescriptor(parentResult, descriptor);

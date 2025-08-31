@@ -207,8 +207,8 @@ export class TinyYolov2Base extends NeuralNetwork<TinyYolov2NetParams> {
 
     const results = [];
 
-    const scoresData = await scoresTensor.array();
-    const boxesData = await boxesTensor.array();
+    const scoresData = (await scoresTensor.array()) as number[][][][];
+    const boxesData = (await boxesTensor.array()) as number[][][][];
     for (let row = 0; row < numCells; row++) {
       for (let col = 0; col < numCells; col++) {
         for (let anchor = 0; anchor < numBoxes; anchor++) {

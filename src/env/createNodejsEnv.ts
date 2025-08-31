@@ -2,8 +2,9 @@ import { createFileSystem } from './createFileSystem';
 import type { Environment } from './types';
 
 export function createNodejsEnv(): Environment {
-  const Canvas = global.Canvas || global.HTMLCanvasElement;
-  const Image = global.Image || global.HTMLImageElement;
+  const globalAny = global as any;
+  const Canvas = globalAny.Canvas || globalAny.HTMLCanvasElement;
+  const Image = globalAny.Image || globalAny.HTMLImageElement;
 
   const createCanvasElement = () => {
     if (Canvas) {
@@ -20,7 +21,7 @@ export function createNodejsEnv(): Environment {
   };
 
   const fetch =
-    global.fetch ||
+    globalAny.fetch ||
     (() => {
       throw new Error('fetch - missing fetch implementation for nodejs environment');
     });
@@ -29,10 +30,10 @@ export function createNodejsEnv(): Environment {
 
   return {
     Canvas: Canvas || class {},
-    CanvasRenderingContext2D: global.CanvasRenderingContext2D || class {},
+    CanvasRenderingContext2D: globalAny.CanvasRenderingContext2D || class {},
     Image: Image || class {},
-    ImageData: global.ImageData || class {},
-    Video: global.HTMLVideoElement || class {},
+    ImageData: globalAny.ImageData || class {},
+    Video: globalAny.HTMLVideoElement || class {},
     createCanvasElement,
     createImageElement,
     fetch,

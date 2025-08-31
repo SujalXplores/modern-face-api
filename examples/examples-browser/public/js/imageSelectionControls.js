@@ -50,3 +50,16 @@ function _initImageSelectionControls(initialValue = 'bbt1.jpg', withFaceExpressi
   );
   onSelectedImageChanged($('#selectList select').val());
 }
+
+// Global wrapper functions
+function loadImageFromUrl() {
+  return _loadImageFromUrl();
+}
+
+function loadImageFromUpload() {
+  return _loadImageFromUpload();
+}
+
+function initImageSelectionControls(initialValue, withFaceExpressionImages) {
+  return _initImageSelectionControls(initialValue, withFaceExpressionImages);
+}

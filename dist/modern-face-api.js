@@ -323,144 +323,24 @@
     zerosLike: Xn
   });
 
-  function drawContour(ctx, points, isClosed) {
-      if (isClosed === void 0) { isClosed = false; }
-      ctx.beginPath();
-      points.slice(1).forEach(function (_a, prevIdx) {
-          var x = _a.x, y = _a.y;
-          var from = points[prevIdx];
-          ctx.moveTo(from.x, from.y);
-          ctx.lineTo(x, y);
-      });
-      if (isClosed) {
-          var from = points[points.length - 1];
-          var to = points[0];
-          if (!from || !to) {
-              return;
-          }
-          ctx.moveTo(from.x, from.y);
-          ctx.lineTo(to.x, to.y);
-      }
-      ctx.stroke();
-  }
-
-  /******************************************************************************
-  Copyright (c) Microsoft Corporation.
-
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** */
-  /* global Reflect, Promise, SuppressedError, Symbol, Iterator */
-
-  var extendStatics = function(d, b) {
-      extendStatics = Object.setPrototypeOf ||
-          ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-          function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-      return extendStatics(d, b);
-  };
-
-  function __extends(d, b) {
-      if (typeof b !== "function" && b !== null)
-          throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-      extendStatics(d, b);
-      function __() { this.constructor = d; }
-      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  }
-
-  var __assign = function() {
-      __assign = Object.assign || function __assign(t) {
-          for (var s, i = 1, n = arguments.length; i < n; i++) {
-              s = arguments[i];
-              for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-          }
-          return t;
-      };
-      return __assign.apply(this, arguments);
-  };
-
-  function __awaiter(thisArg, _arguments, P, generator) {
-      function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-      return new (P || (P = Promise))(function (resolve, reject) {
-          function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-          function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-          function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-          step((generator = generator.apply(thisArg, _arguments || [])).next());
-      });
-  }
-
-  function __generator(thisArg, body) {
-      var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-      return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-      function verb(n) { return function (v) { return step([n, v]); }; }
-      function step(op) {
-          if (f) throw new TypeError("Generator is already executing.");
-          while (g && (g = 0, op[0] && (_ = 0)), _) try {
-              if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-              if (y = 0, t) op = [op[0] & 2, t.value];
-              switch (op[0]) {
-                  case 0: case 1: t = op; break;
-                  case 4: _.label++; return { value: op[1], done: false };
-                  case 5: _.label++; y = op[1]; op = [0]; continue;
-                  case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                  default:
-                      if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                      if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                      if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                      if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                      if (t[2]) _.ops.pop();
-                      _.trys.pop(); continue;
-              }
-              op = body.call(thisArg, _);
-          } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-          if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-      }
-  }
-
-  /** @deprecated */
-  function __spreadArrays() {
-      for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-      for (var r = Array(s), k = 0, i = 0; i < il; i++)
-          for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-              r[k] = a[j];
-      return r;
-  }
-
-  typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-      var e = new Error(message);
-      return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-  };
-
-  var Dimensions = /** @class */ (function () {
-      function Dimensions(width, height) {
+  class Dimensions {
+      constructor(width, height) {
           if (!isValidNumber(width) || !isValidNumber(height)) {
-              throw new Error("Dimensions.constructor - expected width and height to be valid numbers, instead have " + JSON.stringify({ width: width, height: height }));
+              throw new Error(`Dimensions.constructor - expected width and height to be valid numbers, instead have ${JSON.stringify({ width, height })}`);
           }
           this._width = width;
           this._height = height;
       }
-      Object.defineProperty(Dimensions.prototype, "width", {
-          get: function () { return this._width; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Dimensions.prototype, "height", {
-          get: function () { return this._height; },
-          enumerable: false,
-          configurable: true
-      });
-      Dimensions.prototype.reverse = function () {
+      get width() {
+          return this._width;
+      }
+      get height() {
+          return this._height;
+      }
+      reverse() {
           return new Dimensions(1 / this.width, 1 / this.height);
-      };
-      return Dimensions;
-  }());
+      }
+  }
 
   function isTensor(tensor, dim) {
       return tensor instanceof wt && tensor.shape.length === dim;
@@ -483,31 +363,35 @@
   function isEven(num) {
       return num % 2 === 0;
   }
-  function round(num, prec) {
-      if (prec === void 0) { prec = 2; }
-      var f = Math.pow(10, prec);
+  function round(num, prec = 2) {
+      const f = 10 ** prec;
       return Math.floor(num * f) / f;
   }
   function isDimensions(obj) {
-      return obj && obj.width && obj.height;
+      return !!(obj &&
+          typeof obj === 'object' &&
+          obj.width &&
+          obj.height);
   }
-  function computeReshapedDimensions(_a, inputSize) {
-      var width = _a.width, height = _a.height;
-      var scale = inputSize / Math.max(height, width);
+  function computeReshapedDimensions({ width, height }, inputSize) {
+      const scale = inputSize / Math.max(height, width);
       return new Dimensions(Math.round(width * scale), Math.round(height * scale));
   }
   function getCenterPoint(pts) {
-      return pts.reduce(function (sum, pt) { return sum.add(pt); }, new Point(0, 0))
+      return pts
+          .reduce((sum, pt) => sum.add(pt), new Point(0, 0))
           .div(new Point(pts.length, pts.length));
   }
   function range(num, start, step) {
-      return Array(num).fill(0).map(function (_, i) { return start + (i * step); });
+      return Array(num)
+          .fill(0)
+          .map((_, i) => start + i * step);
   }
   function isValidNumber(num) {
-      return !!num && num !== Infinity && num !== -Infinity && !isNaN(num) || num === 0;
+      return (!!num && num !== Infinity && num !== -Infinity && !Number.isNaN(num)) || num === 0;
   }
   function isValidProbablitiy(num) {
-      return isValidNumber(num) && 0 <= num && num <= 1.0;
+      return isValidNumber(num) && typeof num === 'number' && 0 <= num && num <= 1.0;
   }
 
   var index$1 = /*#__PURE__*/Object.freeze({
@@ -528,209 +412,187 @@
     isValidProbablitiy: isValidProbablitiy
   });
 
-  var Point = /** @class */ (function () {
-      function Point(x, y) {
+  class Point {
+      constructor(x, y) {
           this._x = x;
           this._y = y;
       }
-      Object.defineProperty(Point.prototype, "x", {
-          get: function () { return this._x; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Point.prototype, "y", {
-          get: function () { return this._y; },
-          enumerable: false,
-          configurable: true
-      });
-      Point.prototype.add = function (pt) {
+      get x() {
+          return this._x;
+      }
+      get y() {
+          return this._y;
+      }
+      add(pt) {
           return new Point(this.x + pt.x, this.y + pt.y);
-      };
-      Point.prototype.sub = function (pt) {
+      }
+      sub(pt) {
           return new Point(this.x - pt.x, this.y - pt.y);
-      };
-      Point.prototype.mul = function (pt) {
+      }
+      mul(pt) {
           return new Point(this.x * pt.x, this.y * pt.y);
-      };
-      Point.prototype.div = function (pt) {
+      }
+      div(pt) {
           return new Point(this.x / pt.x, this.y / pt.y);
-      };
-      Point.prototype.abs = function () {
+      }
+      abs() {
           return new Point(Math.abs(this.x), Math.abs(this.y));
-      };
-      Point.prototype.magnitude = function () {
-          return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-      };
-      Point.prototype.floor = function () {
+      }
+      magnitude() {
+          return Math.sqrt(this.x ** 2 + this.y ** 2);
+      }
+      floor() {
           return new Point(Math.floor(this.x), Math.floor(this.y));
-      };
-      return Point;
-  }());
+      }
+  }
 
-  var Box = /** @class */ (function () {
-      function Box(_box, allowNegativeDimensions) {
-          if (allowNegativeDimensions === void 0) { allowNegativeDimensions = true; }
-          var box = (_box || {});
-          var isBbox = [box.left, box.top, box.right, box.bottom].every(isValidNumber);
-          var isRect = [box.x, box.y, box.width, box.height].every(isValidNumber);
-          if (!isRect && !isBbox) {
-              throw new Error("Box.constructor - expected box to be IBoundingBox | IRect, instead have " + JSON.stringify(box));
+  class Box {
+      static isRect(rect) {
+          const r = rect;
+          return !!rect && [r.x, r.y, r.width, r.height].every(isValidNumber);
+      }
+      static assertIsValidBox(box, callee, allowNegativeDimensions = false) {
+          const r = box;
+          if (!Box.isRect(box)) {
+              throw new Error(`${callee} - invalid box: ${JSON.stringify(box)}, expected object with properties x, y, width, height`);
           }
-          var _a = isRect
-              ? [box.x, box.y, box.width, box.height]
-              : [box.left, box.top, box.right - box.left, box.bottom - box.top], x = _a[0], y = _a[1], width = _a[2], height = _a[3];
-          Box.assertIsValidBox({ x: x, y: y, width: width, height: height }, 'Box.constructor', allowNegativeDimensions);
+          if (!allowNegativeDimensions && (r.width < 0 || r.height < 0)) {
+              throw new Error(`${callee} - width (${r.width}) and height (${r.height}) must be positive numbers`);
+          }
+      }
+      constructor(_box, allowNegativeDimensions = true) {
+          const box = (_box || {});
+          const boxRecord = box;
+          const isBbox = [boxRecord.left, boxRecord.top, boxRecord.right, boxRecord.bottom].every(isValidNumber);
+          const isRect = [boxRecord.x, boxRecord.y, boxRecord.width, boxRecord.height].every(isValidNumber);
+          if (!isRect && !isBbox) {
+              throw new Error(`Box.constructor - expected box to be IBoundingBox | IRect, instead have ${JSON.stringify(box)}`);
+          }
+          const [x, y, width, height] = isRect
+              ? [boxRecord.x, boxRecord.y, boxRecord.width, boxRecord.height]
+              : [
+                  boxRecord.left,
+                  boxRecord.top,
+                  boxRecord.right - boxRecord.left,
+                  boxRecord.bottom - boxRecord.top,
+              ];
+          Box.assertIsValidBox({ x, y, width, height }, 'Box.constructor', allowNegativeDimensions);
           this._x = x;
           this._y = y;
           this._width = width;
           this._height = height;
       }
-      Box.isRect = function (rect) {
-          return !!rect && [rect.x, rect.y, rect.width, rect.height].every(isValidNumber);
-      };
-      Box.assertIsValidBox = function (box, callee, allowNegativeDimensions) {
-          if (allowNegativeDimensions === void 0) { allowNegativeDimensions = false; }
-          if (!Box.isRect(box)) {
-              throw new Error(callee + " - invalid box: " + JSON.stringify(box) + ", expected object with properties x, y, width, height");
-          }
-          if (!allowNegativeDimensions && (box.width < 0 || box.height < 0)) {
-              throw new Error(callee + " - width (" + box.width + ") and height (" + box.height + ") must be positive numbers");
-          }
-      };
-      Object.defineProperty(Box.prototype, "x", {
-          get: function () { return this._x; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "y", {
-          get: function () { return this._y; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "width", {
-          get: function () { return this._width; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "height", {
-          get: function () { return this._height; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "left", {
-          get: function () { return this.x; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "top", {
-          get: function () { return this.y; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "right", {
-          get: function () { return this.x + this.width; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "bottom", {
-          get: function () { return this.y + this.height; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "area", {
-          get: function () { return this.width * this.height; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "topLeft", {
-          get: function () { return new Point(this.left, this.top); },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "topRight", {
-          get: function () { return new Point(this.right, this.top); },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "bottomLeft", {
-          get: function () { return new Point(this.left, this.bottom); },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(Box.prototype, "bottomRight", {
-          get: function () { return new Point(this.right, this.bottom); },
-          enumerable: false,
-          configurable: true
-      });
-      Box.prototype.round = function () {
-          var _a = [this.x, this.y, this.width, this.height]
-              .map(function (val) { return Math.round(val); }), x = _a[0], y = _a[1], width = _a[2], height = _a[3];
-          return new Box({ x: x, y: y, width: width, height: height });
-      };
-      Box.prototype.floor = function () {
-          var _a = [this.x, this.y, this.width, this.height]
-              .map(function (val) { return Math.floor(val); }), x = _a[0], y = _a[1], width = _a[2], height = _a[3];
-          return new Box({ x: x, y: y, width: width, height: height });
-      };
-      Box.prototype.toSquare = function () {
-          var _a = this, x = _a.x, y = _a.y, width = _a.width, height = _a.height;
-          var diff = Math.abs(width - height);
+      get x() {
+          return this._x;
+      }
+      get y() {
+          return this._y;
+      }
+      get width() {
+          return this._width;
+      }
+      get height() {
+          return this._height;
+      }
+      get left() {
+          return this.x;
+      }
+      get top() {
+          return this.y;
+      }
+      get right() {
+          return this.x + this.width;
+      }
+      get bottom() {
+          return this.y + this.height;
+      }
+      get area() {
+          return this.width * this.height;
+      }
+      get topLeft() {
+          return new Point(this.left, this.top);
+      }
+      get topRight() {
+          return new Point(this.right, this.top);
+      }
+      get bottomLeft() {
+          return new Point(this.left, this.bottom);
+      }
+      get bottomRight() {
+          return new Point(this.right, this.bottom);
+      }
+      round() {
+          const [x, y, width, height] = [this.x, this.y, this.width, this.height].map(val => Math.round(val));
+          return new Box({ x, y, width, height });
+      }
+      floor() {
+          const [x, y, width, height] = [this.x, this.y, this.width, this.height].map(val => Math.floor(val));
+          return new Box({ x, y, width, height });
+      }
+      toSquare() {
+          let { x, y, width, height } = this;
+          const diff = Math.abs(width - height);
           if (width < height) {
-              x -= (diff / 2);
+              x -= diff / 2;
               width += diff;
           }
           if (height < width) {
-              y -= (diff / 2);
+              y -= diff / 2;
               height += diff;
           }
-          return new Box({ x: x, y: y, width: width, height: height });
-      };
-      Box.prototype.rescale = function (s) {
-          var scaleX = isDimensions(s) ? s.width : s;
-          var scaleY = isDimensions(s) ? s.height : s;
+          return new Box({ x, y, width, height });
+      }
+      rescale(s) {
+          const scaleX = isDimensions(s) ? s.width : s;
+          const scaleY = isDimensions(s) ? s.height : s;
           return new Box({
               x: this.x * scaleX,
               y: this.y * scaleY,
               width: this.width * scaleX,
-              height: this.height * scaleY
+              height: this.height * scaleY,
           });
-      };
-      Box.prototype.pad = function (padX, padY) {
-          var _a = [
-              this.x - (padX / 2),
-              this.y - (padY / 2),
+      }
+      pad(padX, padY) {
+          const [x, y, width, height] = [
+              this.x - padX / 2,
+              this.y - padY / 2,
               this.width + padX,
-              this.height + padY
-          ], x = _a[0], y = _a[1], width = _a[2], height = _a[3];
-          return new Box({ x: x, y: y, width: width, height: height });
-      };
-      Box.prototype.clipAtImageBorders = function (imgWidth, imgHeight) {
-          var _a = this, x = _a.x, y = _a.y, right = _a.right, bottom = _a.bottom;
-          var clippedX = Math.max(x, 0);
-          var clippedY = Math.max(y, 0);
-          var newWidth = right - clippedX;
-          var newHeight = bottom - clippedY;
-          var clippedWidth = Math.min(newWidth, imgWidth - clippedX);
-          var clippedHeight = Math.min(newHeight, imgHeight - clippedY);
-          return (new Box({ x: clippedX, y: clippedY, width: clippedWidth, height: clippedHeight })).floor();
-      };
-      Box.prototype.shift = function (sx, sy) {
-          var _a = this, width = _a.width, height = _a.height;
-          var x = this.x + sx;
-          var y = this.y + sy;
-          return new Box({ x: x, y: y, width: width, height: height });
-      };
-      Box.prototype.padAtBorders = function (imageHeight, imageWidth) {
-          var w = this.width + 1;
-          var h = this.height + 1;
-          var dx = 1;
-          var dy = 1;
-          var edx = w;
-          var edy = h;
-          var x = this.left;
-          var y = this.top;
-          var ex = this.right;
-          var ey = this.bottom;
+              this.height + padY,
+          ];
+          return new Box({ x, y, width, height });
+      }
+      clipAtImageBorders(imgWidth, imgHeight) {
+          const { x, y, right, bottom } = this;
+          const clippedX = Math.max(x, 0);
+          const clippedY = Math.max(y, 0);
+          const newWidth = right - clippedX;
+          const newHeight = bottom - clippedY;
+          const clippedWidth = Math.min(newWidth, imgWidth - clippedX);
+          const clippedHeight = Math.min(newHeight, imgHeight - clippedY);
+          return new Box({
+              x: clippedX,
+              y: clippedY,
+              width: clippedWidth,
+              height: clippedHeight,
+          }).floor();
+      }
+      shift(sx, sy) {
+          const { width, height } = this;
+          const x = this.x + sx;
+          const y = this.y + sy;
+          return new Box({ x, y, width, height });
+      }
+      padAtBorders(imageHeight, imageWidth) {
+          const w = this.width + 1;
+          const h = this.height + 1;
+          const dx = 1;
+          const dy = 1;
+          let edx = w;
+          let edy = h;
+          let x = this.left;
+          let y = this.top;
+          let ex = this.right;
+          let ey = this.bottom;
           if (ex > imageWidth) {
               edx = -ex + imageWidth + w;
               ex = imageWidth;
@@ -747,147 +609,124 @@
               edy = 2 - y;
               y = 1;
           }
-          return { dy: dy, edy: edy, dx: dx, edx: edx, y: y, ey: ey, x: x, ex: ex, w: w, h: h };
-      };
-      Box.prototype.calibrate = function (region) {
-          return new Box({
-              left: this.left + (region.left * this.width),
-              top: this.top + (region.top * this.height),
-              right: this.right + (region.right * this.width),
-              bottom: this.bottom + (region.bottom * this.height)
-          }).toSquare().round();
-      };
-      return Box;
-  }());
-
-  var BoundingBox = /** @class */ (function (_super) {
-      __extends(BoundingBox, _super);
-      function BoundingBox(left, top, right, bottom, allowNegativeDimensions) {
-          if (allowNegativeDimensions === void 0) { allowNegativeDimensions = false; }
-          return _super.call(this, { left: left, top: top, right: right, bottom: bottom }, allowNegativeDimensions) || this;
+          return { dy, edy, dx, edx, y, ey, x, ex, w, h };
       }
-      return BoundingBox;
-  }(Box));
+      calibrate(region) {
+          return new Box({
+              left: this.left + region.left * this.width,
+              top: this.top + region.top * this.height,
+              right: this.right + region.right * this.width,
+              bottom: this.bottom + region.bottom * this.height,
+          })
+              .toSquare()
+              .round();
+      }
+  }
 
-  var ObjectDetection = /** @class */ (function () {
-      function ObjectDetection(score, classScore, className, relativeBox, imageDims) {
+  class BoundingBox extends Box {
+      constructor(left, top, right, bottom, allowNegativeDimensions = false) {
+          super({ left, top, right, bottom }, allowNegativeDimensions);
+      }
+  }
+
+  class ObjectDetection {
+      constructor(score, classScore, className, relativeBox, imageDims) {
           this._imageDims = new Dimensions(imageDims.width, imageDims.height);
           this._score = score;
           this._classScore = classScore;
           this._className = className;
           this._box = new Box(relativeBox).rescale(this._imageDims);
       }
-      Object.defineProperty(ObjectDetection.prototype, "score", {
-          get: function () { return this._score; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "classScore", {
-          get: function () { return this._classScore; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "className", {
-          get: function () { return this._className; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "box", {
-          get: function () { return this._box; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "imageDims", {
-          get: function () { return this._imageDims; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "imageWidth", {
-          get: function () { return this.imageDims.width; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "imageHeight", {
-          get: function () { return this.imageDims.height; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(ObjectDetection.prototype, "relativeBox", {
-          get: function () { return new Box(this._box).rescale(this.imageDims.reverse()); },
-          enumerable: false,
-          configurable: true
-      });
-      ObjectDetection.prototype.forSize = function (width, height) {
-          return new ObjectDetection(this.score, this.classScore, this.className, this.relativeBox, { width: width, height: height });
-      };
-      return ObjectDetection;
-  }());
-
-  var FaceDetection = /** @class */ (function (_super) {
-      __extends(FaceDetection, _super);
-      function FaceDetection(score, relativeBox, imageDims) {
-          return _super.call(this, score, score, '', relativeBox, imageDims) || this;
+      get score() {
+          return this._score;
       }
-      FaceDetection.prototype.forSize = function (width, height) {
-          var _a = _super.prototype.forSize.call(this, width, height), score = _a.score, relativeBox = _a.relativeBox, imageDims = _a.imageDims;
-          return new FaceDetection(score, relativeBox, imageDims);
-      };
-      return FaceDetection;
-  }(ObjectDetection));
+      get classScore() {
+          return this._classScore;
+      }
+      get className() {
+          return this._className;
+      }
+      get box() {
+          return this._box;
+      }
+      get imageDims() {
+          return this._imageDims;
+      }
+      get imageWidth() {
+          return this.imageDims.width;
+      }
+      get imageHeight() {
+          return this.imageDims.height;
+      }
+      get relativeBox() {
+          return new Box(this._box).rescale(this.imageDims.reverse());
+      }
+      forSize(width, height) {
+          return new ObjectDetection(this.score, this.classScore, this.className, this.relativeBox, {
+              width,
+              height,
+          });
+      }
+  }
 
-  function iou(box1, box2, isIOU) {
-      if (isIOU === void 0) { isIOU = true; }
-      var width = Math.max(0.0, Math.min(box1.right, box2.right) - Math.max(box1.left, box2.left));
-      var height = Math.max(0.0, Math.min(box1.bottom, box2.bottom) - Math.max(box1.top, box2.top));
-      var interSection = width * height;
+  class FaceDetection extends ObjectDetection {
+      constructor(score, relativeBox, imageDims) {
+          super(score, score, '', relativeBox, imageDims);
+      }
+      forSize(width, height) {
+          const { score, relativeBox, imageDims } = super.forSize(width, height);
+          return new FaceDetection(score, relativeBox, imageDims);
+      }
+  }
+
+  function iou(box1, box2, isIOU = true) {
+      const width = Math.max(0.0, Math.min(box1.right, box2.right) - Math.max(box1.left, box2.left));
+      const height = Math.max(0.0, Math.min(box1.bottom, box2.bottom) - Math.max(box1.top, box2.top));
+      const interSection = width * height;
       return isIOU
           ? interSection / (box1.area + box2.area - interSection)
           : interSection / Math.min(box1.area, box2.area);
   }
 
   function minBbox(pts) {
-      var xs = pts.map(function (pt) { return pt.x; });
-      var ys = pts.map(function (pt) { return pt.y; });
-      var minX = xs.reduce(function (min, x) { return x < min ? x : min; }, Infinity);
-      var minY = ys.reduce(function (min, y) { return y < min ? y : min; }, Infinity);
-      var maxX = xs.reduce(function (max, x) { return max < x ? x : max; }, 0);
-      var maxY = ys.reduce(function (max, y) { return max < y ? y : max; }, 0);
+      const xs = pts.map(pt => pt.x);
+      const ys = pts.map(pt => pt.y);
+      const minX = xs.reduce((min, x) => (x < min ? x : min), Infinity);
+      const minY = ys.reduce((min, y) => (y < min ? y : min), Infinity);
+      const maxX = xs.reduce((max, x) => (max < x ? x : max), 0);
+      const maxY = ys.reduce((max, y) => (max < y ? y : max), 0);
       return new BoundingBox(minX, minY, maxX, maxY);
   }
 
-  function nonMaxSuppression$1(boxes, scores, iouThreshold, isIOU) {
-      if (isIOU === void 0) { isIOU = true; }
-      var indicesSortedByScore = scores
-          .map(function (score, boxIndex) { return ({ score: score, boxIndex: boxIndex }); })
-          .sort(function (c1, c2) { return c1.score - c2.score; })
-          .map(function (c) { return c.boxIndex; });
-      var pick = [];
-      var _loop_1 = function () {
-          var curr = indicesSortedByScore.pop();
+  function nonMaxSuppression$1(boxes, scores, iouThreshold, isIOU = true) {
+      let indicesSortedByScore = scores
+          .map((score, boxIndex) => ({ score, boxIndex }))
+          .sort((c1, c2) => c1.score - c2.score)
+          .map(c => c.boxIndex);
+      const pick = [];
+      while (indicesSortedByScore.length > 0) {
+          const curr = indicesSortedByScore.pop();
           pick.push(curr);
-          var indices = indicesSortedByScore;
-          var outputs = [];
-          for (var i = 0; i < indices.length; i++) {
-              var idx = indices[i];
-              var currBox = boxes[curr];
-              var idxBox = boxes[idx];
+          const indices = indicesSortedByScore;
+          const outputs = [];
+          for (let i = 0; i < indices.length; i++) {
+              const idx = indices[i];
+              const currBox = boxes[curr];
+              const idxBox = boxes[idx];
               outputs.push(iou(currBox, idxBox, isIOU));
           }
-          indicesSortedByScore = indicesSortedByScore.filter(function (_, j) { return outputs[j] <= iouThreshold; });
-      };
-      while (indicesSortedByScore.length > 0) {
-          _loop_1();
+          indicesSortedByScore = indicesSortedByScore.filter((_, j) => outputs[j] <= iouThreshold);
       }
       return pick;
   }
 
   function normalize$1(x, meanRgb) {
-      return Ze(function () {
-          var r = meanRgb[0], g = meanRgb[1], b = meanRgb[2];
-          var avg_r = Hn(__spreadArrays(x.shape.slice(0, 3), [1]), r);
-          var avg_g = Hn(__spreadArrays(x.shape.slice(0, 3), [1]), g);
-          var avg_b = Hn(__spreadArrays(x.shape.slice(0, 3), [1]), b);
-          var avg_rgb = Yn([avg_r, avg_g, avg_b], 3);
+      return Ze(() => {
+          const [r, g, b] = meanRgb;
+          const avg_r = Hn([...x.shape.slice(0, 3), 1], r);
+          const avg_g = Hn([...x.shape.slice(0, 3), 1], g);
+          const avg_b = Hn([...x.shape.slice(0, 3), 1], b);
+          const avg_rgb = Yn([avg_r, avg_g, avg_b], 3);
           return Oo(x, avg_rgb);
       });
   }
@@ -900,42 +739,35 @@
    * both sides of the minor dimension oof the image.
    * @returns The padded tensor with width === height.
    */
-  function padToSquare(imgTensor, isCenterImage) {
-      if (isCenterImage === void 0) { isCenterImage = false; }
-      return Ze(function () {
-          var _a = imgTensor.shape.slice(1), height = _a[0], width = _a[1];
+  function padToSquare(imgTensor, isCenterImage = false) {
+      return Ze(() => {
+          const [height, width] = imgTensor.shape.slice(1);
           if (height === width) {
               return imgTensor;
           }
-          var dimDiff = Math.abs(height - width);
-          var paddingAmount = Math.round(dimDiff * (isCenterImage ? 0.5 : 1));
-          var paddingAxis = height > width ? 2 : 1;
-          var createPaddingTensor = function (paddingAmount) {
-              var paddingTensorShape = imgTensor.shape.slice();
+          const dimDiff = Math.abs(height - width);
+          const paddingAmount = Math.round(dimDiff * (isCenterImage ? 0.5 : 1));
+          const paddingAxis = height > width ? 2 : 1;
+          const createPaddingTensor = (paddingAmount) => {
+              const paddingTensorShape = imgTensor.shape.slice();
               paddingTensorShape[paddingAxis] = paddingAmount;
               return Hn(paddingTensorShape, 0);
           };
-          var paddingTensorAppend = createPaddingTensor(paddingAmount);
-          var remainingPaddingAmount = dimDiff - paddingTensorAppend.shape[paddingAxis];
-          var paddingTensorPrepend = isCenterImage && remainingPaddingAmount
-              ? createPaddingTensor(remainingPaddingAmount)
-              : null;
-          var tensorsToStack = [
-              paddingTensorPrepend,
-              imgTensor,
-              paddingTensorAppend
-          ]
-              .filter(function (t) { return !!t; })
-              .map(function (t) { return t.toFloat(); });
+          const paddingTensorAppend = createPaddingTensor(paddingAmount);
+          const remainingPaddingAmount = dimDiff - paddingTensorAppend.shape[paddingAxis];
+          const paddingTensorPrepend = isCenterImage && remainingPaddingAmount ? createPaddingTensor(remainingPaddingAmount) : null;
+          const tensorsToStack = [paddingTensorPrepend, imgTensor, paddingTensorAppend]
+              .filter(t => !!t)
+              .map((t) => t.toFloat());
           return Yn(tensorsToStack, paddingAxis);
       });
   }
 
   function shuffleArray(inputArray) {
-      var array = inputArray.slice();
-      for (var i = array.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var x = array[i];
+      const array = inputArray.slice();
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const x = array[i];
           array[i] = array[j];
           array[j] = x;
       }
@@ -949,64 +781,47 @@
       return Math.log(x / (1 - x));
   }
 
-  var Rect = /** @class */ (function (_super) {
-      __extends(Rect, _super);
-      function Rect(x, y, width, height, allowNegativeDimensions) {
-          if (allowNegativeDimensions === void 0) { allowNegativeDimensions = false; }
-          return _super.call(this, { x: x, y: y, width: width, height: height }, allowNegativeDimensions) || this;
+  class Rect extends Box {
+      constructor(x, y, width, height, allowNegativeDimensions = false) {
+          super({ x, y, width, height }, allowNegativeDimensions);
       }
-      return Rect;
-  }(Box));
+  }
 
   // face alignment constants
-  var relX = 0.5;
-  var relY = 0.43;
-  var relScale = 0.45;
-  var FaceLandmarks = /** @class */ (function () {
-      function FaceLandmarks(relativeFaceLandmarkPositions, imgDims, shift) {
-          if (shift === void 0) { shift = new Point(0, 0); }
-          var width = imgDims.width, height = imgDims.height;
+  const relX = 0.5;
+  const relY = 0.43;
+  const relScale = 0.45;
+  class FaceLandmarks {
+      constructor(relativeFaceLandmarkPositions, imgDims, shift = new Point(0, 0)) {
+          const { width, height } = imgDims;
           this._imgDims = new Dimensions(width, height);
           this._shift = shift;
-          this._positions = relativeFaceLandmarkPositions.map(function (pt) { return pt.mul(new Point(width, height)).add(shift); });
+          this._positions = relativeFaceLandmarkPositions.map(pt => pt.mul(new Point(width, height)).add(shift));
       }
-      Object.defineProperty(FaceLandmarks.prototype, "shift", {
-          get: function () { return new Point(this._shift.x, this._shift.y); },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(FaceLandmarks.prototype, "imageWidth", {
-          get: function () { return this._imgDims.width; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(FaceLandmarks.prototype, "imageHeight", {
-          get: function () { return this._imgDims.height; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(FaceLandmarks.prototype, "positions", {
-          get: function () { return this._positions; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(FaceLandmarks.prototype, "relativePositions", {
-          get: function () {
-              var _this = this;
-              return this._positions.map(function (pt) { return pt.sub(_this._shift).div(new Point(_this.imageWidth, _this.imageHeight)); });
-          },
-          enumerable: false,
-          configurable: true
-      });
-      FaceLandmarks.prototype.forSize = function (width, height) {
-          return new this.constructor(this.relativePositions, { width: width, height: height });
-      };
-      FaceLandmarks.prototype.shiftBy = function (x, y) {
+      get shift() {
+          return new Point(this._shift.x, this._shift.y);
+      }
+      get imageWidth() {
+          return this._imgDims.width;
+      }
+      get imageHeight() {
+          return this._imgDims.height;
+      }
+      get positions() {
+          return this._positions;
+      }
+      get relativePositions() {
+          return this._positions.map(pt => pt.sub(this._shift).div(new Point(this.imageWidth, this.imageHeight)));
+      }
+      forSize(width, height) {
+          return new this.constructor(this.relativePositions, { width, height });
+      }
+      shiftBy(x, y) {
           return new this.constructor(this.relativePositions, this._imgDims, new Point(x, y));
-      };
-      FaceLandmarks.prototype.shiftByPoint = function (pt) {
+      }
+      shiftByPoint(pt) {
           return this.shiftBy(pt.x, pt.y);
-      };
+      }
       /**
        * Aligns the face landmarks after face detection from the relative positions of the faces
        * bounding box, or it's current shift. This function should be used to align the face images
@@ -1018,214 +833,163 @@
        * it's current shift.
        * @returns The bounding box of the aligned face.
        */
-      FaceLandmarks.prototype.align = function (detection, options) {
-          if (options === void 0) { options = {}; }
+      align(detection, options = {}) {
           if (detection) {
-              var box = detection instanceof FaceDetection
-                  ? detection.box.floor()
-                  : new Box(detection);
+              const box = detection instanceof FaceDetection ? detection.box.floor() : new Box(detection);
               return this.shiftBy(box.x, box.y).align(null, options);
           }
-          var _a = Object.assign({}, { useDlibAlignment: false, minBoxPadding: 0.2 }, options), useDlibAlignment = _a.useDlibAlignment, minBoxPadding = _a.minBoxPadding;
+          const { useDlibAlignment, minBoxPadding } = Object.assign({}, { useDlibAlignment: false, minBoxPadding: 0.2 }, options);
           if (useDlibAlignment) {
               return this.alignDlib();
           }
           return this.alignMinBbox(minBoxPadding);
-      };
-      FaceLandmarks.prototype.alignDlib = function () {
-          var centers = this.getRefPointsForAlignment();
-          var leftEyeCenter = centers[0], rightEyeCenter = centers[1], mouthCenter = centers[2];
-          var distToMouth = function (pt) { return mouthCenter.sub(pt).magnitude(); };
-          var eyeToMouthDist = (distToMouth(leftEyeCenter) + distToMouth(rightEyeCenter)) / 2;
-          var size = Math.floor(eyeToMouthDist / relScale);
-          var refPoint = getCenterPoint(centers);
+      }
+      alignDlib() {
+          const centers = this.getRefPointsForAlignment();
+          const [leftEyeCenter, rightEyeCenter, mouthCenter] = centers;
+          const distToMouth = (pt) => mouthCenter.sub(pt).magnitude();
+          const eyeToMouthDist = (distToMouth(leftEyeCenter) + distToMouth(rightEyeCenter)) / 2;
+          const size = Math.floor(eyeToMouthDist / relScale);
+          const refPoint = getCenterPoint(centers);
           // TODO: pad in case rectangle is out of image bounds
-          var x = Math.floor(Math.max(0, refPoint.x - (relX * size)));
-          var y = Math.floor(Math.max(0, refPoint.y - (relY * size)));
+          const x = Math.floor(Math.max(0, refPoint.x - relX * size));
+          const y = Math.floor(Math.max(0, refPoint.y - relY * size));
           return new Rect(x, y, Math.min(size, this.imageWidth + x), Math.min(size, this.imageHeight + y));
-      };
-      FaceLandmarks.prototype.alignMinBbox = function (padding) {
-          var box = minBbox(this.positions);
+      }
+      alignMinBbox(padding) {
+          const box = minBbox(this.positions);
           return box.pad(box.width * padding, box.height * padding);
-      };
-      FaceLandmarks.prototype.getRefPointsForAlignment = function () {
+      }
+      getRefPointsForAlignment() {
           throw new Error('getRefPointsForAlignment not implemented by base class');
-      };
-      return FaceLandmarks;
-  }());
-
-  var FaceLandmarks5 = /** @class */ (function (_super) {
-      __extends(FaceLandmarks5, _super);
-      function FaceLandmarks5() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      FaceLandmarks5.prototype.getRefPointsForAlignment = function () {
-          var pts = this.positions;
-          return [
-              pts[0],
-              pts[1],
-              getCenterPoint([pts[3], pts[4]])
-          ];
-      };
-      return FaceLandmarks5;
-  }(FaceLandmarks));
+  }
 
-  var FaceLandmarks68 = /** @class */ (function (_super) {
-      __extends(FaceLandmarks68, _super);
-      function FaceLandmarks68() {
-          return _super !== null && _super.apply(this, arguments) || this;
+  class FaceLandmarks5 extends FaceLandmarks {
+      getRefPointsForAlignment() {
+          const pts = this.positions;
+          return [pts[0], pts[1], getCenterPoint([pts[3], pts[4]])];
       }
-      FaceLandmarks68.prototype.getJawOutline = function () {
+  }
+
+  class FaceLandmarks68 extends FaceLandmarks {
+      getJawOutline() {
           return this.positions.slice(0, 17);
-      };
-      FaceLandmarks68.prototype.getLeftEyeBrow = function () {
+      }
+      getLeftEyeBrow() {
           return this.positions.slice(17, 22);
-      };
-      FaceLandmarks68.prototype.getRightEyeBrow = function () {
+      }
+      getRightEyeBrow() {
           return this.positions.slice(22, 27);
-      };
-      FaceLandmarks68.prototype.getNose = function () {
+      }
+      getNose() {
           return this.positions.slice(27, 36);
-      };
-      FaceLandmarks68.prototype.getLeftEye = function () {
+      }
+      getLeftEye() {
           return this.positions.slice(36, 42);
-      };
-      FaceLandmarks68.prototype.getRightEye = function () {
+      }
+      getRightEye() {
           return this.positions.slice(42, 48);
-      };
-      FaceLandmarks68.prototype.getMouth = function () {
+      }
+      getMouth() {
           return this.positions.slice(48, 68);
-      };
-      FaceLandmarks68.prototype.getRefPointsForAlignment = function () {
-          return [
-              this.getLeftEye(),
-              this.getRightEye(),
-              this.getMouth()
-          ].map(getCenterPoint);
-      };
-      return FaceLandmarks68;
-  }(FaceLandmarks));
+      }
+      getRefPointsForAlignment() {
+          return [this.getLeftEye(), this.getRightEye(), this.getMouth()].map(getCenterPoint);
+      }
+  }
 
-  var FaceMatch = /** @class */ (function () {
-      function FaceMatch(label, distance) {
+  class FaceMatch {
+      constructor(label, distance) {
           this._label = label;
           this._distance = distance;
       }
-      Object.defineProperty(FaceMatch.prototype, "label", {
-          get: function () { return this._label; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(FaceMatch.prototype, "distance", {
-          get: function () { return this._distance; },
-          enumerable: false,
-          configurable: true
-      });
-      FaceMatch.prototype.toString = function (withDistance) {
-          if (withDistance === void 0) { withDistance = true; }
-          return "" + this.label + (withDistance ? " (" + round(this.distance) + ")" : '');
-      };
-      return FaceMatch;
-  }());
-
-  var LabeledBox = /** @class */ (function (_super) {
-      __extends(LabeledBox, _super);
-      function LabeledBox(box, label) {
-          var _this = _super.call(this, box) || this;
-          _this._label = label;
-          return _this;
+      get label() {
+          return this._label;
       }
-      LabeledBox.assertIsValidLabeledBox = function (box, callee) {
-          Box.assertIsValidBox(box, callee);
-          if (!isValidNumber(box.label)) {
-              throw new Error(callee + " - expected property label (" + box.label + ") to be a number");
-          }
-      };
-      Object.defineProperty(LabeledBox.prototype, "label", {
-          get: function () { return this._label; },
-          enumerable: false,
-          configurable: true
-      });
-      return LabeledBox;
-  }(Box));
+      get distance() {
+          return this._distance;
+      }
+      toString(withDistance = true) {
+          return `${this.label}${withDistance ? ` (${round(this.distance)})` : ''}`;
+      }
+  }
 
-  var LabeledFaceDescriptors = /** @class */ (function () {
-      function LabeledFaceDescriptors(label, descriptors) {
+  class LabeledBox extends Box {
+      static assertIsValidLabeledBox(box, callee) {
+          Box.assertIsValidBox(box, callee);
+          const boxRecord = box;
+          if (!isValidNumber(boxRecord.label)) {
+              throw new Error(`${callee} - expected property label (${boxRecord.label}) to be a number`);
+          }
+      }
+      constructor(box, label) {
+          super(box);
+          this._label = label;
+      }
+      get label() {
+          return this._label;
+      }
+  }
+
+  class LabeledFaceDescriptors {
+      constructor(label, descriptors) {
           if (!(typeof label === 'string')) {
               throw new Error('LabeledFaceDescriptors - constructor expected label to be a string');
           }
-          if (!Array.isArray(descriptors) || descriptors.some(function (desc) { return !(desc instanceof Float32Array); })) {
+          if (!Array.isArray(descriptors) || descriptors.some(desc => !(desc instanceof Float32Array))) {
               throw new Error('LabeledFaceDescriptors - constructor expected descriptors to be an array of Float32Array');
           }
           this._label = label;
           this._descriptors = descriptors;
       }
-      Object.defineProperty(LabeledFaceDescriptors.prototype, "label", {
-          get: function () { return this._label; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(LabeledFaceDescriptors.prototype, "descriptors", {
-          get: function () { return this._descriptors; },
-          enumerable: false,
-          configurable: true
-      });
-      LabeledFaceDescriptors.prototype.toJSON = function () {
+      get label() {
+          return this._label;
+      }
+      get descriptors() {
+          return this._descriptors;
+      }
+      toJSON() {
           return {
               label: this.label,
-              descriptors: this.descriptors.map(function (d) { return Array.from(d); })
+              descriptors: this.descriptors.map(d => Array.from(d)),
           };
-      };
-      LabeledFaceDescriptors.fromJSON = function (json) {
-          var descriptors = json.descriptors.map(function (d) {
+      }
+      static fromJSON(json) {
+          const descriptors = json.descriptors.map((d) => {
               return new Float32Array(d);
           });
           return new LabeledFaceDescriptors(json.label, descriptors);
-      };
-      return LabeledFaceDescriptors;
-  }());
-
-  var PredictedBox = /** @class */ (function (_super) {
-      __extends(PredictedBox, _super);
-      function PredictedBox(box, label, score, classScore) {
-          var _this = _super.call(this, box, label) || this;
-          _this._score = score;
-          _this._classScore = classScore;
-          return _this;
       }
-      PredictedBox.assertIsValidPredictedBox = function (box, callee) {
-          LabeledBox.assertIsValidLabeledBox(box, callee);
-          if (!isValidProbablitiy(box.score)
-              || !isValidProbablitiy(box.classScore)) {
-              throw new Error(callee + " - expected properties score (" + box.score + ") and (" + box.classScore + ") to be a number between [0, 1]");
-          }
-      };
-      Object.defineProperty(PredictedBox.prototype, "score", {
-          get: function () { return this._score; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(PredictedBox.prototype, "classScore", {
-          get: function () { return this._classScore; },
-          enumerable: false,
-          configurable: true
-      });
-      return PredictedBox;
-  }(LabeledBox));
-
-  function isWithFaceDetection(obj) {
-      return obj['detection'] instanceof FaceDetection;
   }
-  function extendWithFaceDetection(sourceObj, detection) {
-      var extension = { detection: detection };
-      return Object.assign({}, sourceObj, extension);
+
+  class PredictedBox extends LabeledBox {
+      static assertIsValidPredictedBox(box, callee) {
+          LabeledBox.assertIsValidLabeledBox(box, callee);
+          const boxRecord = box;
+          if (!isValidProbablitiy(boxRecord.score) || !isValidProbablitiy(boxRecord.classScore)) {
+              throw new Error(`${callee} - expected properties score (${boxRecord.score}) and (${boxRecord.classScore}) to be a number between [0, 1]`);
+          }
+      }
+      constructor(box, label, score, classScore) {
+          super(box, label);
+          this._score = score;
+          this._classScore = classScore;
+      }
+      get score() {
+          return this._score;
+      }
+      get classScore() {
+          return this._classScore;
+      }
   }
 
   function createBrowserEnv() {
-      var fetch = window['fetch'] || function () {
-          throw new Error('fetch - missing fetch implementation for browser environment');
-      };
-      var readFile = function () {
+      const fetch = window.fetch ||
+          (() => {
+              throw new Error('fetch - missing fetch implementation for browser environment');
+          });
+      const readFile = () => {
           throw new Error('readFile - filesystem not available for browser environment');
       };
       return {
@@ -1234,103 +998,87 @@
           Image: HTMLImageElement,
           ImageData: ImageData,
           Video: HTMLVideoElement,
-          createCanvasElement: function () { return document.createElement('canvas'); },
-          createImageElement: function () { return document.createElement('img'); },
-          fetch: fetch,
-          readFile: readFile
+          createCanvasElement: () => document.createElement('canvas'),
+          createImageElement: () => document.createElement('img'),
+          fetch,
+          readFile,
       };
   }
 
   function createFileSystem(fs) {
-      var requireFsError = '';
+      let requireFsError = '';
       if (!fs) {
           try {
-              fs = require('fs');
+              fs = require('node:fs');
           }
           catch (err) {
               requireFsError = err.toString();
           }
       }
-      var readFile = fs
-          ? function (filePath) {
-              return new Promise(function (res, rej) {
-                  fs.readFile(filePath, function (err, buffer) {
-                      return err ? rej(err) : res(buffer);
-                  });
-              });
-          }
-          : function () {
-              throw new Error("readFile - failed to require fs in nodejs environment with error: " + requireFsError);
+      const readFile = fs
+          ? (filePath) => new Promise((res, rej) => {
+              fs.readFile(filePath, (err, buffer) => err ? rej(err) : res(buffer));
+          })
+          : () => {
+              throw new Error(`readFile - failed to require fs in nodejs environment with error: ${requireFsError}`);
           };
       return {
-          readFile: readFile
+          readFile,
       };
   }
 
   function createNodejsEnv() {
-      var Canvas = global['Canvas'] || global['HTMLCanvasElement'];
-      var Image = global['Image'] || global['HTMLImageElement'];
-      var createCanvasElement = function () {
+      const globalAny = global;
+      const Canvas = globalAny.Canvas || globalAny.HTMLCanvasElement;
+      const Image = globalAny.Image || globalAny.HTMLImageElement;
+      const createCanvasElement = () => {
           if (Canvas) {
               return new Canvas();
           }
           throw new Error('createCanvasElement - missing Canvas implementation for nodejs environment');
       };
-      var createImageElement = function () {
+      const createImageElement = () => {
           if (Image) {
               return new Image();
           }
           throw new Error('createImageElement - missing Image implementation for nodejs environment');
       };
-      var fetch = global['fetch'] || function () {
-          throw new Error('fetch - missing fetch implementation for nodejs environment');
-      };
-      var fileSystem = createFileSystem();
-      return __assign({ Canvas: Canvas || /** @class */ (function () {
-              function Canvas() {
-              }
-              return Canvas;
-          }()), CanvasRenderingContext2D: global['CanvasRenderingContext2D'] || /** @class */ (function () {
-              function class_1() {
-              }
-              return class_1;
-          }()), Image: Image || /** @class */ (function () {
-              function Image() {
-              }
-              return Image;
-          }()), ImageData: global['ImageData'] || /** @class */ (function () {
-              function class_2() {
-              }
-              return class_2;
-          }()), Video: global['HTMLVideoElement'] || /** @class */ (function () {
-              function class_3() {
-              }
-              return class_3;
-          }()), createCanvasElement: createCanvasElement,
-          createImageElement: createImageElement,
-          fetch: fetch }, fileSystem);
+      const fetch = globalAny.fetch ||
+          (() => {
+              throw new Error('fetch - missing fetch implementation for nodejs environment');
+          });
+      const fileSystem = createFileSystem();
+      return Object.assign({ Canvas: Canvas || class {
+          }, CanvasRenderingContext2D: globalAny.CanvasRenderingContext2D || class {
+          }, Image: Image || class {
+          }, ImageData: globalAny.ImageData || class {
+          }, Video: globalAny.HTMLVideoElement || class {
+          }, createCanvasElement,
+          createImageElement,
+          fetch }, fileSystem);
   }
 
   function isBrowser() {
-      return typeof window === 'object'
-          && typeof document !== 'undefined'
-          && typeof HTMLImageElement !== 'undefined'
-          && typeof HTMLCanvasElement !== 'undefined'
-          && typeof HTMLVideoElement !== 'undefined'
-          && typeof ImageData !== 'undefined'
-          && typeof CanvasRenderingContext2D !== 'undefined';
+      return (typeof window === 'object' &&
+          typeof document !== 'undefined' &&
+          typeof HTMLImageElement !== 'undefined' &&
+          typeof HTMLCanvasElement !== 'undefined' &&
+          typeof HTMLVideoElement !== 'undefined' &&
+          typeof ImageData !== 'undefined' &&
+          typeof CanvasRenderingContext2D !== 'undefined');
   }
 
   function isNodejs() {
-      return typeof global === 'object'
-          && typeof require === 'function'
-          && typeof module !== 'undefined'
+      return (typeof global === 'object' &&
+          typeof require === 'function' &&
+          typeof module !== 'undefined' &&
           // issues with gatsby.js: module.exports is undefined
           // && !!module.exports
-          && typeof process !== 'undefined' && !!process.version;
+          typeof process !== 'undefined' &&
+          !!process.version);
   }
 
-  var environment;
+  let environment;
   function getEnv() {
       if (!environment) {
           throw new Error('getEnv - environment is not defined, check isNodejs() and isBrowser()');
@@ -1357,26 +1105,26 @@
       if (!environment) {
           throw new Error('monkeyPatch - environment is not defined, check isNodejs() and isBrowser()');
       }
-      var _a = env.Canvas, Canvas = _a === void 0 ? environment.Canvas : _a, _b = env.Image, Image = _b === void 0 ? environment.Image : _b;
+      const { Canvas = environment.Canvas, Image = environment.Image } = env;
       environment.Canvas = Canvas;
       environment.Image = Image;
-      environment.createCanvasElement = env.createCanvasElement || (function () { return new Canvas(); });
-      environment.createImageElement = env.createImageElement || (function () { return new Image(); });
+      environment.createCanvasElement = env.createCanvasElement || (() => new Canvas());
+      environment.createImageElement = env.createImageElement || (() => new Image());
       environment.ImageData = env.ImageData || environment.ImageData;
       environment.Video = env.Video || environment.Video;
       environment.fetch = env.fetch || environment.fetch;
       environment.readFile = env.readFile || environment.readFile;
   }
-  var env = {
-      getEnv: getEnv,
-      setEnv: setEnv,
-      initialize: initialize,
-      createBrowserEnv: createBrowserEnv,
-      createFileSystem: createFileSystem,
-      createNodejsEnv: createNodejsEnv,
-      monkeyPatch: monkeyPatch,
-      isBrowser: isBrowser,
-      isNodejs: isNodejs
+  const env = {
+      getEnv,
+      setEnv,
+      initialize,
+      createBrowserEnv,
+      createFileSystem,
+      createNodejsEnv,
+      monkeyPatch,
+      isBrowser,
+      isNodejs,
   };
   initialize();
 
@@ -1388,15 +1136,15 @@
   }
 
   function getContext2dOrThrow(canvasArg) {
-      var _a = env.getEnv(), Canvas = _a.Canvas, CanvasRenderingContext2D = _a.CanvasRenderingContext2D;
+      const { Canvas, CanvasRenderingContext2D } = env.getEnv();
       if (canvasArg instanceof CanvasRenderingContext2D) {
           return canvasArg;
       }
-      var canvas = resolveInput(canvasArg);
+      const canvas = resolveInput(canvasArg);
       if (!(canvas instanceof Canvas)) {
           throw new Error('resolveContext2d - expected canvas to be of instance of Canvas');
       }
-      var ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d');
       if (!ctx) {
           throw new Error('resolveContext2d - canvas 2d context is null');
       }
@@ -1410,10 +1158,9 @@
       AnchorPosition["BOTTOM_LEFT"] = "BOTTOM_LEFT";
       AnchorPosition["BOTTOM_RIGHT"] = "BOTTOM_RIGHT";
   })(AnchorPosition || (AnchorPosition = {}));
-  var DrawTextFieldOptions = /** @class */ (function () {
-      function DrawTextFieldOptions(options) {
-          if (options === void 0) { options = {}; }
-          var anchorPosition = options.anchorPosition, backgroundColor = options.backgroundColor, fontColor = options.fontColor, fontSize = options.fontSize, fontStyle = options.fontStyle, padding = options.padding;
+  class DrawTextFieldOptions {
+      constructor(options = {}) {
+          const { anchorPosition, backgroundColor, fontColor, fontSize, fontStyle, padding } = options;
           this.anchorPosition = anchorPosition || AnchorPosition.TOP_LEFT;
           this.backgroundColor = backgroundColor || 'rgba(0, 0, 0, 0.5)';
           this.fontColor = fontColor || 'rgba(255, 255, 255, 1)';
@@ -1421,120 +1168,218 @@
           this.fontStyle = fontStyle || 'Georgia';
           this.padding = padding || 4;
       }
-      return DrawTextFieldOptions;
-  }());
-  var DrawTextField = /** @class */ (function () {
-      function DrawTextField(text, anchor, options) {
-          if (options === void 0) { options = {}; }
-          this.text = typeof text === 'string'
-              ? [text]
-              : (text instanceof DrawTextField ? text.text : text);
+  }
+  class DrawTextField {
+      constructor(text, anchor, options = {}) {
+          this.text =
+              typeof text === 'string' ? [text] : text instanceof DrawTextField ? text.text : text;
           this.anchor = anchor;
           this.options = new DrawTextFieldOptions(options);
       }
-      DrawTextField.prototype.measureWidth = function (ctx) {
-          var padding = this.options.padding;
-          return this.text.map(function (l) { return ctx.measureText(l).width; }).reduce(function (w0, w1) { return w0 < w1 ? w1 : w0; }, 0) + (2 * padding);
-      };
-      DrawTextField.prototype.measureHeight = function () {
-          var _a = this.options, fontSize = _a.fontSize, padding = _a.padding;
-          return this.text.length * fontSize + (2 * padding);
-      };
-      DrawTextField.prototype.getUpperLeft = function (ctx, canvasDims) {
-          var anchorPosition = this.options.anchorPosition;
-          var isShiftLeft = anchorPosition === AnchorPosition.BOTTOM_RIGHT || anchorPosition === AnchorPosition.TOP_RIGHT;
-          var isShiftTop = anchorPosition === AnchorPosition.BOTTOM_LEFT || anchorPosition === AnchorPosition.BOTTOM_RIGHT;
-          var textFieldWidth = this.measureWidth(ctx);
-          var textFieldHeight = this.measureHeight();
-          var x = (isShiftLeft ? this.anchor.x - textFieldWidth : this.anchor.x);
-          var y = isShiftTop ? this.anchor.y - textFieldHeight : this.anchor.y;
+      measureWidth(ctx) {
+          const { padding } = this.options;
+          return (this.text.map(l => ctx.measureText(l).width).reduce((w0, w1) => (w0 < w1 ? w1 : w0), 0) +
+              2 * padding);
+      }
+      measureHeight() {
+          const { fontSize, padding } = this.options;
+          return this.text.length * fontSize + 2 * padding;
+      }
+      getUpperLeft(ctx, canvasDims) {
+          const { anchorPosition } = this.options;
+          const isShiftLeft = anchorPosition === AnchorPosition.BOTTOM_RIGHT || anchorPosition === AnchorPosition.TOP_RIGHT;
+          const isShiftTop = anchorPosition === AnchorPosition.BOTTOM_LEFT ||
+              anchorPosition === AnchorPosition.BOTTOM_RIGHT;
+          const textFieldWidth = this.measureWidth(ctx);
+          const textFieldHeight = this.measureHeight();
+          const x = isShiftLeft ? this.anchor.x - textFieldWidth : this.anchor.x;
+          const y = isShiftTop ? this.anchor.y - textFieldHeight : this.anchor.y;
           // adjust anchor if text box exceeds canvas borders
           if (canvasDims) {
-              var width = canvasDims.width, height = canvasDims.height;
-              var newX = Math.max(Math.min(x, width - textFieldWidth), 0);
-              var newY = Math.max(Math.min(y, height - textFieldHeight), 0);
+              const { width, height } = canvasDims;
+              const newX = Math.max(Math.min(x, width - textFieldWidth), 0);
+              const newY = Math.max(Math.min(y, height - textFieldHeight), 0);
               return { x: newX, y: newY };
           }
-          return { x: x, y: y };
-      };
-      DrawTextField.prototype.draw = function (canvasArg) {
-          var canvas = resolveInput(canvasArg);
-          var ctx = getContext2dOrThrow(canvas);
-          var _a = this.options, backgroundColor = _a.backgroundColor, fontColor = _a.fontColor, fontSize = _a.fontSize, fontStyle = _a.fontStyle, padding = _a.padding;
-          ctx.font = fontSize + "px " + fontStyle;
-          var maxTextWidth = this.measureWidth(ctx);
-          var textHeight = this.measureHeight();
+          return { x, y };
+      }
+      draw(canvasArg) {
+          const canvas = resolveInput(canvasArg);
+          const ctx = getContext2dOrThrow(canvas);
+          const { backgroundColor, fontColor, fontSize, fontStyle, padding } = this.options;
+          ctx.font = `${fontSize}px ${fontStyle}`;
+          const maxTextWidth = this.measureWidth(ctx);
+          const textHeight = this.measureHeight();
           ctx.fillStyle = backgroundColor;
-          var upperLeft = this.getUpperLeft(ctx, canvas);
+          const upperLeft = this.getUpperLeft(ctx, canvas);
           ctx.fillRect(upperLeft.x, upperLeft.y, maxTextWidth, textHeight);
           ctx.fillStyle = fontColor;
-          this.text.forEach(function (textLine, i) {
-              var x = padding + upperLeft.x;
-              var y = padding + upperLeft.y + ((i + 1) * fontSize);
+          this.text.forEach((textLine, i) => {
+              const x = padding + upperLeft.x;
+              const y = padding + upperLeft.y + (i + 1) * fontSize;
               ctx.fillText(textLine, x, y);
           });
-      };
-      return DrawTextField;
-  }());
+      }
+  }
 
-  var DrawBoxOptions = /** @class */ (function () {
-      function DrawBoxOptions(options) {
-          if (options === void 0) { options = {}; }
-          var boxColor = options.boxColor, lineWidth = options.lineWidth, label = options.label, drawLabelOptions = options.drawLabelOptions;
+  class DrawBoxOptions {
+      constructor(options = {}) {
+          const { boxColor, lineWidth, label, drawLabelOptions } = options;
           this.boxColor = boxColor || 'rgba(0, 0, 255, 1)';
           this.lineWidth = lineWidth || 2;
           this.label = label;
-          var defaultDrawLabelOptions = {
+          const defaultDrawLabelOptions = {
               anchorPosition: AnchorPosition.BOTTOM_LEFT,
-              backgroundColor: this.boxColor
+              backgroundColor: this.boxColor,
           };
           this.drawLabelOptions = new DrawTextFieldOptions(Object.assign({}, defaultDrawLabelOptions, drawLabelOptions));
       }
-      return DrawBoxOptions;
-  }());
-  var DrawBox = /** @class */ (function () {
-      function DrawBox(box, options) {
-          if (options === void 0) { options = {}; }
+  }
+  class DrawBox {
+      constructor(box, options = {}) {
           this.box = new Box(box);
           this.options = new DrawBoxOptions(options);
       }
-      DrawBox.prototype.draw = function (canvasArg) {
-          var ctx = getContext2dOrThrow(canvasArg);
-          var _a = this.options, boxColor = _a.boxColor, lineWidth = _a.lineWidth;
-          var _b = this.box, x = _b.x, y = _b.y, width = _b.width, height = _b.height;
+      draw(canvasArg) {
+          const ctx = getContext2dOrThrow(canvasArg);
+          const { boxColor, lineWidth } = this.options;
+          const { x, y, width, height } = this.box;
           ctx.strokeStyle = boxColor;
           ctx.lineWidth = lineWidth;
           ctx.strokeRect(x, y, width, height);
-          var label = this.options.label;
+          const { label } = this.options;
           if (label) {
-              new DrawTextField([label], { x: x - (lineWidth / 2), y: y }, this.options.drawLabelOptions).draw(canvasArg);
+              new DrawTextField([label], { x: x - lineWidth / 2, y }, this.options.drawLabelOptions).draw(canvasArg);
           }
+      }
+  }
+
+  function isWithFaceLandmarks(obj) {
+      return !!(obj &&
+          typeof obj === 'object' &&
+          obj.landmarks instanceof FaceLandmarks);
+  }
+  function extendWithFaceLandmarks(sourceObj, unshiftedLandmarks) {
+      const { box: shift } = sourceObj.detection;
+      const landmarks = unshiftedLandmarks.shiftBy(shift.x, shift.y);
+      const rect = landmarks.align();
+      const { imageDims } = sourceObj.detection;
+      const alignedRect = new FaceDetection(sourceObj.detection.score, rect.rescale(imageDims.reverse()), imageDims);
+      const extension = {
+          landmarks,
+          unshiftedLandmarks,
+          alignedRect,
       };
-      return DrawBox;
-  }());
+      return Object.assign({}, sourceObj, extension);
+  }
+
+  function drawContour(ctx, points, isClosed = false) {
+      ctx.beginPath();
+      points.slice(1).forEach(({ x, y }, prevIdx) => {
+          const from = points[prevIdx];
+          ctx.moveTo(from.x, from.y);
+          ctx.lineTo(x, y);
+      });
+      if (isClosed) {
+          const from = points[points.length - 1];
+          const to = points[0];
+          if (!from || !to) {
+              return;
+          }
+          ctx.moveTo(from.x, from.y);
+          ctx.lineTo(to.x, to.y);
+      }
+      ctx.stroke();
+  }
+
+  class DrawFaceLandmarksOptions {
+      constructor(options = {}) {
+          const { drawLines = true, drawPoints = true, lineWidth, lineColor, pointSize, pointColor, } = options;
+          this.drawLines = drawLines;
+          this.drawPoints = drawPoints;
+          this.lineWidth = lineWidth || 1;
+          this.pointSize = pointSize || 2;
+          this.lineColor = lineColor || 'rgba(0, 255, 255, 1)';
+          this.pointColor = pointColor || 'rgba(255, 0, 255, 1)';
+      }
+  }
+  class DrawFaceLandmarks {
+      constructor(faceLandmarks, options = {}) {
+          this.faceLandmarks = faceLandmarks;
+          this.options = new DrawFaceLandmarksOptions(options);
+      }
+      draw(canvasArg) {
+          const ctx = getContext2dOrThrow(canvasArg);
+          const { drawLines, drawPoints, lineWidth, lineColor, pointSize, pointColor } = this.options;
+          if (drawLines && this.faceLandmarks instanceof FaceLandmarks68) {
+              ctx.strokeStyle = lineColor;
+              ctx.lineWidth = lineWidth;
+              drawContour(ctx, this.faceLandmarks.getJawOutline());
+              drawContour(ctx, this.faceLandmarks.getLeftEyeBrow());
+              drawContour(ctx, this.faceLandmarks.getRightEyeBrow());
+              drawContour(ctx, this.faceLandmarks.getNose());
+              drawContour(ctx, this.faceLandmarks.getLeftEye(), true);
+              drawContour(ctx, this.faceLandmarks.getRightEye(), true);
+              drawContour(ctx, this.faceLandmarks.getMouth(), true);
+          }
+          if (drawPoints) {
+              ctx.strokeStyle = pointColor;
+              ctx.fillStyle = pointColor;
+              const drawPoint = (pt) => {
+                  ctx.beginPath();
+                  ctx.arc(pt.x, pt.y, pointSize, 0, 2 * Math.PI);
+                  ctx.fill();
+              };
+              this.faceLandmarks.positions.forEach(drawPoint);
+          }
+      }
+  }
+  function drawFaceLandmarks(canvasArg, faceLandmarks) {
+      const faceLandmarksArray = Array.isArray(faceLandmarks) ? faceLandmarks : [faceLandmarks];
+      faceLandmarksArray.forEach(f => {
+          const landmarks = f instanceof FaceLandmarks ? f : isWithFaceLandmarks(f) ? f.landmarks : undefined;
+          if (!landmarks) {
+              throw new Error('drawFaceLandmarks - expected faceExpressions to be FaceLandmarks | WithFaceLandmarks<WithFaceDetection<{}>> or array thereof');
+          }
+          new DrawFaceLandmarks(landmarks).draw(canvasArg);
+      });
+  }
+
+  function isWithFaceDetection(obj) {
+      return !!(obj &&
+          typeof obj === 'object' &&
+          obj.detection instanceof FaceDetection);
+  }
+  function extendWithFaceDetection(sourceObj, detection) {
+      const extension = { detection };
+      return Object.assign({}, sourceObj, extension);
+  }
 
   function drawDetections(canvasArg, detections) {
-      var detectionsArray = Array.isArray(detections) ? detections : [detections];
-      detectionsArray.forEach(function (det) {
-          var score = det instanceof FaceDetection
+      const detectionsArray = Array.isArray(detections) ? detections : [detections];
+      detectionsArray.forEach(det => {
+          const score = det instanceof FaceDetection
               ? det.score
-              : (isWithFaceDetection(det) ? det.detection.score : undefined);
-          var box = det instanceof FaceDetection
+              : isWithFaceDetection(det)
+                  ? det.detection.score
+                  : undefined;
+          const box = det instanceof FaceDetection
               ? det.box
-              : (isWithFaceDetection(det) ? det.detection.box : new Box(det));
-          var label = score ? "" + round(score) : undefined;
-          new DrawBox(box, { label: label }).draw(canvasArg);
+              : isWithFaceDetection(det)
+                  ? det.detection.box
+                  : new Box(det);
+          const label = score ? `${round(score)}` : undefined;
+          new DrawBox(box, { label }).draw(canvasArg);
       });
   }
 
   function isMediaLoaded(media) {
-      var _a = env.getEnv(), Image = _a.Image, Video = _a.Video;
-      return (media instanceof Image && media.complete)
-          || (media instanceof Video && media.readyState >= 3);
+      const { Image, Video } = env.getEnv();
+      return ((media instanceof Image && media.complete) || (media instanceof Video && media.readyState >= 3));
   }
 
   function awaitMediaLoaded(media) {
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
           if (media instanceof env.getEnv().Canvas || isMediaLoaded(media)) {
               return resolve();
           }
@@ -1558,17 +1403,17 @@
   }
 
   function bufferToImage(buf) {
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
           if (!(buf instanceof Blob)) {
               return reject('bufferToImage - expected buf to be of type: Blob');
           }
-          var reader = new FileReader();
-          reader.onload = function () {
+          const reader = new FileReader();
+          reader.onload = () => {
               if (typeof reader.result !== 'string') {
                   return reject('bufferToImage - expected reader.result to be a string, in onload');
               }
-              var img = env.getEnv().createImageElement();
-              img.onload = function () { return resolve(img); };
+              const img = env.getEnv().createImageElement();
+              img.onload = () => resolve(img);
               img.onerror = reject;
               img.src = reader.result;
           };
@@ -1578,7 +1423,7 @@
   }
 
   function getMediaDimensions(input) {
-      var _a = env.getEnv(), Image = _a.Image, Video = _a.Video;
+      const { Image, Video } = env.getEnv();
       if (input instanceof Image) {
           return new Dimensions(input.naturalWidth, input.naturalHeight);
       }
@@ -1588,21 +1433,20 @@
       return new Dimensions(input.width, input.height);
   }
 
-  function createCanvas(_a) {
-      var width = _a.width, height = _a.height;
-      var createCanvasElement = env.getEnv().createCanvasElement;
-      var canvas = createCanvasElement();
+  function createCanvas({ width, height }) {
+      const { createCanvasElement } = env.getEnv();
+      const canvas = createCanvasElement();
       canvas.width = width;
       canvas.height = height;
       return canvas;
   }
   function createCanvasFromMedia(media, dims) {
-      var ImageData = env.getEnv().ImageData;
+      const { ImageData } = env.getEnv();
       if (!(media instanceof ImageData) && !isMediaLoaded(media)) {
           throw new Error('createCanvasFromMedia - media has not finished loading yet');
       }
-      var _a = dims || getMediaDimensions(media), width = _a.width, height = _a.height;
-      var canvas = createCanvas({ width: width, height: height });
+      const { width, height } = dims || getMediaDimensions(media);
+      const canvas = createCanvas({ width, height });
       if (media instanceof ImageData) {
           getContext2dOrThrow(canvas).putImageData(media, 0, 0);
       }
@@ -1612,154 +1456,110 @@
       return canvas;
   }
 
-  function imageTensorToCanvas(imgTensor, canvas) {
-      return __awaiter(this, void 0, void 0, function () {
-          var targetCanvas, _a, height, width, numChannels, imgTensor3D;
-          return __generator(this, function (_b) {
-              switch (_b.label) {
-                  case 0:
-                      targetCanvas = canvas || env.getEnv().createCanvasElement();
-                      _a = imgTensor.shape.slice(isTensor4D(imgTensor) ? 1 : 0), height = _a[0], width = _a[1], numChannels = _a[2];
-                      imgTensor3D = Ze(function () { return imgTensor.as3D(height, width, numChannels).toInt(); });
-                      return [4 /*yield*/, Vd.toPixels(imgTensor3D, targetCanvas)];
-                  case 1:
-                      _b.sent();
-                      imgTensor3D.dispose();
-                      return [2 /*return*/, targetCanvas];
-              }
-          });
-      });
+  async function imageTensorToCanvas(imgTensor, canvas) {
+      const targetCanvas = canvas || env.getEnv().createCanvasElement();
+      const [height, width, numChannels] = imgTensor.shape.slice(isTensor4D(imgTensor) ? 1 : 0);
+      const imgTensor3D = Ze(() => imgTensor.as3D(height, width, numChannels).toInt());
+      await Vd.toPixels(imgTensor3D, targetCanvas);
+      imgTensor3D.dispose();
+      return targetCanvas;
   }
 
   function isMediaElement(input) {
-      var _a = env.getEnv(), Image = _a.Image, Canvas = _a.Canvas, Video = _a.Video;
-      return input instanceof Image
-          || input instanceof Canvas
-          || input instanceof Video;
+      const { Image, Canvas, Video } = env.getEnv();
+      return input instanceof Image || input instanceof Canvas || input instanceof Video;
   }
 
-  function imageToSquare(input, inputSize, centerImage) {
-      if (centerImage === void 0) { centerImage = false; }
-      var _a = env.getEnv(), Image = _a.Image, Canvas = _a.Canvas;
+  function imageToSquare(input, inputSize, centerImage = false) {
+      const { Image, Canvas } = env.getEnv();
       if (!(input instanceof Image || input instanceof Canvas)) {
           throw new Error('imageToSquare - expected arg0 to be HTMLImageElement | HTMLCanvasElement');
       }
-      var dims = getMediaDimensions(input);
-      var scale = inputSize / Math.max(dims.height, dims.width);
-      var width = scale * dims.width;
-      var height = scale * dims.height;
-      var targetCanvas = createCanvas({ width: inputSize, height: inputSize });
-      var inputCanvas = input instanceof Canvas ? input : createCanvasFromMedia(input);
-      var offset = Math.abs(width - height) / 2;
-      var dx = centerImage && width < height ? offset : 0;
-      var dy = centerImage && height < width ? offset : 0;
+      const dims = getMediaDimensions(input);
+      const scale = inputSize / Math.max(dims.height, dims.width);
+      const width = scale * dims.width;
+      const height = scale * dims.height;
+      const targetCanvas = createCanvas({ width: inputSize, height: inputSize });
+      const inputCanvas = input instanceof Canvas ? input : createCanvasFromMedia(input);
+      const offset = Math.abs(width - height) / 2;
+      const dx = centerImage && width < height ? offset : 0;
+      const dy = centerImage && height < width ? offset : 0;
       getContext2dOrThrow(targetCanvas).drawImage(inputCanvas, dx, dy, width, height);
       return targetCanvas;
   }
 
-  var NetInput = /** @class */ (function () {
-      function NetInput(inputs, treatAsBatchInput) {
-          var _this = this;
-          if (treatAsBatchInput === void 0) { treatAsBatchInput = false; }
+  class NetInput {
+      constructor(inputs, treatAsBatchInput = false) {
           this._imageTensors = [];
           this._canvases = [];
           this._treatAsBatchInput = false;
           this._inputDimensions = [];
           if (!Array.isArray(inputs)) {
-              throw new Error("NetInput.constructor - expected inputs to be an Array of TResolvedNetInput or to be instanceof tf.Tensor4D, instead have " + inputs);
+              throw new Error(`NetInput.constructor - expected inputs to be an Array of TResolvedNetInput or to be instanceof tf.Tensor4D, instead have ${inputs}`);
           }
           this._treatAsBatchInput = treatAsBatchInput;
           this._batchSize = inputs.length;
-          inputs.forEach(function (input, idx) {
+          inputs.forEach((input, idx) => {
               if (isTensor3D(input)) {
-                  _this._imageTensors[idx] = input;
-                  _this._inputDimensions[idx] = input.shape;
+                  this._imageTensors[idx] = input;
+                  this._inputDimensions[idx] = input.shape;
                   return;
               }
               if (isTensor4D(input)) {
-                  var batchSize = input.shape[0];
+                  const batchSize = input.shape[0];
                   if (batchSize !== 1) {
-                      throw new Error("NetInput - tf.Tensor4D with batchSize " + batchSize + " passed, but not supported in input array");
+                      throw new Error(`NetInput - tf.Tensor4D with batchSize ${batchSize} passed, but not supported in input array`);
                   }
-                  _this._imageTensors[idx] = input;
-                  _this._inputDimensions[idx] = input.shape.slice(1);
+                  this._imageTensors[idx] = input;
+                  this._inputDimensions[idx] = input.shape.slice(1);
                   return;
               }
-              var canvas = input instanceof env.getEnv().Canvas ? input : createCanvasFromMedia(input);
-              _this._canvases[idx] = canvas;
-              _this._inputDimensions[idx] = [canvas.height, canvas.width, 3];
+              const canvas = input instanceof env.getEnv().Canvas ? input : createCanvasFromMedia(input);
+              this._canvases[idx] = canvas;
+              this._inputDimensions[idx] = [canvas.height, canvas.width, 3];
           });
       }
-      Object.defineProperty(NetInput.prototype, "imageTensors", {
-          get: function () {
-              return this._imageTensors;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NetInput.prototype, "canvases", {
-          get: function () {
-              return this._canvases;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NetInput.prototype, "isBatchInput", {
-          get: function () {
-              return this.batchSize > 1 || this._treatAsBatchInput;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NetInput.prototype, "batchSize", {
-          get: function () {
-              return this._batchSize;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NetInput.prototype, "inputDimensions", {
-          get: function () {
-              return this._inputDimensions;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NetInput.prototype, "inputSize", {
-          get: function () {
-              return this._inputSize;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NetInput.prototype, "reshapedInputDimensions", {
-          get: function () {
-              var _this = this;
-              return range(this.batchSize, 0, 1).map(function (_, batchIdx) { return _this.getReshapedInputDimensions(batchIdx); });
-          },
-          enumerable: false,
-          configurable: true
-      });
-      NetInput.prototype.getInput = function (batchIdx) {
+      get imageTensors() {
+          return this._imageTensors;
+      }
+      get canvases() {
+          return this._canvases;
+      }
+      get isBatchInput() {
+          return this.batchSize > 1 || this._treatAsBatchInput;
+      }
+      get batchSize() {
+          return this._batchSize;
+      }
+      get inputDimensions() {
+          return this._inputDimensions;
+      }
+      get inputSize() {
+          return this._inputSize;
+      }
+      get reshapedInputDimensions() {
+          return range(this.batchSize, 0, 1).map((_, batchIdx) => this.getReshapedInputDimensions(batchIdx));
+      }
+      getInput(batchIdx) {
           return this.canvases[batchIdx] || this.imageTensors[batchIdx];
-      };
-      NetInput.prototype.getInputDimensions = function (batchIdx) {
+      }
+      getInputDimensions(batchIdx) {
           return this._inputDimensions[batchIdx];
-      };
-      NetInput.prototype.getInputHeight = function (batchIdx) {
+      }
+      getInputHeight(batchIdx) {
           return this._inputDimensions[batchIdx][0];
-      };
-      NetInput.prototype.getInputWidth = function (batchIdx) {
+      }
+      getInputWidth(batchIdx) {
           return this._inputDimensions[batchIdx][1];
-      };
-      NetInput.prototype.getReshapedInputDimensions = function (batchIdx) {
+      }
+      getReshapedInputDimensions(batchIdx) {
           if (typeof this.inputSize !== 'number') {
               throw new Error('getReshapedInputDimensions - inputSize not set, toBatchTensor has not been called yet');
           }
-          var width = this.getInputWidth(batchIdx);
-          var height = this.getInputHeight(batchIdx);
-          return computeReshapedDimensions({ width: width, height: height }, this.inputSize);
-      };
+          const width = this.getInputWidth(batchIdx);
+          const height = this.getInputHeight(batchIdx);
+          return computeReshapedDimensions({ width, height }, this.inputSize);
+      }
       /**
        * Create a batch tensor from all input canvases and tensors
        * with size [batchSize, inputSize, inputSize, 3].
@@ -1769,15 +1569,13 @@
        * both sides of the minor dimension oof the image.
        * @returns The batch tensor.
        */
-      NetInput.prototype.toBatchTensor = function (inputSize, isCenterInputs) {
-          var _this = this;
-          if (isCenterInputs === void 0) { isCenterInputs = true; }
+      toBatchTensor(inputSize, isCenterInputs = true) {
           this._inputSize = inputSize;
-          return Ze(function () {
-              var inputTensors = range(_this.batchSize, 0, 1).map(function (batchIdx) {
-                  var input = _this.getInput(batchIdx);
+          return Ze(() => {
+              const inputTensors = range(this.batchSize, 0, 1).map(batchIdx => {
+                  const input = this.getInput(batchIdx);
                   if (input instanceof wt) {
-                      var imgTensor = isTensor4D(input) ? input : input.expandDims();
+                      let imgTensor = isTensor4D(input) ? input : input.expandDims();
                       imgTensor = padToSquare(imgTensor, isCenterInputs);
                       if (imgTensor.shape[1] !== inputSize || imgTensor.shape[2] !== inputSize) {
                           imgTensor = nf.resizeBilinear(imgTensor, [inputSize, inputSize]);
@@ -1787,14 +1585,14 @@
                   if (input instanceof env.getEnv().Canvas) {
                       return Vd.fromPixels(imageToSquare(input, inputSize, isCenterInputs));
                   }
-                  throw new Error("toBatchTensor - at batchIdx " + batchIdx + ", expected input to be instanceof tf.Tensor or instanceof HTMLCanvasElement, instead have " + input);
+                  throw new Error(`toBatchTensor - at batchIdx ${batchIdx}, expected input to be instanceof tf.Tensor or instanceof HTMLCanvasElement, instead have ${input}`);
               });
-              var batchTensor = hr(inputTensors.map(function (t) { return t.toFloat(); })).as4D(_this.batchSize, inputSize, inputSize, 3);
+              const batchTensor = hr(inputTensors.map(t => t.toFloat()))
+                  .as4D(this.batchSize, inputSize, inputSize, 3);
               return batchTensor;
           });
-      };
-      return NetInput;
-  }());
+      }
+  }
 
   /**
    * Validates the input to make sure, they are valid net inputs and awaits all media elements
@@ -1803,47 +1601,34 @@
    * @param input The input, which can be a media element or an array of different media elements.
    * @returns A NetInput instance, which can be passed into one of the neural networks.
    */
-  function toNetInput(inputs) {
-      return __awaiter(this, void 0, void 0, function () {
-          var inputArgArray, getIdxHint, inputArray;
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0:
-                      if (inputs instanceof NetInput) {
-                          return [2 /*return*/, inputs];
-                      }
-                      inputArgArray = Array.isArray(inputs)
-                          ? inputs
-                          : [inputs];
-                      if (!inputArgArray.length) {
-                          throw new Error('toNetInput - empty array passed as input');
-                      }
-                      getIdxHint = function (idx) { return Array.isArray(inputs) ? " at input index " + idx + ":" : ''; };
-                      inputArray = inputArgArray.map(resolveInput);
-                      inputArray.forEach(function (input, i) {
-                          if (!isMediaElement(input) && !isTensor3D(input) && !isTensor4D(input)) {
-                              if (typeof inputArgArray[i] === 'string') {
-                                  throw new Error("toNetInput -" + getIdxHint(i) + " string passed, but could not resolve HTMLElement for element id " + inputArgArray[i]);
-                              }
-                              throw new Error("toNetInput -" + getIdxHint(i) + " expected media to be of type HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | tf.Tensor3D, or to be an element id");
-                          }
-                          if (isTensor4D(input)) {
-                              // if tf.Tensor4D is passed in the input array, the batch size has to be 1
-                              var batchSize = input.shape[0];
-                              if (batchSize !== 1) {
-                                  throw new Error("toNetInput -" + getIdxHint(i) + " tf.Tensor4D with batchSize " + batchSize + " passed, but not supported in input array");
-                              }
-                          }
-                      });
-                      // wait for all media elements being loaded
-                      return [4 /*yield*/, Promise.all(inputArray.map(function (input) { return isMediaElement(input) && awaitMediaLoaded(input); }))];
-                  case 1:
-                      // wait for all media elements being loaded
-                      _a.sent();
-                      return [2 /*return*/, new NetInput(inputArray, Array.isArray(inputs))];
+  async function toNetInput(inputs) {
+      if (inputs instanceof NetInput) {
+          return inputs;
+      }
+      const inputArgArray = Array.isArray(inputs) ? inputs : [inputs];
+      if (!inputArgArray.length) {
+          throw new Error('toNetInput - empty array passed as input');
+      }
+      const getIdxHint = (idx) => (Array.isArray(inputs) ? ` at input index ${idx}:` : '');
+      const inputArray = inputArgArray.map(resolveInput);
+      inputArray.forEach((input, i) => {
+          if (!isMediaElement(input) && !isTensor3D(input) && !isTensor4D(input)) {
+              if (typeof inputArgArray[i] === 'string') {
+                  throw new Error(`toNetInput -${getIdxHint(i)} string passed, but could not resolve HTMLElement for element id ${inputArgArray[i]}`);
               }
-          });
+              throw new Error(`toNetInput -${getIdxHint(i)} expected media to be of type HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | tf.Tensor3D, or to be an element id`);
+          }
+          if (isTensor4D(input)) {
+              // if tf.Tensor4D is passed in the input array, the batch size has to be 1
+              const batchSize = input.shape[0];
+              if (batchSize !== 1) {
+                  throw new Error(`toNetInput -${getIdxHint(i)} tf.Tensor4D with batchSize ${batchSize} passed, but not supported in input array`);
+              }
+          }
       });
+      // wait for all media elements being loaded
+      await Promise.all(inputArray.map(input => isMediaElement(input) && awaitMediaLoaded(input)));
+      return new NetInput(inputArray, Array.isArray(inputs));
   }
 
   /**
@@ -1853,47 +1638,26 @@
    * @param detections The face detection results or face bounding boxes for that image.
    * @returns The Canvases of the corresponding image region for each detected face.
    */
-  function extractFaces(input, detections) {
-      return __awaiter(this, void 0, void 0, function () {
-          var Canvas, canvas, netInput, tensorOrCanvas, _a, ctx, boxes;
-          return __generator(this, function (_b) {
-              switch (_b.label) {
-                  case 0:
-                      Canvas = env.getEnv().Canvas;
-                      canvas = input;
-                      if (!!(input instanceof Canvas)) return [3 /*break*/, 5];
-                      return [4 /*yield*/, toNetInput(input)];
-                  case 1:
-                      netInput = _b.sent();
-                      if (netInput.batchSize > 1) {
-                          throw new Error('extractFaces - batchSize > 1 not supported');
-                      }
-                      tensorOrCanvas = netInput.getInput(0);
-                      if (!(tensorOrCanvas instanceof Canvas)) return [3 /*break*/, 2];
-                      _a = tensorOrCanvas;
-                      return [3 /*break*/, 4];
-                  case 2: return [4 /*yield*/, imageTensorToCanvas(tensorOrCanvas)];
-                  case 3:
-                      _a = _b.sent();
-                      _b.label = 4;
-                  case 4:
-                      canvas = _a;
-                      _b.label = 5;
-                  case 5:
-                      ctx = getContext2dOrThrow(canvas);
-                      boxes = detections.map(function (det) { return det instanceof FaceDetection
-                          ? det.forSize(canvas.width, canvas.height).box.floor()
-                          : det; })
-                          .map(function (box) { return box.clipAtImageBorders(canvas.width, canvas.height); });
-                      return [2 /*return*/, boxes.map(function (_a) {
-                              var x = _a.x, y = _a.y, width = _a.width, height = _a.height;
-                              var faceImg = createCanvas({ width: width, height: height });
-                              getContext2dOrThrow(faceImg)
-                                  .putImageData(ctx.getImageData(x, y, width, height), 0, 0);
-                              return faceImg;
-                          })];
-              }
-          });
+  async function extractFaces(input, detections) {
+      const { Canvas } = env.getEnv();
+      let canvas = input;
+      if (!(input instanceof Canvas)) {
+          const netInput = await toNetInput(input);
+          if (netInput.batchSize > 1) {
+              throw new Error('extractFaces - batchSize > 1 not supported');
+          }
+          const tensorOrCanvas = netInput.getInput(0);
+          canvas =
+              tensorOrCanvas instanceof Canvas ? tensorOrCanvas : await imageTensorToCanvas(tensorOrCanvas);
+      }
+      const ctx = getContext2dOrThrow(canvas);
+      const boxes = detections
+          .map(det => det instanceof FaceDetection ? det.forSize(canvas.width, canvas.height).box.floor() : det)
+          .map(box => box.clipAtImageBorders(canvas.width, canvas.height));
+      return boxes.map(({ x, y, width, height }) => {
+          const faceImg = createCanvas({ width, height });
+          getContext2dOrThrow(faceImg).putImageData(ctx.getImageData(x, y, width, height), 0, 0);
+          return faceImg;
       });
   }
 
@@ -1907,436 +1671,330 @@
    * @param detections The face detection results or face bounding boxes for that image.
    * @returns Tensors of the corresponding image region for each detected face.
    */
-  function extractFaceTensors(imageTensor, detections) {
-      return __awaiter(this, void 0, void 0, function () {
-          return __generator(this, function (_a) {
-              if (!isTensor3D(imageTensor) && !isTensor4D(imageTensor)) {
-                  throw new Error('extractFaceTensors - expected image tensor to be 3D or 4D');
-              }
-              if (isTensor4D(imageTensor) && imageTensor.shape[0] > 1) {
-                  throw new Error('extractFaceTensors - batchSize > 1 not supported');
-              }
-              return [2 /*return*/, Ze(function () {
-                      var _a = imageTensor.shape.slice(isTensor4D(imageTensor) ? 1 : 0), imgHeight = _a[0], imgWidth = _a[1], numChannels = _a[2];
-                      var boxes = detections.map(function (det) { return det instanceof FaceDetection
-                          ? det.forSize(imgWidth, imgHeight).box
-                          : det; })
-                          .map(function (box) { return box.clipAtImageBorders(imgWidth, imgHeight); });
-                      var faceTensors = boxes.map(function (_a) {
-                          var x = _a.x, y = _a.y, width = _a.width, height = _a.height;
-                          return zl(imageTensor.as3D(imgHeight, imgWidth, numChannels), [y, x, 0], [height, width, numChannels]);
-                      });
-                      return faceTensors;
-                  })];
-          });
+  async function extractFaceTensors(imageTensor, detections) {
+      if (!isTensor3D(imageTensor) && !isTensor4D(imageTensor)) {
+          throw new Error('extractFaceTensors - expected image tensor to be 3D or 4D');
+      }
+      if (isTensor4D(imageTensor) && imageTensor.shape[0] > 1) {
+          throw new Error('extractFaceTensors - batchSize > 1 not supported');
+      }
+      return Ze(() => {
+          const [imgHeight, imgWidth, numChannels] = imageTensor.shape.slice(isTensor4D(imageTensor) ? 1 : 0);
+          const boxes = detections
+              .map(det => (det instanceof FaceDetection ? det.forSize(imgWidth, imgHeight).box : det))
+              .map(box => box.clipAtImageBorders(imgWidth, imgHeight));
+          const faceTensors = boxes.map(({ x, y, width, height }) => zl(imageTensor.as3D(imgHeight, imgWidth, numChannels), [y, x, 0], [height, width, numChannels]));
+          return faceTensors;
       });
   }
 
-  function fetchOrThrow(url, init) {
-      return __awaiter(this, void 0, void 0, function () {
-          var fetch, res;
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0:
-                      fetch = env.getEnv().fetch;
-                      return [4 /*yield*/, fetch(url, init)];
-                  case 1:
-                      res = _a.sent();
-                      if (!(res.status < 400)) {
-                          throw new Error("failed to fetch: (" + res.status + ") " + res.statusText + ", from url: " + res.url);
-                      }
-                      return [2 /*return*/, res];
-              }
-          });
-      });
+  async function fetchOrThrow(url, init) {
+      const fetch = env.getEnv().fetch;
+      const res = await fetch(url, init);
+      if (!(res.status < 400)) {
+          throw new Error(`failed to fetch: (${res.status}) ${res.statusText}, from url: ${res.url}`);
+      }
+      return res;
   }
 
-  function fetchImage(uri) {
-      return __awaiter(this, void 0, void 0, function () {
-          var res, blob;
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0: return [4 /*yield*/, fetchOrThrow(uri)];
-                  case 1:
-                      res = _a.sent();
-                      return [4 /*yield*/, (res).blob()];
-                  case 2:
-                      blob = _a.sent();
-                      if (!blob.type.startsWith('image/')) {
-                          throw new Error("fetchImage - expected blob type to be of type image/*, instead have: " + blob.type + ", for url: " + res.url);
-                      }
-                      return [2 /*return*/, bufferToImage(blob)];
-              }
-          });
-      });
+  async function fetchImage(uri) {
+      const res = await fetchOrThrow(uri);
+      const blob = await res.blob();
+      if (!blob.type.startsWith('image/')) {
+          throw new Error(`fetchImage - expected blob type to be of type image/*, instead have: ${blob.type}, for url: ${res.url}`);
+      }
+      return bufferToImage(blob);
   }
 
-  function fetchJson(uri) {
-      return __awaiter(this, void 0, void 0, function () {
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0: return [4 /*yield*/, fetchOrThrow(uri)];
-                  case 1: return [2 /*return*/, (_a.sent()).json()];
-              }
-          });
-      });
+  async function fetchJson(uri) {
+      return (await fetchOrThrow(uri)).json();
   }
 
-  function fetchNetWeights(uri) {
-      return __awaiter(this, void 0, void 0, function () {
-          var _a;
-          return __generator(this, function (_b) {
-              switch (_b.label) {
-                  case 0:
-                      _a = Float32Array.bind;
-                      return [4 /*yield*/, fetchOrThrow(uri)];
-                  case 1: return [4 /*yield*/, (_b.sent()).arrayBuffer()];
-                  case 2: return [2 /*return*/, new (_a.apply(Float32Array, [void 0, _b.sent()]))()];
-              }
-          });
-      });
+  async function fetchNetWeights(uri) {
+      return new Float32Array(await (await fetchOrThrow(uri)).arrayBuffer());
   }
 
   function getModelUris(uri, defaultModelName) {
-      var defaultManifestFilename = defaultModelName + "-weights_manifest.json";
+      const defaultManifestFilename = `${defaultModelName}-weights_manifest.json`;
       if (!uri) {
           return {
               modelBaseUri: '',
-              manifestUri: defaultManifestFilename
+              manifestUri: defaultManifestFilename,
           };
       }
       if (uri === '/') {
           return {
               modelBaseUri: '/',
-              manifestUri: "/" + defaultManifestFilename
+              manifestUri: `/${defaultManifestFilename}`,
           };
       }
-      var protocol = uri.startsWith('http://') ? 'http://' : uri.startsWith('https://') ? 'https://' : '';
+      const protocol = uri.startsWith('http://')
+          ? 'http://'
+          : uri.startsWith('https://')
+              ? 'https://'
+              : '';
       uri = uri.replace(protocol, '');
-      var parts = uri.split('/').filter(function (s) { return s; });
-      var manifestFile = uri.endsWith('.json')
-          ? parts[parts.length - 1]
-          : defaultManifestFilename;
-      var modelBaseUri = protocol + (uri.endsWith('.json') ? parts.slice(0, parts.length - 1) : parts).join('/');
-      modelBaseUri = uri.startsWith('/') ? "/" + modelBaseUri : modelBaseUri;
+      const parts = uri.split('/').filter(s => s);
+      const manifestFile = uri.endsWith('.json') ? parts[parts.length - 1] : defaultManifestFilename;
+      let modelBaseUri = protocol + (uri.endsWith('.json') ? parts.slice(0, parts.length - 1) : parts).join('/');
+      modelBaseUri = uri.startsWith('/') ? `/${modelBaseUri}` : modelBaseUri;
       return {
-          modelBaseUri: modelBaseUri,
-          manifestUri: modelBaseUri === '/' ? "/" + manifestFile : modelBaseUri + "/" + manifestFile
+          modelBaseUri,
+          manifestUri: modelBaseUri === '/' ? `/${manifestFile}` : `${modelBaseUri}/${manifestFile}`,
       };
   }
 
-  function loadWeightMap(uri, defaultModelName) {
-      return __awaiter(this, void 0, void 0, function () {
-          var _a, manifestUri, modelBaseUri, manifest;
-          return __generator(this, function (_b) {
-              switch (_b.label) {
-                  case 0:
-                      _a = getModelUris(uri, defaultModelName), manifestUri = _a.manifestUri, modelBaseUri = _a.modelBaseUri;
-                      return [4 /*yield*/, fetchJson(manifestUri)];
-                  case 1:
-                      manifest = _b.sent();
-                      return [2 /*return*/, Bd.loadWeights(manifest, modelBaseUri)];
-              }
-          });
-      });
+  async function loadWeightMap(uri, defaultModelName) {
+      const { manifestUri, modelBaseUri } = getModelUris(uri, defaultModelName);
+      const manifest = await fetchJson(manifestUri);
+      return Bd.loadWeights(manifest, modelBaseUri);
   }
 
-  function matchDimensions(input, reference, useMediaDimensions) {
-      if (useMediaDimensions === void 0) { useMediaDimensions = false; }
-      var _a = useMediaDimensions
-          ? getMediaDimensions(reference)
-          : reference, width = _a.width, height = _a.height;
+  function matchDimensions(input, reference, useMediaDimensions = false) {
+      const { width, height } = useMediaDimensions ? getMediaDimensions(reference) : reference;
       input.width = width;
       input.height = height;
-      return { width: width, height: height };
+      return { width, height };
   }
 
-  var NeuralNetwork = /** @class */ (function () {
-      function NeuralNetwork(_name) {
+  class NeuralNetwork {
+      constructor(_name) {
           this._name = _name;
           this._params = undefined;
           this._paramMappings = [];
       }
-      Object.defineProperty(NeuralNetwork.prototype, "params", {
-          get: function () { return this._params; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NeuralNetwork.prototype, "paramMappings", {
-          get: function () { return this._paramMappings; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(NeuralNetwork.prototype, "isLoaded", {
-          get: function () { return !!this.params; },
-          enumerable: false,
-          configurable: true
-      });
-      NeuralNetwork.prototype.getParamFromPath = function (paramPath) {
-          var _a = this.traversePropertyPath(paramPath), obj = _a.obj, objProp = _a.objProp;
+      get params() {
+          return this._params;
+      }
+      get paramMappings() {
+          return this._paramMappings;
+      }
+      get isLoaded() {
+          return !!this.params;
+      }
+      getParamFromPath(paramPath) {
+          const { obj, objProp } = this.traversePropertyPath(paramPath);
           return obj[objProp];
-      };
-      NeuralNetwork.prototype.reassignParamFromPath = function (paramPath, tensor) {
-          var _a = this.traversePropertyPath(paramPath), obj = _a.obj, objProp = _a.objProp;
+      }
+      reassignParamFromPath(paramPath, tensor) {
+          const { obj, objProp } = this.traversePropertyPath(paramPath);
           obj[objProp].dispose();
           obj[objProp] = tensor;
-      };
-      NeuralNetwork.prototype.getParamList = function () {
-          var _this = this;
-          return this._paramMappings.map(function (_a) {
-              var paramPath = _a.paramPath;
-              return ({
-                  path: paramPath,
-                  tensor: _this.getParamFromPath(paramPath)
-              });
+      }
+      getParamList() {
+          return this._paramMappings.map(({ paramPath }) => ({
+              path: paramPath,
+              tensor: this.getParamFromPath(paramPath),
+          }));
+      }
+      getTrainableParams() {
+          return this.getParamList().filter(param => param.tensor instanceof St);
+      }
+      getFrozenParams() {
+          return this.getParamList().filter(param => !(param.tensor instanceof St));
+      }
+      variable() {
+          this.getFrozenParams().forEach(({ path, tensor }) => {
+              this.reassignParamFromPath(path, tensor.variable());
           });
-      };
-      NeuralNetwork.prototype.getTrainableParams = function () {
-          return this.getParamList().filter(function (param) { return param.tensor instanceof St; });
-      };
-      NeuralNetwork.prototype.getFrozenParams = function () {
-          return this.getParamList().filter(function (param) { return !(param.tensor instanceof St); });
-      };
-      NeuralNetwork.prototype.variable = function () {
-          var _this = this;
-          this.getFrozenParams().forEach(function (_a) {
-              var path = _a.path, tensor = _a.tensor;
-              _this.reassignParamFromPath(path, tensor.variable());
-          });
-      };
-      NeuralNetwork.prototype.freeze = function () {
-          var _this = this;
-          this.getTrainableParams().forEach(function (_a) {
-              var path = _a.path, variable = _a.tensor;
-              var tensor = Fn(variable.dataSync());
+      }
+      freeze() {
+          this.getTrainableParams().forEach(({ path, tensor: variable }) => {
+              const tensor = Fn(variable.dataSync());
               variable.dispose();
-              _this.reassignParamFromPath(path, tensor);
+              this.reassignParamFromPath(path, tensor);
           });
-      };
-      NeuralNetwork.prototype.dispose = function (throwOnRedispose) {
-          if (throwOnRedispose === void 0) { throwOnRedispose = true; }
-          this.getParamList().forEach(function (param) {
+      }
+      dispose(throwOnRedispose = true) {
+          this.getParamList().forEach(param => {
               if (throwOnRedispose && param.tensor.isDisposed) {
-                  throw new Error("param tensor has already been disposed for path " + param.path);
+                  throw new Error(`param tensor has already been disposed for path ${param.path}`);
               }
               param.tensor.dispose();
           });
           this._params = undefined;
-      };
-      NeuralNetwork.prototype.serializeParams = function () {
+      }
+      serializeParams() {
           return new Float32Array(this.getParamList()
-              .map(function (_a) {
-              var tensor = _a.tensor;
-              return Array.from(tensor.dataSync());
-          })
-              .reduce(function (flat, arr) { return flat.concat(arr); }));
-      };
-      NeuralNetwork.prototype.load = function (weightsOrUrl) {
-          return __awaiter(this, void 0, void 0, function () {
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0:
-                          if (weightsOrUrl instanceof Float32Array) {
-                              this.extractWeights(weightsOrUrl);
-                              return [2 /*return*/];
-                          }
-                          return [4 /*yield*/, this.loadFromUri(weightsOrUrl)];
-                      case 1:
-                          _a.sent();
-                          return [2 /*return*/];
-                  }
-              });
-          });
-      };
-      NeuralNetwork.prototype.loadFromUri = function (uri) {
-          return __awaiter(this, void 0, void 0, function () {
-              var weightMap;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0:
-                          if (uri && typeof uri !== 'string') {
-                              throw new Error(this._name + ".loadFromUri - expected model uri");
-                          }
-                          return [4 /*yield*/, loadWeightMap(uri, this.getDefaultModelName())];
-                      case 1:
-                          weightMap = _a.sent();
-                          this.loadFromWeightMap(weightMap);
-                          return [2 /*return*/];
-                  }
-              });
-          });
-      };
-      NeuralNetwork.prototype.loadFromDisk = function (filePath) {
-          return __awaiter(this, void 0, void 0, function () {
-              var readFile, _a, manifestUri, modelBaseUri, fetchWeightsFromDisk, loadWeights, manifest, _b, _c, weightMap;
-              return __generator(this, function (_d) {
-                  switch (_d.label) {
-                      case 0:
-                          if (filePath && typeof filePath !== 'string') {
-                              throw new Error(this._name + ".loadFromDisk - expected model file path");
-                          }
-                          readFile = env.getEnv().readFile;
-                          _a = getModelUris(filePath, this.getDefaultModelName()), manifestUri = _a.manifestUri, modelBaseUri = _a.modelBaseUri;
-                          fetchWeightsFromDisk = function (filePaths) { return Promise.all(filePaths.map(function (filePath) { return readFile(filePath).then(function (buf) { return buf.buffer; }); })); };
-                          loadWeights = Bd.weightsLoaderFactory(fetchWeightsFromDisk);
-                          _c = (_b = JSON).parse;
-                          return [4 /*yield*/, readFile(manifestUri)];
-                      case 1:
-                          manifest = _c.apply(_b, [(_d.sent()).toString()]);
-                          return [4 /*yield*/, loadWeights(manifest, modelBaseUri)];
-                      case 2:
-                          weightMap = _d.sent();
-                          this.loadFromWeightMap(weightMap);
-                          return [2 /*return*/];
-                  }
-              });
-          });
-      };
-      NeuralNetwork.prototype.loadFromWeightMap = function (weightMap) {
-          var _a = this.extractParamsFromWeigthMap(weightMap), paramMappings = _a.paramMappings, params = _a.params;
+              .map(({ tensor }) => Array.from(tensor.dataSync()))
+              .reduce((flat, arr) => flat.concat(arr)));
+      }
+      async load(weightsOrUrl) {
+          if (weightsOrUrl instanceof Float32Array) {
+              this.extractWeights(weightsOrUrl);
+              return;
+          }
+          await this.loadFromUri(weightsOrUrl);
+      }
+      async loadFromUri(uri) {
+          if (uri && typeof uri !== 'string') {
+              throw new Error(`${this._name}.loadFromUri - expected model uri`);
+          }
+          const weightMap = await loadWeightMap(uri, this.getDefaultModelName());
+          this.loadFromWeightMap(weightMap);
+      }
+      async loadFromDisk(filePath) {
+          if (filePath && typeof filePath !== 'string') {
+              throw new Error(`${this._name}.loadFromDisk - expected model file path`);
+          }
+          const { readFile } = env.getEnv();
+          const { manifestUri, modelBaseUri } = getModelUris(filePath, this.getDefaultModelName());
+          const fetchWeightsFromDisk = (filePaths) => Promise.all(filePaths.map(filePath => readFile(filePath).then(buf => buf.buffer)));
+          const loadWeights = Bd.weightsLoaderFactory(fetchWeightsFromDisk);
+          const manifest = JSON.parse((await readFile(manifestUri)).toString());
+          const weightMap = await loadWeights(manifest, modelBaseUri);
+          this.loadFromWeightMap(weightMap);
+      }
+      loadFromWeightMap(weightMap) {
+          const { paramMappings, params } = this.extractParamsFromWeigthMap(weightMap);
           this._paramMappings = paramMappings;
           this._params = params;
-      };
-      NeuralNetwork.prototype.extractWeights = function (weights) {
-          var _a = this.extractParams(weights), paramMappings = _a.paramMappings, params = _a.params;
+      }
+      extractWeights(weights) {
+          const { paramMappings, params } = this.extractParams(weights);
           this._paramMappings = paramMappings;
           this._params = params;
-      };
-      NeuralNetwork.prototype.traversePropertyPath = function (paramPath) {
+      }
+      traversePropertyPath(paramPath) {
           if (!this.params) {
-              throw new Error("traversePropertyPath - model has no loaded params");
+              throw new Error(`traversePropertyPath - model has no loaded params`);
           }
-          var result = paramPath.split('/').reduce(function (res, objProp) {
-              if (!res.nextObj.hasOwnProperty(objProp)) {
-                  throw new Error("traversePropertyPath - object does not have property " + objProp + ", for path " + paramPath);
+          const result = paramPath.split('/').reduce((res, objProp) => {
+              if (!(objProp in res.nextObj)) {
+                  throw new Error(`traversePropertyPath - object does not have property ${objProp}, for path ${paramPath}`);
               }
-              return { obj: res.nextObj, objProp: objProp, nextObj: res.nextObj[objProp] };
+              return {
+                  obj: res.nextObj,
+                  objProp,
+                  nextObj: res.nextObj[objProp],
+              };
           }, { nextObj: this.params });
-          var obj = result.obj, objProp = result.objProp;
+          const { obj, objProp } = result;
           if (!obj || !objProp || !(obj[objProp] instanceof wt)) {
-              throw new Error("traversePropertyPath - parameter is not a tensor, for path " + paramPath);
+              throw new Error(`traversePropertyPath - parameter is not a tensor, for path ${paramPath}`);
           }
-          return { obj: obj, objProp: objProp };
-      };
-      return NeuralNetwork;
-  }());
+          return { obj, objProp };
+      }
+  }
 
   function depthwiseSeparableConv$1(x, params, stride) {
-      return Ze(function () {
-          var out = bl(x, params.depthwise_filter, params.pointwise_filter, stride, 'same');
+      return Ze(() => {
+          let out = bl(x, params.depthwise_filter, params.pointwise_filter, stride, 'same');
           out = Or(out, params.bias);
           return out;
       });
   }
 
-  function denseBlock3(x, denseBlockParams, isFirstLayer) {
-      if (isFirstLayer === void 0) { isFirstLayer = false; }
-      return Ze(function () {
-          var out1 = ah(isFirstLayer
+  function denseBlock3(x, denseBlockParams, isFirstLayer = false) {
+      return Ze(() => {
+          const out1 = ah(isFirstLayer
               ? Or(dl(x, denseBlockParams.conv0.filters, [2, 2], 'same'), denseBlockParams.conv0.bias)
               : depthwiseSeparableConv$1(x, denseBlockParams.conv0, [2, 2]));
-          var out2 = depthwiseSeparableConv$1(out1, denseBlockParams.conv1, [1, 1]);
-          var in3 = ah(Or(out1, out2));
-          var out3 = depthwiseSeparableConv$1(in3, denseBlockParams.conv2, [1, 1]);
+          const out2 = depthwiseSeparableConv$1(out1, denseBlockParams.conv1, [1, 1]);
+          const in3 = ah(Or(out1, out2));
+          const out3 = depthwiseSeparableConv$1(in3, denseBlockParams.conv2, [1, 1]);
           return ah(Or(out1, Or(out2, out3)));
       });
   }
-  function denseBlock4(x, denseBlockParams, isFirstLayer, isScaleDown) {
-      if (isFirstLayer === void 0) { isFirstLayer = false; }
-      if (isScaleDown === void 0) { isScaleDown = true; }
-      return Ze(function () {
-          var out1 = ah(isFirstLayer
+  function denseBlock4(x, denseBlockParams, isFirstLayer = false, isScaleDown = true) {
+      return Ze(() => {
+          const out1 = ah(isFirstLayer
               ? Or(dl(x, denseBlockParams.conv0.filters, isScaleDown ? [2, 2] : [1, 1], 'same'), denseBlockParams.conv0.bias)
               : depthwiseSeparableConv$1(x, denseBlockParams.conv0, isScaleDown ? [2, 2] : [1, 1]));
-          var out2 = depthwiseSeparableConv$1(out1, denseBlockParams.conv1, [1, 1]);
-          var in3 = ah(Or(out1, out2));
-          var out3 = depthwiseSeparableConv$1(in3, denseBlockParams.conv2, [1, 1]);
-          var in4 = ah(Or(out1, Or(out2, out3)));
-          var out4 = depthwiseSeparableConv$1(in4, denseBlockParams.conv3, [1, 1]);
+          const out2 = depthwiseSeparableConv$1(out1, denseBlockParams.conv1, [1, 1]);
+          const in3 = ah(Or(out1, out2));
+          const out3 = depthwiseSeparableConv$1(in3, denseBlockParams.conv2, [1, 1]);
+          const in4 = ah(Or(out1, Or(out2, out3)));
+          const out4 = depthwiseSeparableConv$1(in4, denseBlockParams.conv3, [1, 1]);
           return ah(Or(out1, Or(out2, Or(out3, out4))));
       });
   }
 
-  function convLayer$1(x, params, padding, withRelu) {
-      if (padding === void 0) { padding = 'same'; }
-      if (withRelu === void 0) { withRelu = false; }
-      return Ze(function () {
-          var out = Or(dl(x, params.filters, [1, 1], padding), params.bias);
+  function convLayer$1(x, params, padding = 'same', withRelu = false) {
+      return Ze(() => {
+          const out = Or(dl(x, params.filters, [1, 1], padding), params.bias);
           return withRelu ? ah(out) : out;
       });
   }
 
   function disposeUnusedWeightTensors(weightMap, paramMappings) {
-      Object.keys(weightMap).forEach(function (path) {
-          if (!paramMappings.some(function (pm) { return pm.originalPath === path; })) {
+      Object.keys(weightMap).forEach(path => {
+          if (!paramMappings.some(pm => pm.originalPath === path)) {
               weightMap[path].dispose();
           }
       });
   }
 
   function extractConvParamsFactory(extractWeights, paramMappings) {
-      return function (channelsIn, channelsOut, filterSize, mappedPrefix) {
-          var filters = Ln(extractWeights(channelsIn * channelsOut * filterSize * filterSize), [filterSize, filterSize, channelsIn, channelsOut]);
-          var bias = Mn(extractWeights(channelsOut));
-          paramMappings.push({ paramPath: mappedPrefix + "/filters" }, { paramPath: mappedPrefix + "/bias" });
-          return { filters: filters, bias: bias };
+      return (channelsIn, channelsOut, filterSize, mappedPrefix) => {
+          const filters = Ln(extractWeights(channelsIn * channelsOut * filterSize * filterSize), [filterSize, filterSize, channelsIn, channelsOut]);
+          const bias = Mn(extractWeights(channelsOut));
+          paramMappings.push({ paramPath: `${mappedPrefix}/filters` }, { paramPath: `${mappedPrefix}/bias` });
+          return { filters, bias };
       };
   }
 
   function extractFCParamsFactory(extractWeights, paramMappings) {
-      return function (channelsIn, channelsOut, mappedPrefix) {
-          var fc_weights = Bn(extractWeights(channelsIn * channelsOut), [channelsIn, channelsOut]);
-          var fc_bias = Mn(extractWeights(channelsOut));
-          paramMappings.push({ paramPath: mappedPrefix + "/weights" }, { paramPath: mappedPrefix + "/bias" });
+      return (channelsIn, channelsOut, mappedPrefix) => {
+          const fc_weights = Bn(extractWeights(channelsIn * channelsOut), [
+              channelsIn,
+              channelsOut,
+          ]);
+          const fc_bias = Mn(extractWeights(channelsOut));
+          paramMappings.push({ paramPath: `${mappedPrefix}/weights` }, { paramPath: `${mappedPrefix}/bias` });
           return {
               weights: fc_weights,
-              bias: fc_bias
+              bias: fc_bias,
           };
       };
   }
 
-  var SeparableConvParams = /** @class */ (function () {
-      function SeparableConvParams(depthwise_filter, pointwise_filter, bias) {
+  class SeparableConvParams {
+      constructor(depthwise_filter, pointwise_filter, bias) {
           this.depthwise_filter = depthwise_filter;
           this.pointwise_filter = pointwise_filter;
           this.bias = bias;
       }
-      return SeparableConvParams;
-  }());
+  }
 
   function extractSeparableConvParamsFactory(extractWeights, paramMappings) {
-      return function (channelsIn, channelsOut, mappedPrefix) {
-          var depthwise_filter = Ln(extractWeights(3 * 3 * channelsIn), [3, 3, channelsIn, 1]);
-          var pointwise_filter = Ln(extractWeights(channelsIn * channelsOut), [1, 1, channelsIn, channelsOut]);
-          var bias = Mn(extractWeights(channelsOut));
-          paramMappings.push({ paramPath: mappedPrefix + "/depthwise_filter" }, { paramPath: mappedPrefix + "/pointwise_filter" }, { paramPath: mappedPrefix + "/bias" });
+      return (channelsIn, channelsOut, mappedPrefix) => {
+          const depthwise_filter = Ln(extractWeights(3 * 3 * channelsIn), [3, 3, channelsIn, 1]);
+          const pointwise_filter = Ln(extractWeights(channelsIn * channelsOut), [
+              1,
+              1,
+              channelsIn,
+              channelsOut,
+          ]);
+          const bias = Mn(extractWeights(channelsOut));
+          paramMappings.push({ paramPath: `${mappedPrefix}/depthwise_filter` }, { paramPath: `${mappedPrefix}/pointwise_filter` }, { paramPath: `${mappedPrefix}/bias` });
           return new SeparableConvParams(depthwise_filter, pointwise_filter, bias);
       };
   }
   function loadSeparableConvParamsFactory(extractWeightEntry) {
-      return function (prefix) {
-          var depthwise_filter = extractWeightEntry(prefix + "/depthwise_filter", 4);
-          var pointwise_filter = extractWeightEntry(prefix + "/pointwise_filter", 4);
-          var bias = extractWeightEntry(prefix + "/bias", 1);
+      return (prefix) => {
+          const depthwise_filter = extractWeightEntry(`${prefix}/depthwise_filter`, 4);
+          const pointwise_filter = extractWeightEntry(`${prefix}/pointwise_filter`, 4);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
           return new SeparableConvParams(depthwise_filter, pointwise_filter, bias);
       };
   }
 
   function extractWeightEntryFactory(weightMap, paramMappings) {
-      return function (originalPath, paramRank, mappedPath) {
-          var tensor = weightMap[originalPath];
+      return (originalPath, paramRank, mappedPath) => {
+          const tensor = weightMap[originalPath];
           if (!isTensor(tensor, paramRank)) {
-              throw new Error("expected weightMap[" + originalPath + "] to be a Tensor" + paramRank + "D, instead have " + tensor);
+              throw new Error(`expected weightMap[${originalPath}] to be a Tensor${paramRank}D, instead have ${tensor}`);
           }
-          paramMappings.push({ originalPath: originalPath, paramPath: mappedPath || originalPath });
+          paramMappings.push({ originalPath, paramPath: mappedPath || originalPath });
           return tensor;
       };
   }
 
   function extractWeightsFactory(weights) {
-      var remainingWeights = weights;
+      let remainingWeights = weights;
       function extractWeights(numWeights) {
-          var ret = remainingWeights.slice(0, numWeights);
+          const ret = remainingWeights.slice(0, numWeights);
           remainingWeights = remainingWeights.slice(numWeights);
           return ret;
       }
@@ -2344,454 +2002,310 @@
           return remainingWeights;
       }
       return {
-          extractWeights: extractWeights,
-          getRemainingWeights: getRemainingWeights
+          extractWeights,
+          getRemainingWeights,
       };
   }
 
   function extractorsFactory$9(extractWeights, paramMappings) {
-      var extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
-      var extractSeparableConvParams = extractSeparableConvParamsFactory(extractWeights, paramMappings);
-      function extractDenseBlock3Params(channelsIn, channelsOut, mappedPrefix, isFirstLayer) {
-          if (isFirstLayer === void 0) { isFirstLayer = false; }
-          var conv0 = isFirstLayer
-              ? extractConvParams(channelsIn, channelsOut, 3, mappedPrefix + "/conv0")
-              : extractSeparableConvParams(channelsIn, channelsOut, mappedPrefix + "/conv0");
-          var conv1 = extractSeparableConvParams(channelsOut, channelsOut, mappedPrefix + "/conv1");
-          var conv2 = extractSeparableConvParams(channelsOut, channelsOut, mappedPrefix + "/conv2");
-          return { conv0: conv0, conv1: conv1, conv2: conv2 };
+      const extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
+      const extractSeparableConvParams = extractSeparableConvParamsFactory(extractWeights, paramMappings);
+      function extractDenseBlock3Params(channelsIn, channelsOut, mappedPrefix, isFirstLayer = false) {
+          const conv0 = isFirstLayer
+              ? extractConvParams(channelsIn, channelsOut, 3, `${mappedPrefix}/conv0`)
+              : extractSeparableConvParams(channelsIn, channelsOut, `${mappedPrefix}/conv0`);
+          const conv1 = extractSeparableConvParams(channelsOut, channelsOut, `${mappedPrefix}/conv1`);
+          const conv2 = extractSeparableConvParams(channelsOut, channelsOut, `${mappedPrefix}/conv2`);
+          return { conv0, conv1, conv2 };
       }
-      function extractDenseBlock4Params(channelsIn, channelsOut, mappedPrefix, isFirstLayer) {
-          if (isFirstLayer === void 0) { isFirstLayer = false; }
-          var _a = extractDenseBlock3Params(channelsIn, channelsOut, mappedPrefix, isFirstLayer), conv0 = _a.conv0, conv1 = _a.conv1, conv2 = _a.conv2;
-          var conv3 = extractSeparableConvParams(channelsOut, channelsOut, mappedPrefix + "/conv3");
-          return { conv0: conv0, conv1: conv1, conv2: conv2, conv3: conv3 };
+      function extractDenseBlock4Params(channelsIn, channelsOut, mappedPrefix, isFirstLayer = false) {
+          const { conv0, conv1, conv2 } = extractDenseBlock3Params(channelsIn, channelsOut, mappedPrefix, isFirstLayer);
+          const conv3 = extractSeparableConvParams(channelsOut, channelsOut, `${mappedPrefix}/conv3`);
+          return { conv0, conv1, conv2, conv3 };
       }
       return {
-          extractDenseBlock3Params: extractDenseBlock3Params,
-          extractDenseBlock4Params: extractDenseBlock4Params
+          extractDenseBlock3Params,
+          extractDenseBlock4Params,
       };
   }
 
   function extractParams$7(weights) {
-      var paramMappings = [];
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var extractDenseBlock4Params = extractorsFactory$9(extractWeights, paramMappings).extractDenseBlock4Params;
-      var dense0 = extractDenseBlock4Params(3, 32, 'dense0', true);
-      var dense1 = extractDenseBlock4Params(32, 64, 'dense1');
-      var dense2 = extractDenseBlock4Params(64, 128, 'dense2');
-      var dense3 = extractDenseBlock4Params(128, 256, 'dense3');
+      const paramMappings = [];
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const { extractDenseBlock4Params } = extractorsFactory$9(extractWeights, paramMappings);
+      const dense0 = extractDenseBlock4Params(3, 32, 'dense0', true);
+      const dense1 = extractDenseBlock4Params(32, 64, 'dense1');
+      const dense2 = extractDenseBlock4Params(64, 128, 'dense2');
+      const dense3 = extractDenseBlock4Params(128, 256, 'dense3');
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
       return {
-          paramMappings: paramMappings,
-          params: { dense0: dense0, dense1: dense1, dense2: dense2, dense3: dense3 }
+          paramMappings,
+          params: { dense0, dense1, dense2, dense3 },
       };
   }
 
   function loadConvParamsFactory(extractWeightEntry) {
-      return function (prefix) {
-          var filters = extractWeightEntry(prefix + "/filters", 4);
-          var bias = extractWeightEntry(prefix + "/bias", 1);
-          return { filters: filters, bias: bias };
+      return (prefix) => {
+          const filters = extractWeightEntry(`${prefix}/filters`, 4);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
+          return { filters, bias };
       };
   }
 
   function loadParamsFactory$1(weightMap, paramMappings) {
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
-      var extractConvParams = loadConvParamsFactory(extractWeightEntry);
-      var extractSeparableConvParams = loadSeparableConvParamsFactory(extractWeightEntry);
-      function extractDenseBlock3Params(prefix, isFirstLayer) {
-          if (isFirstLayer === void 0) { isFirstLayer = false; }
-          var conv0 = isFirstLayer
-              ? extractConvParams(prefix + "/conv0")
-              : extractSeparableConvParams(prefix + "/conv0");
-          var conv1 = extractSeparableConvParams(prefix + "/conv1");
-          var conv2 = extractSeparableConvParams(prefix + "/conv2");
-          return { conv0: conv0, conv1: conv1, conv2: conv2 };
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const extractConvParams = loadConvParamsFactory(extractWeightEntry);
+      const extractSeparableConvParams = loadSeparableConvParamsFactory(extractWeightEntry);
+      function extractDenseBlock3Params(prefix, isFirstLayer = false) {
+          const conv0 = isFirstLayer
+              ? extractConvParams(`${prefix}/conv0`)
+              : extractSeparableConvParams(`${prefix}/conv0`);
+          const conv1 = extractSeparableConvParams(`${prefix}/conv1`);
+          const conv2 = extractSeparableConvParams(`${prefix}/conv2`);
+          return { conv0, conv1, conv2 };
       }
-      function extractDenseBlock4Params(prefix, isFirstLayer) {
-          if (isFirstLayer === void 0) { isFirstLayer = false; }
-          var conv0 = isFirstLayer
-              ? extractConvParams(prefix + "/conv0")
-              : extractSeparableConvParams(prefix + "/conv0");
-          var conv1 = extractSeparableConvParams(prefix + "/conv1");
-          var conv2 = extractSeparableConvParams(prefix + "/conv2");
-          var conv3 = extractSeparableConvParams(prefix + "/conv3");
-          return { conv0: conv0, conv1: conv1, conv2: conv2, conv3: conv3 };
+      function extractDenseBlock4Params(prefix, isFirstLayer = false) {
+          const conv0 = isFirstLayer
+              ? extractConvParams(`${prefix}/conv0`)
+              : extractSeparableConvParams(`${prefix}/conv0`);
+          const conv1 = extractSeparableConvParams(`${prefix}/conv1`);
+          const conv2 = extractSeparableConvParams(`${prefix}/conv2`);
+          const conv3 = extractSeparableConvParams(`${prefix}/conv3`);
+          return { conv0, conv1, conv2, conv3 };
       }
       return {
-          extractDenseBlock3Params: extractDenseBlock3Params,
-          extractDenseBlock4Params: extractDenseBlock4Params
+          extractDenseBlock3Params,
+          extractDenseBlock4Params,
       };
   }
 
   function extractParamsFromWeigthMap$7(weightMap) {
-      var paramMappings = [];
-      var extractDenseBlock4Params = loadParamsFactory$1(weightMap, paramMappings).extractDenseBlock4Params;
-      var params = {
+      const paramMappings = [];
+      const { extractDenseBlock4Params } = loadParamsFactory$1(weightMap, paramMappings);
+      const params = {
           dense0: extractDenseBlock4Params('dense0', true),
           dense1: extractDenseBlock4Params('dense1'),
           dense2: extractDenseBlock4Params('dense2'),
-          dense3: extractDenseBlock4Params('dense3')
+          dense3: extractDenseBlock4Params('dense3'),
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
-  var FaceFeatureExtractor = /** @class */ (function (_super) {
-      __extends(FaceFeatureExtractor, _super);
-      function FaceFeatureExtractor() {
-          return _super.call(this, 'FaceFeatureExtractor') || this;
+  class FaceFeatureExtractor extends NeuralNetwork {
+      constructor() {
+          super('FaceFeatureExtractor');
       }
-      FaceFeatureExtractor.prototype.forwardInput = function (input) {
-          var params = this.params;
+      forwardInput(input) {
+          const { params } = this;
           if (!params) {
               throw new Error('FaceFeatureExtractor - load model before inference');
           }
-          return Ze(function () {
-              var batchTensor = input.toBatchTensor(112, true);
-              var meanRgb = [122.782, 117.001, 104.298];
-              var normalized = normalize$1(batchTensor, meanRgb).div(On(255));
-              var out = denseBlock4(normalized, params.dense0, true);
+          return Ze(() => {
+              const batchTensor = input.toBatchTensor(112, true);
+              const meanRgb = [122.782, 117.001, 104.298];
+              const normalized = normalize$1(batchTensor, meanRgb).div(On(255));
+              let out = denseBlock4(normalized, params.dense0, true);
               out = denseBlock4(out, params.dense1);
               out = denseBlock4(out, params.dense2);
               out = denseBlock4(out, params.dense3);
               out = Ol(out, [7, 7], [2, 2], 'valid');
               return out;
           });
-      };
-      FaceFeatureExtractor.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      FaceFeatureExtractor.prototype.getDefaultModelName = function () {
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      getDefaultModelName() {
           return 'face_feature_extractor_model';
-      };
-      FaceFeatureExtractor.prototype.extractParamsFromWeigthMap = function (weightMap) {
+      }
+      extractParamsFromWeigthMap(weightMap) {
           return extractParamsFromWeigthMap$7(weightMap);
-      };
-      FaceFeatureExtractor.prototype.extractParams = function (weights) {
+      }
+      extractParams(weights) {
           return extractParams$7(weights);
-      };
-      return FaceFeatureExtractor;
-  }(NeuralNetwork));
+      }
+  }
 
   function fullyConnectedLayer(x, params) {
-      return Ze(function () {
-          return Or(El(x, params.weights), params.bias);
-      });
+      return Ze(() => Or(El(x, params.weights), params.bias));
   }
 
   function extractParams$6(weights, channelsIn, channelsOut) {
-      var paramMappings = [];
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var extractFCParams = extractFCParamsFactory(extractWeights, paramMappings);
-      var fc = extractFCParams(channelsIn, channelsOut, 'fc');
+      const paramMappings = [];
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const extractFCParams = extractFCParamsFactory(extractWeights, paramMappings);
+      const fc = extractFCParams(channelsIn, channelsOut, 'fc');
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
       return {
-          paramMappings: paramMappings,
-          params: { fc: fc }
+          paramMappings,
+          params: { fc },
       };
   }
 
   function extractParamsFromWeigthMap$6(weightMap) {
-      var paramMappings = [];
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const paramMappings = [];
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
       function extractFcParams(prefix) {
-          var weights = extractWeightEntry(prefix + "/weights", 2);
-          var bias = extractWeightEntry(prefix + "/bias", 1);
-          return { weights: weights, bias: bias };
+          const weights = extractWeightEntry(`${prefix}/weights`, 2);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
+          return { weights, bias };
       }
-      var params = {
-          fc: extractFcParams('fc')
+      const params = {
+          fc: extractFcParams('fc'),
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   function seperateWeightMaps(weightMap) {
-      var featureExtractorMap = {};
-      var classifierMap = {};
-      Object.keys(weightMap).forEach(function (key) {
-          var map = key.startsWith('fc') ? classifierMap : featureExtractorMap;
+      const featureExtractorMap = {};
+      const classifierMap = {};
+      Object.keys(weightMap).forEach(key => {
+          const map = key.startsWith('fc') ? classifierMap : featureExtractorMap;
           map[key] = weightMap[key];
       });
-      return { featureExtractorMap: featureExtractorMap, classifierMap: classifierMap };
+      return { featureExtractorMap, classifierMap };
   }
 
-  var FaceProcessor = /** @class */ (function (_super) {
-      __extends(FaceProcessor, _super);
-      function FaceProcessor(_name, faceFeatureExtractor) {
-          var _this = _super.call(this, _name) || this;
-          _this._faceFeatureExtractor = faceFeatureExtractor;
-          return _this;
+  class FaceProcessor extends NeuralNetwork {
+      constructor(_name, faceFeatureExtractor) {
+          super(_name);
+          this._faceFeatureExtractor = faceFeatureExtractor;
       }
-      Object.defineProperty(FaceProcessor.prototype, "faceFeatureExtractor", {
-          get: function () {
-              return this._faceFeatureExtractor;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      FaceProcessor.prototype.runNet = function (input) {
-          var _this = this;
-          var params = this.params;
+      get faceFeatureExtractor() {
+          return this._faceFeatureExtractor;
+      }
+      runNet(input) {
+          const { params } = this;
           if (!params) {
-              throw new Error(this._name + " - load model before inference");
+              throw new Error(`${this._name} - load model before inference`);
           }
-          return Ze(function () {
-              var bottleneckFeatures = input instanceof NetInput
-                  ? _this.faceFeatureExtractor.forwardInput(input)
-                  : input;
+          return Ze(() => {
+              const bottleneckFeatures = input instanceof NetInput ? this.faceFeatureExtractor.forwardInput(input) : input;
               return fullyConnectedLayer(bottleneckFeatures.as2D(bottleneckFeatures.shape[0], -1), params.fc);
           });
-      };
-      FaceProcessor.prototype.dispose = function (throwOnRedispose) {
-          if (throwOnRedispose === void 0) { throwOnRedispose = true; }
+      }
+      dispose(throwOnRedispose = true) {
           this.faceFeatureExtractor.dispose(throwOnRedispose);
-          _super.prototype.dispose.call(this, throwOnRedispose);
-      };
-      FaceProcessor.prototype.loadClassifierParams = function (weights) {
-          var _a = this.extractClassifierParams(weights), params = _a.params, paramMappings = _a.paramMappings;
+          super.dispose(throwOnRedispose);
+      }
+      loadClassifierParams(weights) {
+          const { params, paramMappings } = this.extractClassifierParams(weights);
           this._params = params;
           this._paramMappings = paramMappings;
-      };
-      FaceProcessor.prototype.extractClassifierParams = function (weights) {
+      }
+      extractClassifierParams(weights) {
           return extractParams$6(weights, this.getClassifierChannelsIn(), this.getClassifierChannelsOut());
-      };
-      FaceProcessor.prototype.extractParamsFromWeigthMap = function (weightMap) {
-          var _a = seperateWeightMaps(weightMap), featureExtractorMap = _a.featureExtractorMap, classifierMap = _a.classifierMap;
+      }
+      extractParamsFromWeigthMap(weightMap) {
+          const { featureExtractorMap, classifierMap } = seperateWeightMaps(weightMap);
           this.faceFeatureExtractor.loadFromWeightMap(featureExtractorMap);
           return extractParamsFromWeigthMap$6(classifierMap);
-      };
-      FaceProcessor.prototype.extractParams = function (weights) {
-          var cIn = this.getClassifierChannelsIn();
-          var cOut = this.getClassifierChannelsOut();
-          var classifierWeightSize = (cOut * cIn) + cOut;
-          var featureExtractorWeights = weights.slice(0, weights.length - classifierWeightSize);
-          var classifierWeights = weights.slice(weights.length - classifierWeightSize);
+      }
+      extractParams(weights) {
+          const cIn = this.getClassifierChannelsIn();
+          const cOut = this.getClassifierChannelsOut();
+          const classifierWeightSize = cOut * cIn + cOut;
+          const featureExtractorWeights = weights.slice(0, weights.length - classifierWeightSize);
+          const classifierWeights = weights.slice(weights.length - classifierWeightSize);
           this.faceFeatureExtractor.extractWeights(featureExtractorWeights);
           return this.extractClassifierParams(classifierWeights);
-      };
-      return FaceProcessor;
-  }(NeuralNetwork));
+      }
+  }
 
-  var FACE_EXPRESSION_LABELS = ['neutral', 'happy', 'sad', 'angry', 'fearful', 'disgusted', 'surprised'];
-  var FaceExpressions = /** @class */ (function () {
-      function FaceExpressions(probabilities) {
-          var _this = this;
+  const FACE_EXPRESSION_LABELS = [
+      'neutral',
+      'happy',
+      'sad',
+      'angry',
+      'fearful',
+      'disgusted',
+      'surprised',
+  ];
+  class FaceExpressions {
+      constructor(probabilities) {
           if (probabilities.length !== 7) {
-              throw new Error("FaceExpressions.constructor - expected probabilities.length to be 7, have: " + probabilities.length);
+              throw new Error(`FaceExpressions.constructor - expected probabilities.length to be 7, have: ${probabilities.length}`);
           }
-          FACE_EXPRESSION_LABELS.forEach(function (expression, idx) {
-              _this[expression] = probabilities[idx];
+          FACE_EXPRESSION_LABELS.forEach((expression, idx) => {
+              this[expression] = probabilities[idx];
           });
       }
-      FaceExpressions.prototype.asSortedArray = function () {
-          var _this = this;
-          return FACE_EXPRESSION_LABELS
-              .map(function (expression) { return ({ expression: expression, probability: _this[expression] }); })
-              .sort(function (e0, e1) { return e1.probability - e0.probability; });
-      };
-      return FaceExpressions;
-  }());
+      asSortedArray() {
+          return FACE_EXPRESSION_LABELS.map(expression => ({
+              expression,
+              probability: this[expression],
+          })).sort((e0, e1) => e1.probability - e0.probability);
+      }
+  }
 
-  var FaceExpressionNet = /** @class */ (function (_super) {
-      __extends(FaceExpressionNet, _super);
-      function FaceExpressionNet(faceFeatureExtractor) {
-          if (faceFeatureExtractor === void 0) { faceFeatureExtractor = new FaceFeatureExtractor(); }
-          return _super.call(this, 'FaceExpressionNet', faceFeatureExtractor) || this;
+  class FaceExpressionNet extends FaceProcessor {
+      constructor(faceFeatureExtractor = new FaceFeatureExtractor()) {
+          super('FaceExpressionNet', faceFeatureExtractor);
       }
-      FaceExpressionNet.prototype.forwardInput = function (input) {
-          var _this = this;
-          return Ze(function () { return ia(_this.runNet(input)); });
-      };
-      FaceExpressionNet.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      FaceExpressionNet.prototype.predictExpressions = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var netInput, out, probabilitesByBatch, predictionsByBatch;
-              var _this = this;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, toNetInput(input)];
-                      case 1:
-                          netInput = _a.sent();
-                          return [4 /*yield*/, this.forwardInput(netInput)];
-                      case 2:
-                          out = _a.sent();
-                          return [4 /*yield*/, Promise.all(fr(out).map(function (t) { return __awaiter(_this, void 0, void 0, function () {
-                                  var data;
-                                  return __generator(this, function (_a) {
-                                      switch (_a.label) {
-                                          case 0: return [4 /*yield*/, t.data()];
-                                          case 1:
-                                              data = _a.sent();
-                                              t.dispose();
-                                              return [2 /*return*/, data];
-                                      }
-                                  });
-                              }); }))];
-                      case 3:
-                          probabilitesByBatch = _a.sent();
-                          out.dispose();
-                          predictionsByBatch = probabilitesByBatch
-                              .map(function (probabilites) { return new FaceExpressions(probabilites); });
-                          return [2 /*return*/, netInput.isBatchInput
-                                  ? predictionsByBatch
-                                  : predictionsByBatch[0]];
-                  }
-              });
-          });
-      };
-      FaceExpressionNet.prototype.getDefaultModelName = function () {
+      forwardInput(input) {
+          return Ze(() => ia(this.runNet(input)));
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      async predictExpressions(input) {
+          const netInput = await toNetInput(input);
+          const out = await this.forwardInput(netInput);
+          const probabilitesByBatch = await Promise.all(fr(out).map(async (t) => {
+              const data = await t.data();
+              t.dispose();
+              return data;
+          }));
+          out.dispose();
+          const predictionsByBatch = probabilitesByBatch.map(probabilites => new FaceExpressions(probabilites));
+          return netInput.isBatchInput ? predictionsByBatch : predictionsByBatch[0];
+      }
+      getDefaultModelName() {
           return 'face_expression_model';
-      };
-      FaceExpressionNet.prototype.getClassifierChannelsIn = function () {
+      }
+      getClassifierChannelsIn() {
           return 256;
-      };
-      FaceExpressionNet.prototype.getClassifierChannelsOut = function () {
+      }
+      getClassifierChannelsOut() {
           return 7;
-      };
-      return FaceExpressionNet;
-  }(FaceProcessor));
+      }
+  }
 
   function isWithFaceExpressions(obj) {
-      return obj['expressions'] instanceof FaceExpressions;
+      return !!(obj &&
+          typeof obj === 'object' &&
+          obj.expressions instanceof FaceExpressions);
   }
   function extendWithFaceExpressions(sourceObj, expressions) {
-      var extension = { expressions: expressions };
+      const extension = { expressions };
       return Object.assign({}, sourceObj, extension);
   }
 
-  function drawFaceExpressions(canvasArg, faceExpressions, minConfidence, textFieldAnchor) {
-      if (minConfidence === void 0) { minConfidence = 0.1; }
-      var faceExpressionsArray = Array.isArray(faceExpressions) ? faceExpressions : [faceExpressions];
-      faceExpressionsArray.forEach(function (e) {
-          var expr = e instanceof FaceExpressions
-              ? e
-              : (isWithFaceExpressions(e) ? e.expressions : undefined);
+  function drawFaceExpressions(canvasArg, faceExpressions, minConfidence = 0.1, textFieldAnchor) {
+      const faceExpressionsArray = Array.isArray(faceExpressions) ? faceExpressions : [faceExpressions];
+      faceExpressionsArray.forEach(e => {
+          const expr = e instanceof FaceExpressions ? e : isWithFaceExpressions(e) ? e.expressions : undefined;
           if (!expr) {
               throw new Error('drawFaceExpressions - expected faceExpressions to be FaceExpressions | WithFaceExpressions<{}> or array thereof');
           }
-          var sorted = expr.asSortedArray();
-          var resultsToDisplay = sorted.filter(function (expr) { return expr.probability > minConfidence; });
-          var anchor = isWithFaceDetection(e)
+          const sorted = expr.asSortedArray();
+          const resultsToDisplay = sorted.filter(expr => expr.probability > minConfidence);
+          const anchor = isWithFaceDetection(e)
               ? e.detection.box.bottomLeft
-              : (textFieldAnchor || new Point(0, 0));
-          var drawTextField = new DrawTextField(resultsToDisplay.map(function (expr) { return expr.expression + " (" + round(expr.probability) + ")"; }), anchor);
+              : textFieldAnchor || new Point(0, 0);
+          const drawTextField = new DrawTextField(resultsToDisplay.map(expr => `${expr.expression} (${round(expr.probability)})`), anchor);
           drawTextField.draw(canvasArg);
-      });
-  }
-
-  function isWithFaceLandmarks(obj) {
-      return isWithFaceDetection(obj)
-          && obj['landmarks'] instanceof FaceLandmarks
-          && obj['unshiftedLandmarks'] instanceof FaceLandmarks
-          && obj['alignedRect'] instanceof FaceDetection;
-  }
-  function extendWithFaceLandmarks(sourceObj, unshiftedLandmarks) {
-      var shift = sourceObj.detection.box;
-      var landmarks = unshiftedLandmarks.shiftBy(shift.x, shift.y);
-      var rect = landmarks.align();
-      var imageDims = sourceObj.detection.imageDims;
-      var alignedRect = new FaceDetection(sourceObj.detection.score, rect.rescale(imageDims.reverse()), imageDims);
-      var extension = {
-          landmarks: landmarks,
-          unshiftedLandmarks: unshiftedLandmarks,
-          alignedRect: alignedRect
-      };
-      return Object.assign({}, sourceObj, extension);
-  }
-
-  var DrawFaceLandmarksOptions = /** @class */ (function () {
-      function DrawFaceLandmarksOptions(options) {
-          if (options === void 0) { options = {}; }
-          var _a = options.drawLines, drawLines = _a === void 0 ? true : _a, _b = options.drawPoints, drawPoints = _b === void 0 ? true : _b, lineWidth = options.lineWidth, lineColor = options.lineColor, pointSize = options.pointSize, pointColor = options.pointColor;
-          this.drawLines = drawLines;
-          this.drawPoints = drawPoints;
-          this.lineWidth = lineWidth || 1;
-          this.pointSize = pointSize || 2;
-          this.lineColor = lineColor || 'rgba(0, 255, 255, 1)';
-          this.pointColor = pointColor || 'rgba(255, 0, 255, 1)';
-      }
-      return DrawFaceLandmarksOptions;
-  }());
-  var DrawFaceLandmarks = /** @class */ (function () {
-      function DrawFaceLandmarks(faceLandmarks, options) {
-          if (options === void 0) { options = {}; }
-          this.faceLandmarks = faceLandmarks;
-          this.options = new DrawFaceLandmarksOptions(options);
-      }
-      DrawFaceLandmarks.prototype.draw = function (canvasArg) {
-          var ctx = getContext2dOrThrow(canvasArg);
-          var _a = this.options, drawLines = _a.drawLines, drawPoints = _a.drawPoints, lineWidth = _a.lineWidth, lineColor = _a.lineColor, pointSize = _a.pointSize, pointColor = _a.pointColor;
-          if (drawLines && this.faceLandmarks instanceof FaceLandmarks68) {
-              ctx.strokeStyle = lineColor;
-              ctx.lineWidth = lineWidth;
-              drawContour(ctx, this.faceLandmarks.getJawOutline());
-              drawContour(ctx, this.faceLandmarks.getLeftEyeBrow());
-              drawContour(ctx, this.faceLandmarks.getRightEyeBrow());
-              drawContour(ctx, this.faceLandmarks.getNose());
-              drawContour(ctx, this.faceLandmarks.getLeftEye(), true);
-              drawContour(ctx, this.faceLandmarks.getRightEye(), true);
-              drawContour(ctx, this.faceLandmarks.getMouth(), true);
-          }
-          if (drawPoints) {
-              ctx.strokeStyle = pointColor;
-              ctx.fillStyle = pointColor;
-              var drawPoint = function (pt) {
-                  ctx.beginPath();
-                  ctx.arc(pt.x, pt.y, pointSize, 0, 2 * Math.PI);
-                  ctx.fill();
-              };
-              this.faceLandmarks.positions.forEach(drawPoint);
-          }
-      };
-      return DrawFaceLandmarks;
-  }());
-  function drawFaceLandmarks(canvasArg, faceLandmarks) {
-      var faceLandmarksArray = Array.isArray(faceLandmarks) ? faceLandmarks : [faceLandmarks];
-      faceLandmarksArray.forEach(function (f) {
-          var landmarks = f instanceof FaceLandmarks
-              ? f
-              : (isWithFaceLandmarks(f) ? f.landmarks : undefined);
-          if (!landmarks) {
-              throw new Error('drawFaceLandmarks - expected faceExpressions to be FaceLandmarks | WithFaceLandmarks<WithFaceDetection<{}>> or array thereof');
-          }
-          new DrawFaceLandmarks(landmarks).draw(canvasArg);
       });
   }
 
   var index = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    drawContour: drawContour,
-    drawDetections: drawDetections,
-    drawFaceExpressions: drawFaceExpressions,
     DrawBoxOptions: DrawBoxOptions,
     DrawBox: DrawBox,
     DrawFaceLandmarksOptions: DrawFaceLandmarksOptions,
@@ -2799,116 +2313,118 @@
     drawFaceLandmarks: drawFaceLandmarks,
     get AnchorPosition () { return AnchorPosition; },
     DrawTextFieldOptions: DrawTextFieldOptions,
-    DrawTextField: DrawTextField
+    DrawTextField: DrawTextField,
+    drawContour: drawContour,
+    drawDetections: drawDetections,
+    drawFaceExpressions: drawFaceExpressions
   });
 
   function extractorsFactory$8(extractWeights, paramMappings) {
-      var extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
-      var extractSeparableConvParams = extractSeparableConvParamsFactory(extractWeights, paramMappings);
+      const extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
+      const extractSeparableConvParams = extractSeparableConvParamsFactory(extractWeights, paramMappings);
       function extractReductionBlockParams(channelsIn, channelsOut, mappedPrefix) {
-          var separable_conv0 = extractSeparableConvParams(channelsIn, channelsOut, mappedPrefix + "/separable_conv0");
-          var separable_conv1 = extractSeparableConvParams(channelsOut, channelsOut, mappedPrefix + "/separable_conv1");
-          var expansion_conv = extractConvParams(channelsIn, channelsOut, 1, mappedPrefix + "/expansion_conv");
-          return { separable_conv0: separable_conv0, separable_conv1: separable_conv1, expansion_conv: expansion_conv };
+          const separable_conv0 = extractSeparableConvParams(channelsIn, channelsOut, `${mappedPrefix}/separable_conv0`);
+          const separable_conv1 = extractSeparableConvParams(channelsOut, channelsOut, `${mappedPrefix}/separable_conv1`);
+          const expansion_conv = extractConvParams(channelsIn, channelsOut, 1, `${mappedPrefix}/expansion_conv`);
+          return { separable_conv0, separable_conv1, expansion_conv };
       }
       function extractMainBlockParams(channels, mappedPrefix) {
-          var separable_conv0 = extractSeparableConvParams(channels, channels, mappedPrefix + "/separable_conv0");
-          var separable_conv1 = extractSeparableConvParams(channels, channels, mappedPrefix + "/separable_conv1");
-          var separable_conv2 = extractSeparableConvParams(channels, channels, mappedPrefix + "/separable_conv2");
-          return { separable_conv0: separable_conv0, separable_conv1: separable_conv1, separable_conv2: separable_conv2 };
+          const separable_conv0 = extractSeparableConvParams(channels, channels, `${mappedPrefix}/separable_conv0`);
+          const separable_conv1 = extractSeparableConvParams(channels, channels, `${mappedPrefix}/separable_conv1`);
+          const separable_conv2 = extractSeparableConvParams(channels, channels, `${mappedPrefix}/separable_conv2`);
+          return { separable_conv0, separable_conv1, separable_conv2 };
       }
       return {
-          extractConvParams: extractConvParams,
-          extractSeparableConvParams: extractSeparableConvParams,
-          extractReductionBlockParams: extractReductionBlockParams,
-          extractMainBlockParams: extractMainBlockParams
+          extractConvParams,
+          extractSeparableConvParams,
+          extractReductionBlockParams,
+          extractMainBlockParams,
       };
   }
   function extractParams$5(weights, numMainBlocks) {
-      var paramMappings = [];
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var _b = extractorsFactory$8(extractWeights, paramMappings), extractConvParams = _b.extractConvParams, extractSeparableConvParams = _b.extractSeparableConvParams, extractReductionBlockParams = _b.extractReductionBlockParams, extractMainBlockParams = _b.extractMainBlockParams;
-      var entry_flow_conv_in = extractConvParams(3, 32, 3, 'entry_flow/conv_in');
-      var entry_flow_reduction_block_0 = extractReductionBlockParams(32, 64, 'entry_flow/reduction_block_0');
-      var entry_flow_reduction_block_1 = extractReductionBlockParams(64, 128, 'entry_flow/reduction_block_1');
-      var entry_flow = {
+      const paramMappings = [];
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const { extractConvParams, extractSeparableConvParams, extractReductionBlockParams, extractMainBlockParams, } = extractorsFactory$8(extractWeights, paramMappings);
+      const entry_flow_conv_in = extractConvParams(3, 32, 3, 'entry_flow/conv_in');
+      const entry_flow_reduction_block_0 = extractReductionBlockParams(32, 64, 'entry_flow/reduction_block_0');
+      const entry_flow_reduction_block_1 = extractReductionBlockParams(64, 128, 'entry_flow/reduction_block_1');
+      const entry_flow = {
           conv_in: entry_flow_conv_in,
           reduction_block_0: entry_flow_reduction_block_0,
-          reduction_block_1: entry_flow_reduction_block_1
+          reduction_block_1: entry_flow_reduction_block_1,
       };
-      var middle_flow = {};
-      range(numMainBlocks, 0, 1).forEach(function (idx) {
-          middle_flow["main_block_" + idx] = extractMainBlockParams(128, "middle_flow/main_block_" + idx);
+      const middle_flow = {};
+      range(numMainBlocks, 0, 1).forEach(idx => {
+          middle_flow[`main_block_${idx}`] = extractMainBlockParams(128, `middle_flow/main_block_${idx}`);
       });
-      var exit_flow_reduction_block = extractReductionBlockParams(128, 256, 'exit_flow/reduction_block');
-      var exit_flow_separable_conv = extractSeparableConvParams(256, 512, 'exit_flow/separable_conv');
-      var exit_flow = {
+      const exit_flow_reduction_block = extractReductionBlockParams(128, 256, 'exit_flow/reduction_block');
+      const exit_flow_separable_conv = extractSeparableConvParams(256, 512, 'exit_flow/separable_conv');
+      const exit_flow = {
           reduction_block: exit_flow_reduction_block,
-          separable_conv: exit_flow_separable_conv
+          separable_conv: exit_flow_separable_conv,
       };
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
       return {
-          paramMappings: paramMappings,
-          params: { entry_flow: entry_flow, middle_flow: middle_flow, exit_flow: exit_flow }
+          paramMappings,
+          params: { entry_flow, middle_flow, exit_flow },
       };
   }
 
   function loadParamsFactory(weightMap, paramMappings) {
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
-      var extractConvParams = loadConvParamsFactory(extractWeightEntry);
-      var extractSeparableConvParams = loadSeparableConvParamsFactory(extractWeightEntry);
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const extractConvParams = loadConvParamsFactory(extractWeightEntry);
+      const extractSeparableConvParams = loadSeparableConvParamsFactory(extractWeightEntry);
       function extractReductionBlockParams(mappedPrefix) {
-          var separable_conv0 = extractSeparableConvParams(mappedPrefix + "/separable_conv0");
-          var separable_conv1 = extractSeparableConvParams(mappedPrefix + "/separable_conv1");
-          var expansion_conv = extractConvParams(mappedPrefix + "/expansion_conv");
-          return { separable_conv0: separable_conv0, separable_conv1: separable_conv1, expansion_conv: expansion_conv };
+          const separable_conv0 = extractSeparableConvParams(`${mappedPrefix}/separable_conv0`);
+          const separable_conv1 = extractSeparableConvParams(`${mappedPrefix}/separable_conv1`);
+          const expansion_conv = extractConvParams(`${mappedPrefix}/expansion_conv`);
+          return { separable_conv0, separable_conv1, expansion_conv };
       }
       function extractMainBlockParams(mappedPrefix) {
-          var separable_conv0 = extractSeparableConvParams(mappedPrefix + "/separable_conv0");
-          var separable_conv1 = extractSeparableConvParams(mappedPrefix + "/separable_conv1");
-          var separable_conv2 = extractSeparableConvParams(mappedPrefix + "/separable_conv2");
-          return { separable_conv0: separable_conv0, separable_conv1: separable_conv1, separable_conv2: separable_conv2 };
+          const separable_conv0 = extractSeparableConvParams(`${mappedPrefix}/separable_conv0`);
+          const separable_conv1 = extractSeparableConvParams(`${mappedPrefix}/separable_conv1`);
+          const separable_conv2 = extractSeparableConvParams(`${mappedPrefix}/separable_conv2`);
+          return { separable_conv0, separable_conv1, separable_conv2 };
       }
       return {
-          extractConvParams: extractConvParams,
-          extractSeparableConvParams: extractSeparableConvParams,
-          extractReductionBlockParams: extractReductionBlockParams,
-          extractMainBlockParams: extractMainBlockParams
+          extractConvParams,
+          extractSeparableConvParams,
+          extractReductionBlockParams,
+          extractMainBlockParams,
       };
   }
   function extractParamsFromWeigthMap$5(weightMap, numMainBlocks) {
-      var paramMappings = [];
-      var _a = loadParamsFactory(weightMap, paramMappings), extractConvParams = _a.extractConvParams, extractSeparableConvParams = _a.extractSeparableConvParams, extractReductionBlockParams = _a.extractReductionBlockParams, extractMainBlockParams = _a.extractMainBlockParams;
-      var entry_flow_conv_in = extractConvParams('entry_flow/conv_in');
-      var entry_flow_reduction_block_0 = extractReductionBlockParams('entry_flow/reduction_block_0');
-      var entry_flow_reduction_block_1 = extractReductionBlockParams('entry_flow/reduction_block_1');
-      var entry_flow = {
+      const paramMappings = [];
+      const { extractConvParams, extractSeparableConvParams, extractReductionBlockParams, extractMainBlockParams, } = loadParamsFactory(weightMap, paramMappings);
+      const entry_flow_conv_in = extractConvParams('entry_flow/conv_in');
+      const entry_flow_reduction_block_0 = extractReductionBlockParams('entry_flow/reduction_block_0');
+      const entry_flow_reduction_block_1 = extractReductionBlockParams('entry_flow/reduction_block_1');
+      const entry_flow = {
           conv_in: entry_flow_conv_in,
           reduction_block_0: entry_flow_reduction_block_0,
-          reduction_block_1: entry_flow_reduction_block_1
+          reduction_block_1: entry_flow_reduction_block_1,
       };
-      var middle_flow = {};
-      range(numMainBlocks, 0, 1).forEach(function (idx) {
-          middle_flow["main_block_" + idx] = extractMainBlockParams("middle_flow/main_block_" + idx);
+      const middle_flow = {};
+      range(numMainBlocks, 0, 1).forEach(idx => {
+          middle_flow[`main_block_${idx}`] = extractMainBlockParams(`middle_flow/main_block_${idx}`);
       });
-      var exit_flow_reduction_block = extractReductionBlockParams('exit_flow/reduction_block');
-      var exit_flow_separable_conv = extractSeparableConvParams('exit_flow/separable_conv');
-      var exit_flow = {
+      const exit_flow_reduction_block = extractReductionBlockParams('exit_flow/reduction_block');
+      const exit_flow_separable_conv = extractSeparableConvParams('exit_flow/separable_conv');
+      const exit_flow = {
           reduction_block: exit_flow_reduction_block,
-          separable_conv: exit_flow_separable_conv
+          separable_conv: exit_flow_separable_conv,
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: { entry_flow: entry_flow, middle_flow: middle_flow, exit_flow: exit_flow }, paramMappings: paramMappings };
+      return { params: { entry_flow, middle_flow, exit_flow }, paramMappings };
   }
 
   function conv$1(x, params, stride) {
       return Or(dl(x, params.filters, stride, 'same'), params.bias);
   }
-  function reductionBlock(x, params, isActivateInput) {
-      if (isActivateInput === void 0) { isActivateInput = true; }
-      var out = isActivateInput ? ah(x) : x;
+  function reductionBlock(x, params, isActivateInput = true) {
+      let out = isActivateInput ? ah(x) : x;
       out = depthwiseSeparableConv$1(out, params.separable_conv0, [1, 1]);
       out = depthwiseSeparableConv$1(ah(out), params.separable_conv1, [1, 1]);
       out = _l(out, [3, 3], [2, 2], 'same');
@@ -2916,96 +2432,82 @@
       return out;
   }
   function mainBlock(x, params) {
-      var out = depthwiseSeparableConv$1(ah(x), params.separable_conv0, [1, 1]);
+      let out = depthwiseSeparableConv$1(ah(x), params.separable_conv0, [1, 1]);
       out = depthwiseSeparableConv$1(ah(out), params.separable_conv1, [1, 1]);
       out = depthwiseSeparableConv$1(ah(out), params.separable_conv2, [1, 1]);
       out = Or(out, x);
       return out;
   }
-  var TinyXception = /** @class */ (function (_super) {
-      __extends(TinyXception, _super);
-      function TinyXception(numMainBlocks) {
-          var _this = _super.call(this, 'TinyXception') || this;
-          _this._numMainBlocks = numMainBlocks;
-          return _this;
+  class TinyXception extends NeuralNetwork {
+      constructor(numMainBlocks) {
+          super('TinyXception');
+          this._numMainBlocks = numMainBlocks;
       }
-      TinyXception.prototype.forwardInput = function (input) {
-          var _this = this;
-          var params = this.params;
+      forwardInput(input) {
+          const { params } = this;
           if (!params) {
               throw new Error('TinyXception - load model before inference');
           }
-          return Ze(function () {
-              var batchTensor = input.toBatchTensor(112, true);
-              var meanRgb = [122.782, 117.001, 104.298];
-              var normalized = normalize$1(batchTensor, meanRgb).div(On(256));
-              var out = ah(conv$1(normalized, params.entry_flow.conv_in, [2, 2]));
+          return Ze(() => {
+              const batchTensor = input.toBatchTensor(112, true);
+              const meanRgb = [122.782, 117.001, 104.298];
+              const normalized = normalize$1(batchTensor, meanRgb).div(On(256));
+              let out = ah(conv$1(normalized, params.entry_flow.conv_in, [2, 2]));
               out = reductionBlock(out, params.entry_flow.reduction_block_0, false);
               out = reductionBlock(out, params.entry_flow.reduction_block_1);
-              range(_this._numMainBlocks, 0, 1).forEach(function (idx) {
-                  out = mainBlock(out, params.middle_flow["main_block_" + idx]);
+              range(this._numMainBlocks, 0, 1).forEach(idx => {
+                  out = mainBlock(out, params.middle_flow[`main_block_${idx}`]);
               });
               out = reductionBlock(out, params.exit_flow.reduction_block);
               out = ah(depthwiseSeparableConv$1(out, params.exit_flow.separable_conv, [1, 1]));
               return out;
           });
-      };
-      TinyXception.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      TinyXception.prototype.getDefaultModelName = function () {
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      getDefaultModelName() {
           return 'tiny_xception_model';
-      };
-      TinyXception.prototype.extractParamsFromWeigthMap = function (weightMap) {
+      }
+      extractParamsFromWeigthMap(weightMap) {
           return extractParamsFromWeigthMap$5(weightMap, this._numMainBlocks);
-      };
-      TinyXception.prototype.extractParams = function (weights) {
+      }
+      extractParams(weights) {
           return extractParams$5(weights, this._numMainBlocks);
-      };
-      return TinyXception;
-  }(NeuralNetwork));
+      }
+  }
 
   function extractParams$4(weights) {
-      var paramMappings = [];
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var extractFCParams = extractFCParamsFactory(extractWeights, paramMappings);
-      var age = extractFCParams(512, 1, 'fc/age');
-      var gender = extractFCParams(512, 2, 'fc/gender');
+      const paramMappings = [];
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const extractFCParams = extractFCParamsFactory(extractWeights, paramMappings);
+      const age = extractFCParams(512, 1, 'fc/age');
+      const gender = extractFCParams(512, 2, 'fc/gender');
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
       return {
-          paramMappings: paramMappings,
-          params: { fc: { age: age, gender: gender } }
+          paramMappings,
+          params: { fc: { age, gender } },
       };
   }
 
   function extractParamsFromWeigthMap$4(weightMap) {
-      var paramMappings = [];
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const paramMappings = [];
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
       function extractFcParams(prefix) {
-          var weights = extractWeightEntry(prefix + "/weights", 2);
-          var bias = extractWeightEntry(prefix + "/bias", 1);
-          return { weights: weights, bias: bias };
+          const weights = extractWeightEntry(`${prefix}/weights`, 2);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
+          return { weights, bias };
       }
-      var params = {
+      const params = {
           fc: {
               age: extractFcParams('fc/age'),
-              gender: extractFcParams('fc/gender')
-          }
+              gender: extractFcParams('fc/gender'),
+          },
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   exports.Gender = void 0;
@@ -3014,365 +2516,253 @@
       Gender["MALE"] = "male";
   })(exports.Gender || (exports.Gender = {}));
 
-  var AgeGenderNet = /** @class */ (function (_super) {
-      __extends(AgeGenderNet, _super);
-      function AgeGenderNet(faceFeatureExtractor) {
-          if (faceFeatureExtractor === void 0) { faceFeatureExtractor = new TinyXception(2); }
-          var _this = _super.call(this, 'AgeGenderNet') || this;
-          _this._faceFeatureExtractor = faceFeatureExtractor;
-          return _this;
+  class AgeGenderNet extends NeuralNetwork {
+      constructor(faceFeatureExtractor = new TinyXception(2)) {
+          super('AgeGenderNet');
+          this._faceFeatureExtractor = faceFeatureExtractor;
       }
-      Object.defineProperty(AgeGenderNet.prototype, "faceFeatureExtractor", {
-          get: function () {
-              return this._faceFeatureExtractor;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      AgeGenderNet.prototype.runNet = function (input) {
-          var _this = this;
-          var params = this.params;
+      get faceFeatureExtractor() {
+          return this._faceFeatureExtractor;
+      }
+      runNet(input) {
+          const { params } = this;
           if (!params) {
-              throw new Error(this._name + " - load model before inference");
+              throw new Error(`${this._name} - load model before inference`);
           }
-          return Ze(function () {
-              var bottleneckFeatures = input instanceof NetInput
-                  ? _this.faceFeatureExtractor.forwardInput(input)
-                  : input;
-              var pooled = Ol(bottleneckFeatures, [7, 7], [2, 2], 'valid').as2D(bottleneckFeatures.shape[0], -1);
-              var age = fullyConnectedLayer(pooled, params.fc.age).as1D();
-              var gender = fullyConnectedLayer(pooled, params.fc.gender);
-              return { age: age, gender: gender };
+          return Ze(() => {
+              const bottleneckFeatures = input instanceof NetInput ? this.faceFeatureExtractor.forwardInput(input) : input;
+              const pooled = Ol(bottleneckFeatures, [7, 7], [2, 2], 'valid')
+                  .as2D(bottleneckFeatures.shape[0], -1);
+              const age = fullyConnectedLayer(pooled, params.fc.age).as1D();
+              const gender = fullyConnectedLayer(pooled, params.fc.gender);
+              return { age, gender };
           });
-      };
-      AgeGenderNet.prototype.forwardInput = function (input) {
-          var _this = this;
-          return Ze(function () {
-              var _a = _this.runNet(input), age = _a.age, gender = _a.gender;
-              return { age: age, gender: ia(gender) };
+      }
+      forwardInput(input) {
+          return Ze(() => {
+              const { age, gender } = this.runNet(input);
+              return { age, gender: ia(gender) };
           });
-      };
-      AgeGenderNet.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      AgeGenderNet.prototype.predictAgeAndGender = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var netInput, out, ages, genders, ageAndGenderTensors, predictionsByBatch;
-              var _this = this;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, toNetInput(input)];
-                      case 1:
-                          netInput = _a.sent();
-                          return [4 /*yield*/, this.forwardInput(netInput)];
-                      case 2:
-                          out = _a.sent();
-                          ages = fr(out.age);
-                          genders = fr(out.gender);
-                          ageAndGenderTensors = ages.map(function (ageTensor, i) { return ({
-                              ageTensor: ageTensor,
-                              genderTensor: genders[i]
-                          }); });
-                          return [4 /*yield*/, Promise.all(ageAndGenderTensors.map(function (_a) {
-                                  var ageTensor = _a.ageTensor, genderTensor = _a.genderTensor;
-                                  return __awaiter(_this, void 0, void 0, function () {
-                                      var age, probMale, isMale, gender, genderProbability;
-                                      return __generator(this, function (_b) {
-                                          switch (_b.label) {
-                                              case 0: return [4 /*yield*/, ageTensor.data()];
-                                              case 1:
-                                                  age = (_b.sent())[0];
-                                                  return [4 /*yield*/, genderTensor.data()];
-                                              case 2:
-                                                  probMale = (_b.sent())[0];
-                                                  isMale = probMale > 0.5;
-                                                  gender = isMale ? exports.Gender.MALE : exports.Gender.FEMALE;
-                                                  genderProbability = isMale ? probMale : (1 - probMale);
-                                                  ageTensor.dispose();
-                                                  genderTensor.dispose();
-                                                  return [2 /*return*/, { age: age, gender: gender, genderProbability: genderProbability }];
-                                          }
-                                      });
-                                  });
-                              }))];
-                      case 3:
-                          predictionsByBatch = _a.sent();
-                          out.age.dispose();
-                          out.gender.dispose();
-                          return [2 /*return*/, netInput.isBatchInput
-                                  ? predictionsByBatch
-                                  : predictionsByBatch[0]];
-                  }
-              });
-          });
-      };
-      AgeGenderNet.prototype.getDefaultModelName = function () {
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      async predictAgeAndGender(input) {
+          const netInput = await toNetInput(input);
+          const out = await this.forwardInput(netInput);
+          const ages = fr(out.age);
+          const genders = fr(out.gender);
+          const ageAndGenderTensors = ages.map((ageTensor, i) => ({
+              ageTensor,
+              genderTensor: genders[i],
+          }));
+          const predictionsByBatch = await Promise.all(ageAndGenderTensors.map(async ({ ageTensor, genderTensor }) => {
+              const age = (await ageTensor.data())[0];
+              const probMale = (await genderTensor.data())[0];
+              const isMale = probMale > 0.5;
+              const gender = isMale ? exports.Gender.MALE : exports.Gender.FEMALE;
+              const genderProbability = isMale ? probMale : 1 - probMale;
+              ageTensor.dispose();
+              genderTensor.dispose();
+              return { age, gender, genderProbability };
+          }));
+          out.age.dispose();
+          out.gender.dispose();
+          return netInput.isBatchInput ? predictionsByBatch : predictionsByBatch[0];
+      }
+      getDefaultModelName() {
           return 'age_gender_model';
-      };
-      AgeGenderNet.prototype.dispose = function (throwOnRedispose) {
-          if (throwOnRedispose === void 0) { throwOnRedispose = true; }
+      }
+      dispose(throwOnRedispose = true) {
           this.faceFeatureExtractor.dispose(throwOnRedispose);
-          _super.prototype.dispose.call(this, throwOnRedispose);
-      };
-      AgeGenderNet.prototype.loadClassifierParams = function (weights) {
-          var _a = this.extractClassifierParams(weights), params = _a.params, paramMappings = _a.paramMappings;
+          super.dispose(throwOnRedispose);
+      }
+      loadClassifierParams(weights) {
+          const { params, paramMappings } = this.extractClassifierParams(weights);
           this._params = params;
           this._paramMappings = paramMappings;
-      };
-      AgeGenderNet.prototype.extractClassifierParams = function (weights) {
+      }
+      extractClassifierParams(weights) {
           return extractParams$4(weights);
-      };
-      AgeGenderNet.prototype.extractParamsFromWeigthMap = function (weightMap) {
-          var _a = seperateWeightMaps(weightMap), featureExtractorMap = _a.featureExtractorMap, classifierMap = _a.classifierMap;
+      }
+      extractParamsFromWeigthMap(weightMap) {
+          const { featureExtractorMap, classifierMap } = seperateWeightMaps(weightMap);
           this.faceFeatureExtractor.loadFromWeightMap(featureExtractorMap);
           return extractParamsFromWeigthMap$4(classifierMap);
-      };
-      AgeGenderNet.prototype.extractParams = function (weights) {
-          var classifierWeightSize = (512 * 1 + 1) + (512 * 2 + 2);
-          var featureExtractorWeights = weights.slice(0, weights.length - classifierWeightSize);
-          var classifierWeights = weights.slice(weights.length - classifierWeightSize);
+      }
+      extractParams(weights) {
+          const classifierWeightSize = 512 * 1 + 1 + (512 * 2 + 2);
+          const featureExtractorWeights = weights.slice(0, weights.length - classifierWeightSize);
+          const classifierWeights = weights.slice(weights.length - classifierWeightSize);
           this.faceFeatureExtractor.extractWeights(featureExtractorWeights);
           return this.extractClassifierParams(classifierWeights);
-      };
-      return AgeGenderNet;
-  }(NeuralNetwork));
-
-  var FaceLandmark68NetBase = /** @class */ (function (_super) {
-      __extends(FaceLandmark68NetBase, _super);
-      function FaceLandmark68NetBase() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      FaceLandmark68NetBase.prototype.postProcess = function (output, inputSize, originalDimensions) {
-          var inputDimensions = originalDimensions.map(function (_a) {
-              var width = _a.width, height = _a.height;
-              var scale = inputSize / Math.max(height, width);
+  }
+
+  function euclideanDistance(arr1, arr2) {
+      if (arr1.length !== arr2.length)
+          throw new Error('euclideanDistance: arr1.length !== arr2.length');
+      const desc1 = Array.from(arr1);
+      const desc2 = Array.from(arr2);
+      return Math.sqrt(desc1.map((val, i) => val - desc2[i]).reduce((res, diff) => res + diff ** 2, 0));
+  }
+
+  class FaceLandmark68NetBase extends FaceProcessor {
+      postProcess(output, inputSize, originalDimensions) {
+          const inputDimensions = originalDimensions.map(({ width, height }) => {
+              const scale = inputSize / Math.max(height, width);
               return {
                   width: width * scale,
-                  height: height * scale
+                  height: height * scale,
               };
           });
-          var batchSize = inputDimensions.length;
-          return Ze(function () {
-              var createInterleavedTensor = function (fillX, fillY) {
-                  return hr([
-                      Hn([68], fillX),
-                      Hn([68], fillY)
-                  ], 1).as2D(1, 136).as1D();
-              };
-              var getPadding = function (batchIdx, cond) {
-                  var _a = inputDimensions[batchIdx], width = _a.width, height = _a.height;
+          const batchSize = inputDimensions.length;
+          return Ze(() => {
+              const createInterleavedTensor = (fillX, fillY) => hr([Hn([68], fillX), Hn([68], fillY)], 1)
+                  .as2D(1, 136)
+                  .as1D();
+              const getPadding = (batchIdx, cond) => {
+                  const { width, height } = inputDimensions[batchIdx];
                   return cond(width, height) ? Math.abs(width - height) / 2 : 0;
               };
-              var getPaddingX = function (batchIdx) { return getPadding(batchIdx, function (w, h) { return w < h; }); };
-              var getPaddingY = function (batchIdx) { return getPadding(batchIdx, function (w, h) { return h < w; }); };
-              var landmarkTensors = output
+              const getPaddingX = (batchIdx) => getPadding(batchIdx, (w, h) => w < h);
+              const getPaddingY = (batchIdx) => getPadding(batchIdx, (w, h) => h < w);
+              const landmarkTensors = output
                   .mul(Hn([batchSize, 136], inputSize))
-                  .sub(hr(Array.from(Array(batchSize), function (_, batchIdx) {
-                  return createInterleavedTensor(getPaddingX(batchIdx), getPaddingY(batchIdx));
-              })))
-                  .div(hr(Array.from(Array(batchSize), function (_, batchIdx) {
-                  return createInterleavedTensor(inputDimensions[batchIdx].width, inputDimensions[batchIdx].height);
-              })));
+                  .sub(hr(Array.from(Array(batchSize), (_, batchIdx) => createInterleavedTensor(getPaddingX(batchIdx), getPaddingY(batchIdx)))))
+                  .div(hr(Array.from(Array(batchSize), (_, batchIdx) => createInterleavedTensor(inputDimensions[batchIdx].width, inputDimensions[batchIdx].height))));
               return landmarkTensors;
           });
-      };
-      FaceLandmark68NetBase.prototype.forwardInput = function (input) {
-          var _this = this;
-          return Ze(function () {
-              var out = _this.runNet(input);
-              return _this.postProcess(out, input.inputSize, input.inputDimensions.map(function (_a) {
-                  var height = _a[0], width = _a[1];
-                  return ({ height: height, width: width });
-              }));
-          });
-      };
-      FaceLandmark68NetBase.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      FaceLandmark68NetBase.prototype.detectLandmarks = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var netInput, landmarkTensors, landmarksForBatch;
-              var _this = this;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, toNetInput(input)];
-                      case 1:
-                          netInput = _a.sent();
-                          landmarkTensors = Ze(function () { return fr(_this.forwardInput(netInput)); });
-                          return [4 /*yield*/, Promise.all(landmarkTensors.map(function (landmarkTensor, batchIdx) { return __awaiter(_this, void 0, void 0, function () {
-                                  var landmarksArray, _a, _b, xCoords, yCoords;
-                                  return __generator(this, function (_c) {
-                                      switch (_c.label) {
-                                          case 0:
-                                              _b = (_a = Array).from;
-                                              return [4 /*yield*/, landmarkTensor.data()];
-                                          case 1:
-                                              landmarksArray = _b.apply(_a, [_c.sent()]);
-                                              xCoords = landmarksArray.filter(function (_, i) { return isEven(i); });
-                                              yCoords = landmarksArray.filter(function (_, i) { return !isEven(i); });
-                                              return [2 /*return*/, new FaceLandmarks68(Array(68).fill(0).map(function (_, i) { return new Point(xCoords[i], yCoords[i]); }), {
-                                                      height: netInput.getInputHeight(batchIdx),
-                                                      width: netInput.getInputWidth(batchIdx),
-                                                  })];
-                                      }
-                                  });
-                              }); }))];
-                      case 2:
-                          landmarksForBatch = _a.sent();
-                          landmarkTensors.forEach(function (t) { return t.dispose(); });
-                          return [2 /*return*/, netInput.isBatchInput
-                                  ? landmarksForBatch
-                                  : landmarksForBatch[0]];
-                  }
-              });
-          });
-      };
-      FaceLandmark68NetBase.prototype.getClassifierChannelsOut = function () {
-          return 136;
-      };
-      return FaceLandmark68NetBase;
-  }(FaceProcessor));
-
-  var FaceLandmark68Net = /** @class */ (function (_super) {
-      __extends(FaceLandmark68Net, _super);
-      function FaceLandmark68Net(faceFeatureExtractor) {
-          if (faceFeatureExtractor === void 0) { faceFeatureExtractor = new FaceFeatureExtractor(); }
-          return _super.call(this, 'FaceLandmark68Net', faceFeatureExtractor) || this;
       }
-      FaceLandmark68Net.prototype.getDefaultModelName = function () {
+      forwardInput(input) {
+          return Ze(() => {
+              const out = this.runNet(input);
+              return this.postProcess(out, input.inputSize, input.inputDimensions.map(([height, width]) => ({ height, width })));
+          });
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      async detectLandmarks(input) {
+          const netInput = await toNetInput(input);
+          const landmarkTensors = Ze(() => fr(this.forwardInput(netInput)));
+          const landmarksForBatch = await Promise.all(landmarkTensors.map(async (landmarkTensor, batchIdx) => {
+              const landmarksArray = Array.from(await landmarkTensor.data());
+              const xCoords = landmarksArray.filter((_, i) => isEven(i));
+              const yCoords = landmarksArray.filter((_, i) => !isEven(i));
+              return new FaceLandmarks68(Array(68)
+                  .fill(0)
+                  .map((_, i) => new Point(xCoords[i], yCoords[i])), {
+                  height: netInput.getInputHeight(batchIdx),
+                  width: netInput.getInputWidth(batchIdx),
+              });
+          }));
+          landmarkTensors.forEach(t => {
+              t.dispose();
+          });
+          return netInput.isBatchInput ? landmarksForBatch : landmarksForBatch[0];
+      }
+      getClassifierChannelsOut() {
+          return 136;
+      }
+  }
+
+  class FaceLandmark68Net extends FaceLandmark68NetBase {
+      constructor(faceFeatureExtractor = new FaceFeatureExtractor()) {
+          super('FaceLandmark68Net', faceFeatureExtractor);
+      }
+      getDefaultModelName() {
           return 'face_landmark_68_model';
-      };
-      FaceLandmark68Net.prototype.getClassifierChannelsIn = function () {
+      }
+      getClassifierChannelsIn() {
           return 256;
-      };
-      return FaceLandmark68Net;
-  }(FaceLandmark68NetBase));
+      }
+  }
 
   function extractParamsFromWeigthMapTiny(weightMap) {
-      var paramMappings = [];
-      var extractDenseBlock3Params = loadParamsFactory$1(weightMap, paramMappings).extractDenseBlock3Params;
-      var params = {
+      const paramMappings = [];
+      const { extractDenseBlock3Params } = loadParamsFactory$1(weightMap, paramMappings);
+      const params = {
           dense0: extractDenseBlock3Params('dense0', true),
           dense1: extractDenseBlock3Params('dense1'),
-          dense2: extractDenseBlock3Params('dense2')
+          dense2: extractDenseBlock3Params('dense2'),
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   function extractParamsTiny(weights) {
-      var paramMappings = [];
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var extractDenseBlock3Params = extractorsFactory$9(extractWeights, paramMappings).extractDenseBlock3Params;
-      var dense0 = extractDenseBlock3Params(3, 32, 'dense0', true);
-      var dense1 = extractDenseBlock3Params(32, 64, 'dense1');
-      var dense2 = extractDenseBlock3Params(64, 128, 'dense2');
+      const paramMappings = [];
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const { extractDenseBlock3Params } = extractorsFactory$9(extractWeights, paramMappings);
+      const dense0 = extractDenseBlock3Params(3, 32, 'dense0', true);
+      const dense1 = extractDenseBlock3Params(32, 64, 'dense1');
+      const dense2 = extractDenseBlock3Params(64, 128, 'dense2');
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
       return {
-          paramMappings: paramMappings,
-          params: { dense0: dense0, dense1: dense1, dense2: dense2 }
+          paramMappings,
+          params: { dense0, dense1, dense2 },
       };
   }
 
-  var TinyFaceFeatureExtractor = /** @class */ (function (_super) {
-      __extends(TinyFaceFeatureExtractor, _super);
-      function TinyFaceFeatureExtractor() {
-          return _super.call(this, 'TinyFaceFeatureExtractor') || this;
+  class TinyFaceFeatureExtractor extends NeuralNetwork {
+      constructor() {
+          super('TinyFaceFeatureExtractor');
       }
-      TinyFaceFeatureExtractor.prototype.forwardInput = function (input) {
-          var params = this.params;
+      forwardInput(input) {
+          const { params } = this;
           if (!params) {
               throw new Error('TinyFaceFeatureExtractor - load model before inference');
           }
-          return Ze(function () {
-              var batchTensor = input.toBatchTensor(112, true);
-              var meanRgb = [122.782, 117.001, 104.298];
-              var normalized = normalize$1(batchTensor, meanRgb).div(On(255));
-              var out = denseBlock3(normalized, params.dense0, true);
+          return Ze(() => {
+              const batchTensor = input.toBatchTensor(112, true);
+              const meanRgb = [122.782, 117.001, 104.298];
+              const normalized = normalize$1(batchTensor, meanRgb).div(On(255));
+              let out = denseBlock3(normalized, params.dense0, true);
               out = denseBlock3(out, params.dense1);
               out = denseBlock3(out, params.dense2);
               out = Ol(out, [14, 14], [2, 2], 'valid');
               return out;
           });
-      };
-      TinyFaceFeatureExtractor.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      TinyFaceFeatureExtractor.prototype.getDefaultModelName = function () {
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      getDefaultModelName() {
           return 'face_feature_extractor_tiny_model';
-      };
-      TinyFaceFeatureExtractor.prototype.extractParamsFromWeigthMap = function (weightMap) {
+      }
+      extractParamsFromWeigthMap(weightMap) {
           return extractParamsFromWeigthMapTiny(weightMap);
-      };
-      TinyFaceFeatureExtractor.prototype.extractParams = function (weights) {
+      }
+      extractParams(weights) {
           return extractParamsTiny(weights);
-      };
-      return TinyFaceFeatureExtractor;
-  }(NeuralNetwork));
-
-  var FaceLandmark68TinyNet = /** @class */ (function (_super) {
-      __extends(FaceLandmark68TinyNet, _super);
-      function FaceLandmark68TinyNet(faceFeatureExtractor) {
-          if (faceFeatureExtractor === void 0) { faceFeatureExtractor = new TinyFaceFeatureExtractor(); }
-          return _super.call(this, 'FaceLandmark68TinyNet', faceFeatureExtractor) || this;
       }
-      FaceLandmark68TinyNet.prototype.getDefaultModelName = function () {
+  }
+
+  class FaceLandmark68TinyNet extends FaceLandmark68NetBase {
+      constructor(faceFeatureExtractor = new TinyFaceFeatureExtractor()) {
+          super('FaceLandmark68TinyNet', faceFeatureExtractor);
+      }
+      getDefaultModelName() {
           return 'face_landmark_68_tiny_model';
-      };
-      FaceLandmark68TinyNet.prototype.getClassifierChannelsIn = function () {
-          return 128;
-      };
-      return FaceLandmark68TinyNet;
-  }(FaceLandmark68NetBase));
-
-  var FaceLandmarkNet = /** @class */ (function (_super) {
-      __extends(FaceLandmarkNet, _super);
-      function FaceLandmarkNet() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      return FaceLandmarkNet;
-  }(FaceLandmark68Net));
+      getClassifierChannelsIn() {
+          return 128;
+      }
+  }
+
+  class FaceLandmarkNet extends FaceLandmark68Net {
+  }
 
   function scale(x, params) {
       return Or(To(x, params.weights), params.biases);
   }
 
-  function convLayer(x, params, strides, withRelu, padding) {
-      if (padding === void 0) { padding = 'same'; }
-      var _a = params.conv, filters = _a.filters, bias = _a.bias;
-      var out = dl(x, filters, strides, padding);
+  function convLayer(x, params, strides, withRelu, padding = 'same') {
+      const { filters, bias } = params.conv;
+      let out = dl(x, filters, strides, padding);
       out = Or(out, bias);
       out = scale(out, params.scale);
       return withRelu ? ah(out) : out;
@@ -3389,180 +2779,179 @@
 
   function extractorsFactory$7(extractWeights, paramMappings) {
       function extractFilterValues(numFilterValues, numFilters, filterSize) {
-          var weights = extractWeights(numFilterValues);
-          var depth = weights.length / (numFilters * filterSize * filterSize);
+          const weights = extractWeights(numFilterValues);
+          const depth = weights.length / (numFilters * filterSize * filterSize);
           if (isFloat(depth)) {
-              throw new Error("depth has to be an integer: " + depth + ", weights.length: " + weights.length + ", numFilters: " + numFilters + ", filterSize: " + filterSize);
+              throw new Error(`depth has to be an integer: ${depth}, weights.length: ${weights.length}, numFilters: ${numFilters}, filterSize: ${filterSize}`);
           }
-          return Ze(function () { return ua(Ln(weights, [numFilters, depth, filterSize, filterSize]), [2, 3, 1, 0]); });
+          return Ze(() => ua(Ln(weights, [numFilters, depth, filterSize, filterSize]), [2, 3, 1, 0]));
       }
       function extractConvParams(numFilterValues, numFilters, filterSize, mappedPrefix) {
-          var filters = extractFilterValues(numFilterValues, numFilters, filterSize);
-          var bias = Mn(extractWeights(numFilters));
-          paramMappings.push({ paramPath: mappedPrefix + "/filters" }, { paramPath: mappedPrefix + "/bias" });
-          return { filters: filters, bias: bias };
+          const filters = extractFilterValues(numFilterValues, numFilters, filterSize);
+          const bias = Mn(extractWeights(numFilters));
+          paramMappings.push({ paramPath: `${mappedPrefix}/filters` }, { paramPath: `${mappedPrefix}/bias` });
+          return { filters, bias };
       }
       function extractScaleLayerParams(numWeights, mappedPrefix) {
-          var weights = Mn(extractWeights(numWeights));
-          var biases = Mn(extractWeights(numWeights));
-          paramMappings.push({ paramPath: mappedPrefix + "/weights" }, { paramPath: mappedPrefix + "/biases" });
+          const weights = Mn(extractWeights(numWeights));
+          const biases = Mn(extractWeights(numWeights));
+          paramMappings.push({ paramPath: `${mappedPrefix}/weights` }, { paramPath: `${mappedPrefix}/biases` });
           return {
-              weights: weights,
-              biases: biases
+              weights,
+              biases,
           };
       }
       function extractConvLayerParams(numFilterValues, numFilters, filterSize, mappedPrefix) {
-          var conv = extractConvParams(numFilterValues, numFilters, filterSize, mappedPrefix + "/conv");
-          var scale = extractScaleLayerParams(numFilters, mappedPrefix + "/scale");
-          return { conv: conv, scale: scale };
+          const conv = extractConvParams(numFilterValues, numFilters, filterSize, `${mappedPrefix}/conv`);
+          const scale = extractScaleLayerParams(numFilters, `${mappedPrefix}/scale`);
+          return { conv, scale };
       }
-      function extractResidualLayerParams(numFilterValues, numFilters, filterSize, mappedPrefix, isDown) {
-          if (isDown === void 0) { isDown = false; }
-          var conv1 = extractConvLayerParams((isDown ? 0.5 : 1) * numFilterValues, numFilters, filterSize, mappedPrefix + "/conv1");
-          var conv2 = extractConvLayerParams(numFilterValues, numFilters, filterSize, mappedPrefix + "/conv2");
-          return { conv1: conv1, conv2: conv2 };
+      function extractResidualLayerParams(numFilterValues, numFilters, filterSize, mappedPrefix, isDown = false) {
+          const conv1 = extractConvLayerParams((isDown ? 0.5 : 1) * numFilterValues, numFilters, filterSize, `${mappedPrefix}/conv1`);
+          const conv2 = extractConvLayerParams(numFilterValues, numFilters, filterSize, `${mappedPrefix}/conv2`);
+          return { conv1, conv2 };
       }
       return {
-          extractConvLayerParams: extractConvLayerParams,
-          extractResidualLayerParams: extractResidualLayerParams
+          extractConvLayerParams,
+          extractResidualLayerParams,
       };
   }
   function extractParams$3(weights) {
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var paramMappings = [];
-      var _b = extractorsFactory$7(extractWeights, paramMappings), extractConvLayerParams = _b.extractConvLayerParams, extractResidualLayerParams = _b.extractResidualLayerParams;
-      var conv32_down = extractConvLayerParams(4704, 32, 7, 'conv32_down');
-      var conv32_1 = extractResidualLayerParams(9216, 32, 3, 'conv32_1');
-      var conv32_2 = extractResidualLayerParams(9216, 32, 3, 'conv32_2');
-      var conv32_3 = extractResidualLayerParams(9216, 32, 3, 'conv32_3');
-      var conv64_down = extractResidualLayerParams(36864, 64, 3, 'conv64_down', true);
-      var conv64_1 = extractResidualLayerParams(36864, 64, 3, 'conv64_1');
-      var conv64_2 = extractResidualLayerParams(36864, 64, 3, 'conv64_2');
-      var conv64_3 = extractResidualLayerParams(36864, 64, 3, 'conv64_3');
-      var conv128_down = extractResidualLayerParams(147456, 128, 3, 'conv128_down', true);
-      var conv128_1 = extractResidualLayerParams(147456, 128, 3, 'conv128_1');
-      var conv128_2 = extractResidualLayerParams(147456, 128, 3, 'conv128_2');
-      var conv256_down = extractResidualLayerParams(589824, 256, 3, 'conv256_down', true);
-      var conv256_1 = extractResidualLayerParams(589824, 256, 3, 'conv256_1');
-      var conv256_2 = extractResidualLayerParams(589824, 256, 3, 'conv256_2');
-      var conv256_down_out = extractResidualLayerParams(589824, 256, 3, 'conv256_down_out');
-      var fc = Ze(function () { return ua(Bn(extractWeights(256 * 128), [128, 256]), [1, 0]); });
-      paramMappings.push({ paramPath: "fc" });
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const paramMappings = [];
+      const { extractConvLayerParams, extractResidualLayerParams } = extractorsFactory$7(extractWeights, paramMappings);
+      const conv32_down = extractConvLayerParams(4704, 32, 7, 'conv32_down');
+      const conv32_1 = extractResidualLayerParams(9216, 32, 3, 'conv32_1');
+      const conv32_2 = extractResidualLayerParams(9216, 32, 3, 'conv32_2');
+      const conv32_3 = extractResidualLayerParams(9216, 32, 3, 'conv32_3');
+      const conv64_down = extractResidualLayerParams(36864, 64, 3, 'conv64_down', true);
+      const conv64_1 = extractResidualLayerParams(36864, 64, 3, 'conv64_1');
+      const conv64_2 = extractResidualLayerParams(36864, 64, 3, 'conv64_2');
+      const conv64_3 = extractResidualLayerParams(36864, 64, 3, 'conv64_3');
+      const conv128_down = extractResidualLayerParams(147456, 128, 3, 'conv128_down', true);
+      const conv128_1 = extractResidualLayerParams(147456, 128, 3, 'conv128_1');
+      const conv128_2 = extractResidualLayerParams(147456, 128, 3, 'conv128_2');
+      const conv256_down = extractResidualLayerParams(589824, 256, 3, 'conv256_down', true);
+      const conv256_1 = extractResidualLayerParams(589824, 256, 3, 'conv256_1');
+      const conv256_2 = extractResidualLayerParams(589824, 256, 3, 'conv256_2');
+      const conv256_down_out = extractResidualLayerParams(589824, 256, 3, 'conv256_down_out');
+      const fc = Ze(() => ua(Bn(extractWeights(256 * 128), [128, 256]), [1, 0]));
+      paramMappings.push({ paramPath: `fc` });
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
-      var params = {
-          conv32_down: conv32_down,
-          conv32_1: conv32_1,
-          conv32_2: conv32_2,
-          conv32_3: conv32_3,
-          conv64_down: conv64_down,
-          conv64_1: conv64_1,
-          conv64_2: conv64_2,
-          conv64_3: conv64_3,
-          conv128_down: conv128_down,
-          conv128_1: conv128_1,
-          conv128_2: conv128_2,
-          conv256_down: conv256_down,
-          conv256_1: conv256_1,
-          conv256_2: conv256_2,
-          conv256_down_out: conv256_down_out,
-          fc: fc
+      const params = {
+          conv32_down,
+          conv32_1,
+          conv32_2,
+          conv32_3,
+          conv64_down,
+          conv64_1,
+          conv64_2,
+          conv64_3,
+          conv128_down,
+          conv128_1,
+          conv128_2,
+          conv256_down,
+          conv256_1,
+          conv256_2,
+          conv256_down_out,
+          fc,
       };
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   function extractorsFactory$6(weightMap, paramMappings) {
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
       function extractScaleLayerParams(prefix) {
-          var weights = extractWeightEntry(prefix + "/scale/weights", 1);
-          var biases = extractWeightEntry(prefix + "/scale/biases", 1);
-          return { weights: weights, biases: biases };
+          const weights = extractWeightEntry(`${prefix}/scale/weights`, 1);
+          const biases = extractWeightEntry(`${prefix}/scale/biases`, 1);
+          return { weights, biases };
       }
       function extractConvLayerParams(prefix) {
-          var filters = extractWeightEntry(prefix + "/conv/filters", 4);
-          var bias = extractWeightEntry(prefix + "/conv/bias", 1);
-          var scale = extractScaleLayerParams(prefix);
-          return { conv: { filters: filters, bias: bias }, scale: scale };
+          const filters = extractWeightEntry(`${prefix}/conv/filters`, 4);
+          const bias = extractWeightEntry(`${prefix}/conv/bias`, 1);
+          const scale = extractScaleLayerParams(prefix);
+          return { conv: { filters, bias }, scale };
       }
       function extractResidualLayerParams(prefix) {
           return {
-              conv1: extractConvLayerParams(prefix + "/conv1"),
-              conv2: extractConvLayerParams(prefix + "/conv2")
+              conv1: extractConvLayerParams(`${prefix}/conv1`),
+              conv2: extractConvLayerParams(`${prefix}/conv2`),
           };
       }
       return {
-          extractConvLayerParams: extractConvLayerParams,
-          extractResidualLayerParams: extractResidualLayerParams
+          extractConvLayerParams,
+          extractResidualLayerParams,
       };
   }
   function extractParamsFromWeigthMap$3(weightMap) {
-      var paramMappings = [];
-      var _a = extractorsFactory$6(weightMap, paramMappings), extractConvLayerParams = _a.extractConvLayerParams, extractResidualLayerParams = _a.extractResidualLayerParams;
-      var conv32_down = extractConvLayerParams('conv32_down');
-      var conv32_1 = extractResidualLayerParams('conv32_1');
-      var conv32_2 = extractResidualLayerParams('conv32_2');
-      var conv32_3 = extractResidualLayerParams('conv32_3');
-      var conv64_down = extractResidualLayerParams('conv64_down');
-      var conv64_1 = extractResidualLayerParams('conv64_1');
-      var conv64_2 = extractResidualLayerParams('conv64_2');
-      var conv64_3 = extractResidualLayerParams('conv64_3');
-      var conv128_down = extractResidualLayerParams('conv128_down');
-      var conv128_1 = extractResidualLayerParams('conv128_1');
-      var conv128_2 = extractResidualLayerParams('conv128_2');
-      var conv256_down = extractResidualLayerParams('conv256_down');
-      var conv256_1 = extractResidualLayerParams('conv256_1');
-      var conv256_2 = extractResidualLayerParams('conv256_2');
-      var conv256_down_out = extractResidualLayerParams('conv256_down_out');
-      var fc = weightMap['fc'];
+      const paramMappings = [];
+      const { extractConvLayerParams, extractResidualLayerParams } = extractorsFactory$6(weightMap, paramMappings);
+      const conv32_down = extractConvLayerParams('conv32_down');
+      const conv32_1 = extractResidualLayerParams('conv32_1');
+      const conv32_2 = extractResidualLayerParams('conv32_2');
+      const conv32_3 = extractResidualLayerParams('conv32_3');
+      const conv64_down = extractResidualLayerParams('conv64_down');
+      const conv64_1 = extractResidualLayerParams('conv64_1');
+      const conv64_2 = extractResidualLayerParams('conv64_2');
+      const conv64_3 = extractResidualLayerParams('conv64_3');
+      const conv128_down = extractResidualLayerParams('conv128_down');
+      const conv128_1 = extractResidualLayerParams('conv128_1');
+      const conv128_2 = extractResidualLayerParams('conv128_2');
+      const conv256_down = extractResidualLayerParams('conv256_down');
+      const conv256_1 = extractResidualLayerParams('conv256_1');
+      const conv256_2 = extractResidualLayerParams('conv256_2');
+      const conv256_down_out = extractResidualLayerParams('conv256_down_out');
+      const fc = weightMap.fc;
       paramMappings.push({ originalPath: 'fc', paramPath: 'fc' });
       if (!isTensor2D(fc)) {
-          throw new Error("expected weightMap[fc] to be a Tensor2D, instead have " + fc);
+          throw new Error(`expected weightMap[fc] to be a Tensor2D, instead have ${fc}`);
       }
-      var params = {
-          conv32_down: conv32_down,
-          conv32_1: conv32_1,
-          conv32_2: conv32_2,
-          conv32_3: conv32_3,
-          conv64_down: conv64_down,
-          conv64_1: conv64_1,
-          conv64_2: conv64_2,
-          conv64_3: conv64_3,
-          conv128_down: conv128_down,
-          conv128_1: conv128_1,
-          conv128_2: conv128_2,
-          conv256_down: conv256_down,
-          conv256_1: conv256_1,
-          conv256_2: conv256_2,
-          conv256_down_out: conv256_down_out,
-          fc: fc
+      const params = {
+          conv32_down,
+          conv32_1,
+          conv32_2,
+          conv32_3,
+          conv64_down,
+          conv64_1,
+          conv64_2,
+          conv64_3,
+          conv128_down,
+          conv128_1,
+          conv128_2,
+          conv256_down,
+          conv256_1,
+          conv256_2,
+          conv256_down_out,
+          fc,
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   function residual(x, params) {
-      var out = conv(x, params.conv1);
+      let out = conv(x, params.conv1);
       out = convNoRelu(out, params.conv2);
       out = Or(out, x);
       out = ah(out);
       return out;
   }
   function residualDown(x, params) {
-      var out = convDown(x, params.conv1);
+      let out = convDown(x, params.conv1);
       out = convNoRelu(out, params.conv2);
-      var pooled = Ol(x, 2, 2, 'valid');
-      var zeros = Gn(pooled.shape);
-      var isPad = pooled.shape[3] !== out.shape[3];
-      var isAdjustShape = pooled.shape[1] !== out.shape[1] || pooled.shape[2] !== out.shape[2];
+      let pooled = Ol(x, 2, 2, 'valid');
+      const zeros = Gn(pooled.shape);
+      const isPad = pooled.shape[3] !== out.shape[3];
+      const isAdjustShape = pooled.shape[1] !== out.shape[1] || pooled.shape[2] !== out.shape[2];
       if (isAdjustShape) {
-          var padShapeX = __spreadArrays(out.shape);
+          const padShapeX = [...out.shape];
           padShapeX[1] = 1;
-          var zerosW = Gn(padShapeX);
+          const zerosW = Gn(padShapeX);
           out = Yn([out, zerosW], 1);
-          var padShapeY = __spreadArrays(out.shape);
+          const padShapeY = [...out.shape];
           padShapeY[2] = 1;
-          var zerosH = Gn(padShapeY);
+          const zerosH = Gn(padShapeY);
           out = Yn([out, zerosH], 2);
       }
       pooled = isPad ? Yn([pooled, zeros], 3) : pooled;
@@ -3571,21 +2960,20 @@
       return out;
   }
 
-  var FaceRecognitionNet = /** @class */ (function (_super) {
-      __extends(FaceRecognitionNet, _super);
-      function FaceRecognitionNet() {
-          return _super.call(this, 'FaceRecognitionNet') || this;
+  class FaceRecognitionNet extends NeuralNetwork {
+      constructor() {
+          super('FaceRecognitionNet');
       }
-      FaceRecognitionNet.prototype.forwardInput = function (input) {
-          var params = this.params;
+      forwardInput(input) {
+          const { params } = this;
           if (!params) {
               throw new Error('FaceRecognitionNet - load model before inference');
           }
-          return Ze(function () {
-              var batchTensor = input.toBatchTensor(150, true).toFloat();
-              var meanRgb = [122.782, 117.001, 104.298];
-              var normalized = normalize$1(batchTensor, meanRgb).div(On(256));
-              var out = convDown(normalized, params.conv32_down);
+          return Ze(() => {
+              const batchTensor = input.toBatchTensor(150, true).toFloat();
+              const meanRgb = [122.782, 117.001, 104.298];
+              const normalized = normalize$1(batchTensor, meanRgb).div(On(256));
+              let out = convDown(normalized, params.conv32_down);
               out = _l(out, 3, 2, 'valid');
               out = residual(out, params.conv32_1);
               out = residual(out, params.conv32_2);
@@ -3601,88 +2989,67 @@
               out = residual(out, params.conv256_1);
               out = residual(out, params.conv256_2);
               out = residualDown(out, params.conv256_down_out);
-              var globalAvg = out.mean([1, 2]);
-              var fullyConnected = El(globalAvg, params.fc);
+              const globalAvg = out.mean([1, 2]);
+              const fullyConnected = El(globalAvg, params.fc);
               return fullyConnected;
           });
-      };
-      FaceRecognitionNet.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
-              });
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      async computeFaceDescriptor(input) {
+          const netInput = await toNetInput(input);
+          const faceDescriptorTensors = Ze(() => fr(this.forwardInput(netInput)));
+          const faceDescriptorsForBatch = (await Promise.all(faceDescriptorTensors.map(t => t.data())));
+          faceDescriptorTensors.forEach(t => {
+              t.dispose();
           });
-      };
-      FaceRecognitionNet.prototype.computeFaceDescriptor = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var netInput, faceDescriptorTensors, faceDescriptorsForBatch;
-              var _this = this;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, toNetInput(input)];
-                      case 1:
-                          netInput = _a.sent();
-                          faceDescriptorTensors = Ze(function () { return fr(_this.forwardInput(netInput)); });
-                          return [4 /*yield*/, Promise.all(faceDescriptorTensors.map(function (t) { return t.data(); }))];
-                      case 2:
-                          faceDescriptorsForBatch = _a.sent();
-                          faceDescriptorTensors.forEach(function (t) { return t.dispose(); });
-                          return [2 /*return*/, netInput.isBatchInput
-                                  ? faceDescriptorsForBatch
-                                  : faceDescriptorsForBatch[0]];
-                  }
-              });
-          });
-      };
-      FaceRecognitionNet.prototype.getDefaultModelName = function () {
+          return netInput.isBatchInput ? faceDescriptorsForBatch : faceDescriptorsForBatch[0];
+      }
+      getDefaultModelName() {
           return 'face_recognition_model';
-      };
-      FaceRecognitionNet.prototype.extractParamsFromWeigthMap = function (weightMap) {
+      }
+      extractParamsFromWeigthMap(weightMap) {
           return extractParamsFromWeigthMap$3(weightMap);
-      };
-      FaceRecognitionNet.prototype.extractParams = function (weights) {
+      }
+      extractParams(weights) {
           return extractParams$3(weights);
-      };
-      return FaceRecognitionNet;
-  }(NeuralNetwork));
+      }
+  }
 
   function createFaceRecognitionNet(weights) {
-      var net = new FaceRecognitionNet();
+      const net = new FaceRecognitionNet();
       net.extractWeights(weights);
       return net;
   }
 
-  function extendWithFaceDescriptor(sourceObj, descriptor) {
-      var extension = { descriptor: descriptor };
+  function isWithAge(obj) {
+      return !!(obj && typeof obj === 'object' && typeof obj.age === 'number');
+  }
+  function extendWithAge(sourceObj, age) {
+      const extension = { age };
       return Object.assign({}, sourceObj, extension);
   }
 
-  function isWithAge(obj) {
-      return typeof obj['age'] === 'number';
-  }
-  function extendWithAge(sourceObj, age) {
-      var extension = { age: age };
+  function extendWithFaceDescriptor(sourceObj, descriptor) {
+      const extension = { descriptor };
       return Object.assign({}, sourceObj, extension);
   }
 
   function isWithGender(obj) {
-      return (obj['gender'] === exports.Gender.MALE || obj['gender'] === exports.Gender.FEMALE)
-          && isValidProbablitiy(obj['genderProbability']);
+      const typedObj = obj;
+      return !!(obj &&
+          typeof obj === 'object' &&
+          (typedObj.gender === exports.Gender.MALE || typedObj.gender === exports.Gender.FEMALE) &&
+          isValidProbablitiy(typedObj.genderProbability));
   }
   function extendWithGender(sourceObj, gender, genderProbability) {
-      var extension = { gender: gender, genderProbability: genderProbability };
+      const extension = { gender, genderProbability };
       return Object.assign({}, sourceObj, extension);
   }
 
-  var MtcnnOptions = /** @class */ (function () {
-      function MtcnnOptions(_a) {
-          var _b = _a === void 0 ? {} : _a, minFaceSize = _b.minFaceSize, scaleFactor = _b.scaleFactor, maxNumScales = _b.maxNumScales, scoreThresholds = _b.scoreThresholds, scaleSteps = _b.scaleSteps;
+  class MtcnnOptions {
+      constructor({ minFaceSize, scaleFactor, maxNumScales, scoreThresholds, scaleSteps, } = {}) {
           this._name = 'MtcnnOptions';
           this._minFaceSize = minFaceSize || 20;
           this._scaleFactor = scaleFactor || 0.709;
@@ -3690,235 +3057,224 @@
           this._scoreThresholds = scoreThresholds || [0.6, 0.7, 0.7];
           this._scaleSteps = scaleSteps;
           if (typeof this._minFaceSize !== 'number' || this._minFaceSize < 0) {
-              throw new Error(this._name + " - expected minFaceSize to be a number > 0");
+              throw new Error(`${this._name} - expected minFaceSize to be a number > 0`);
           }
           if (typeof this._scaleFactor !== 'number' || this._scaleFactor <= 0 || this._scaleFactor >= 1) {
-              throw new Error(this._name + " - expected scaleFactor to be a number between 0 and 1");
+              throw new Error(`${this._name} - expected scaleFactor to be a number between 0 and 1`);
           }
           if (typeof this._maxNumScales !== 'number' || this._maxNumScales < 0) {
-              throw new Error(this._name + " - expected maxNumScales to be a number > 0");
+              throw new Error(`${this._name} - expected maxNumScales to be a number > 0`);
           }
-          if (!Array.isArray(this._scoreThresholds)
-              || this._scoreThresholds.length !== 3
-              || this._scoreThresholds.some(function (th) { return typeof th !== 'number'; })) {
-              throw new Error(this._name + " - expected scoreThresholds to be an array of numbers of length 3");
+          if (!Array.isArray(this._scoreThresholds) ||
+              this._scoreThresholds.length !== 3 ||
+              this._scoreThresholds.some(th => typeof th !== 'number')) {
+              throw new Error(`${this._name} - expected scoreThresholds to be an array of numbers of length 3`);
           }
-          if (this._scaleSteps
-              && (!Array.isArray(this._scaleSteps) || this._scaleSteps.some(function (th) { return typeof th !== 'number'; }))) {
-              throw new Error(this._name + " - expected scaleSteps to be an array of numbers");
+          if (this._scaleSteps &&
+              (!Array.isArray(this._scaleSteps) || this._scaleSteps.some(th => typeof th !== 'number'))) {
+              throw new Error(`${this._name} - expected scaleSteps to be an array of numbers`);
           }
       }
-      Object.defineProperty(MtcnnOptions.prototype, "minFaceSize", {
-          get: function () { return this._minFaceSize; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(MtcnnOptions.prototype, "scaleFactor", {
-          get: function () { return this._scaleFactor; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(MtcnnOptions.prototype, "maxNumScales", {
-          get: function () { return this._maxNumScales; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(MtcnnOptions.prototype, "scoreThresholds", {
-          get: function () { return this._scoreThresholds; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(MtcnnOptions.prototype, "scaleSteps", {
-          get: function () { return this._scaleSteps; },
-          enumerable: false,
-          configurable: true
-      });
-      return MtcnnOptions;
-  }());
+      get minFaceSize() {
+          return this._minFaceSize;
+      }
+      get scaleFactor() {
+          return this._scaleFactor;
+      }
+      get maxNumScales() {
+          return this._maxNumScales;
+      }
+      get scoreThresholds() {
+          return this._scoreThresholds;
+      }
+      get scaleSteps() {
+          return this._scaleSteps;
+      }
+  }
 
   function extractorsFactory$5(extractWeights, paramMappings) {
       function extractDepthwiseConvParams(numChannels, mappedPrefix) {
-          var filters = Ln(extractWeights(3 * 3 * numChannels), [3, 3, numChannels, 1]);
-          var batch_norm_scale = Mn(extractWeights(numChannels));
-          var batch_norm_offset = Mn(extractWeights(numChannels));
-          var batch_norm_mean = Mn(extractWeights(numChannels));
-          var batch_norm_variance = Mn(extractWeights(numChannels));
-          paramMappings.push({ paramPath: mappedPrefix + "/filters" }, { paramPath: mappedPrefix + "/batch_norm_scale" }, { paramPath: mappedPrefix + "/batch_norm_offset" }, { paramPath: mappedPrefix + "/batch_norm_mean" }, { paramPath: mappedPrefix + "/batch_norm_variance" });
+          const filters = Ln(extractWeights(3 * 3 * numChannels), [3, 3, numChannels, 1]);
+          const batch_norm_scale = Mn(extractWeights(numChannels));
+          const batch_norm_offset = Mn(extractWeights(numChannels));
+          const batch_norm_mean = Mn(extractWeights(numChannels));
+          const batch_norm_variance = Mn(extractWeights(numChannels));
+          paramMappings.push({ paramPath: `${mappedPrefix}/filters` }, { paramPath: `${mappedPrefix}/batch_norm_scale` }, { paramPath: `${mappedPrefix}/batch_norm_offset` }, { paramPath: `${mappedPrefix}/batch_norm_mean` }, { paramPath: `${mappedPrefix}/batch_norm_variance` });
           return {
-              filters: filters,
-              batch_norm_scale: batch_norm_scale,
-              batch_norm_offset: batch_norm_offset,
-              batch_norm_mean: batch_norm_mean,
-              batch_norm_variance: batch_norm_variance
+              filters,
+              batch_norm_scale,
+              batch_norm_offset,
+              batch_norm_mean,
+              batch_norm_variance,
           };
       }
       function extractConvParams(channelsIn, channelsOut, filterSize, mappedPrefix, isPointwiseConv) {
-          var filters = Ln(extractWeights(channelsIn * channelsOut * filterSize * filterSize), [filterSize, filterSize, channelsIn, channelsOut]);
-          var bias = Mn(extractWeights(channelsOut));
-          paramMappings.push({ paramPath: mappedPrefix + "/filters" }, { paramPath: mappedPrefix + "/" + (isPointwiseConv ? 'batch_norm_offset' : 'bias') });
-          return { filters: filters, bias: bias };
+          const filters = Ln(extractWeights(channelsIn * channelsOut * filterSize * filterSize), [filterSize, filterSize, channelsIn, channelsOut]);
+          const bias = Mn(extractWeights(channelsOut));
+          paramMappings.push({ paramPath: `${mappedPrefix}/filters` }, { paramPath: `${mappedPrefix}/${isPointwiseConv ? 'batch_norm_offset' : 'bias'}` });
+          return { filters, bias };
       }
       function extractPointwiseConvParams(channelsIn, channelsOut, filterSize, mappedPrefix) {
-          var _a = extractConvParams(channelsIn, channelsOut, filterSize, mappedPrefix, true), filters = _a.filters, bias = _a.bias;
+          const { filters, bias } = extractConvParams(channelsIn, channelsOut, filterSize, mappedPrefix, true);
           return {
-              filters: filters,
-              batch_norm_offset: bias
+              filters,
+              batch_norm_offset: bias,
           };
       }
       function extractConvPairParams(channelsIn, channelsOut, mappedPrefix) {
-          var depthwise_conv = extractDepthwiseConvParams(channelsIn, mappedPrefix + "/depthwise_conv");
-          var pointwise_conv = extractPointwiseConvParams(channelsIn, channelsOut, 1, mappedPrefix + "/pointwise_conv");
-          return { depthwise_conv: depthwise_conv, pointwise_conv: pointwise_conv };
+          const depthwise_conv = extractDepthwiseConvParams(channelsIn, `${mappedPrefix}/depthwise_conv`);
+          const pointwise_conv = extractPointwiseConvParams(channelsIn, channelsOut, 1, `${mappedPrefix}/pointwise_conv`);
+          return { depthwise_conv, pointwise_conv };
       }
       function extractMobilenetV1Params() {
-          var conv_0 = extractPointwiseConvParams(3, 32, 3, 'mobilenetv1/conv_0');
-          var conv_1 = extractConvPairParams(32, 64, 'mobilenetv1/conv_1');
-          var conv_2 = extractConvPairParams(64, 128, 'mobilenetv1/conv_2');
-          var conv_3 = extractConvPairParams(128, 128, 'mobilenetv1/conv_3');
-          var conv_4 = extractConvPairParams(128, 256, 'mobilenetv1/conv_4');
-          var conv_5 = extractConvPairParams(256, 256, 'mobilenetv1/conv_5');
-          var conv_6 = extractConvPairParams(256, 512, 'mobilenetv1/conv_6');
-          var conv_7 = extractConvPairParams(512, 512, 'mobilenetv1/conv_7');
-          var conv_8 = extractConvPairParams(512, 512, 'mobilenetv1/conv_8');
-          var conv_9 = extractConvPairParams(512, 512, 'mobilenetv1/conv_9');
-          var conv_10 = extractConvPairParams(512, 512, 'mobilenetv1/conv_10');
-          var conv_11 = extractConvPairParams(512, 512, 'mobilenetv1/conv_11');
-          var conv_12 = extractConvPairParams(512, 1024, 'mobilenetv1/conv_12');
-          var conv_13 = extractConvPairParams(1024, 1024, 'mobilenetv1/conv_13');
+          const conv_0 = extractPointwiseConvParams(3, 32, 3, 'mobilenetv1/conv_0');
+          const conv_1 = extractConvPairParams(32, 64, 'mobilenetv1/conv_1');
+          const conv_2 = extractConvPairParams(64, 128, 'mobilenetv1/conv_2');
+          const conv_3 = extractConvPairParams(128, 128, 'mobilenetv1/conv_3');
+          const conv_4 = extractConvPairParams(128, 256, 'mobilenetv1/conv_4');
+          const conv_5 = extractConvPairParams(256, 256, 'mobilenetv1/conv_5');
+          const conv_6 = extractConvPairParams(256, 512, 'mobilenetv1/conv_6');
+          const conv_7 = extractConvPairParams(512, 512, 'mobilenetv1/conv_7');
+          const conv_8 = extractConvPairParams(512, 512, 'mobilenetv1/conv_8');
+          const conv_9 = extractConvPairParams(512, 512, 'mobilenetv1/conv_9');
+          const conv_10 = extractConvPairParams(512, 512, 'mobilenetv1/conv_10');
+          const conv_11 = extractConvPairParams(512, 512, 'mobilenetv1/conv_11');
+          const conv_12 = extractConvPairParams(512, 1024, 'mobilenetv1/conv_12');
+          const conv_13 = extractConvPairParams(1024, 1024, 'mobilenetv1/conv_13');
           return {
-              conv_0: conv_0,
-              conv_1: conv_1,
-              conv_2: conv_2,
-              conv_3: conv_3,
-              conv_4: conv_4,
-              conv_5: conv_5,
-              conv_6: conv_6,
-              conv_7: conv_7,
-              conv_8: conv_8,
-              conv_9: conv_9,
-              conv_10: conv_10,
-              conv_11: conv_11,
-              conv_12: conv_12,
-              conv_13: conv_13
+              conv_0,
+              conv_1,
+              conv_2,
+              conv_3,
+              conv_4,
+              conv_5,
+              conv_6,
+              conv_7,
+              conv_8,
+              conv_9,
+              conv_10,
+              conv_11,
+              conv_12,
+              conv_13,
           };
       }
       function extractPredictionLayerParams() {
-          var conv_0 = extractPointwiseConvParams(1024, 256, 1, 'prediction_layer/conv_0');
-          var conv_1 = extractPointwiseConvParams(256, 512, 3, 'prediction_layer/conv_1');
-          var conv_2 = extractPointwiseConvParams(512, 128, 1, 'prediction_layer/conv_2');
-          var conv_3 = extractPointwiseConvParams(128, 256, 3, 'prediction_layer/conv_3');
-          var conv_4 = extractPointwiseConvParams(256, 128, 1, 'prediction_layer/conv_4');
-          var conv_5 = extractPointwiseConvParams(128, 256, 3, 'prediction_layer/conv_5');
-          var conv_6 = extractPointwiseConvParams(256, 64, 1, 'prediction_layer/conv_6');
-          var conv_7 = extractPointwiseConvParams(64, 128, 3, 'prediction_layer/conv_7');
-          var box_encoding_0_predictor = extractConvParams(512, 12, 1, 'prediction_layer/box_predictor_0/box_encoding_predictor');
-          var class_predictor_0 = extractConvParams(512, 9, 1, 'prediction_layer/box_predictor_0/class_predictor');
-          var box_encoding_1_predictor = extractConvParams(1024, 24, 1, 'prediction_layer/box_predictor_1/box_encoding_predictor');
-          var class_predictor_1 = extractConvParams(1024, 18, 1, 'prediction_layer/box_predictor_1/class_predictor');
-          var box_encoding_2_predictor = extractConvParams(512, 24, 1, 'prediction_layer/box_predictor_2/box_encoding_predictor');
-          var class_predictor_2 = extractConvParams(512, 18, 1, 'prediction_layer/box_predictor_2/class_predictor');
-          var box_encoding_3_predictor = extractConvParams(256, 24, 1, 'prediction_layer/box_predictor_3/box_encoding_predictor');
-          var class_predictor_3 = extractConvParams(256, 18, 1, 'prediction_layer/box_predictor_3/class_predictor');
-          var box_encoding_4_predictor = extractConvParams(256, 24, 1, 'prediction_layer/box_predictor_4/box_encoding_predictor');
-          var class_predictor_4 = extractConvParams(256, 18, 1, 'prediction_layer/box_predictor_4/class_predictor');
-          var box_encoding_5_predictor = extractConvParams(128, 24, 1, 'prediction_layer/box_predictor_5/box_encoding_predictor');
-          var class_predictor_5 = extractConvParams(128, 18, 1, 'prediction_layer/box_predictor_5/class_predictor');
-          var box_predictor_0 = {
+          const conv_0 = extractPointwiseConvParams(1024, 256, 1, 'prediction_layer/conv_0');
+          const conv_1 = extractPointwiseConvParams(256, 512, 3, 'prediction_layer/conv_1');
+          const conv_2 = extractPointwiseConvParams(512, 128, 1, 'prediction_layer/conv_2');
+          const conv_3 = extractPointwiseConvParams(128, 256, 3, 'prediction_layer/conv_3');
+          const conv_4 = extractPointwiseConvParams(256, 128, 1, 'prediction_layer/conv_4');
+          const conv_5 = extractPointwiseConvParams(128, 256, 3, 'prediction_layer/conv_5');
+          const conv_6 = extractPointwiseConvParams(256, 64, 1, 'prediction_layer/conv_6');
+          const conv_7 = extractPointwiseConvParams(64, 128, 3, 'prediction_layer/conv_7');
+          const box_encoding_0_predictor = extractConvParams(512, 12, 1, 'prediction_layer/box_predictor_0/box_encoding_predictor');
+          const class_predictor_0 = extractConvParams(512, 9, 1, 'prediction_layer/box_predictor_0/class_predictor');
+          const box_encoding_1_predictor = extractConvParams(1024, 24, 1, 'prediction_layer/box_predictor_1/box_encoding_predictor');
+          const class_predictor_1 = extractConvParams(1024, 18, 1, 'prediction_layer/box_predictor_1/class_predictor');
+          const box_encoding_2_predictor = extractConvParams(512, 24, 1, 'prediction_layer/box_predictor_2/box_encoding_predictor');
+          const class_predictor_2 = extractConvParams(512, 18, 1, 'prediction_layer/box_predictor_2/class_predictor');
+          const box_encoding_3_predictor = extractConvParams(256, 24, 1, 'prediction_layer/box_predictor_3/box_encoding_predictor');
+          const class_predictor_3 = extractConvParams(256, 18, 1, 'prediction_layer/box_predictor_3/class_predictor');
+          const box_encoding_4_predictor = extractConvParams(256, 24, 1, 'prediction_layer/box_predictor_4/box_encoding_predictor');
+          const class_predictor_4 = extractConvParams(256, 18, 1, 'prediction_layer/box_predictor_4/class_predictor');
+          const box_encoding_5_predictor = extractConvParams(128, 24, 1, 'prediction_layer/box_predictor_5/box_encoding_predictor');
+          const class_predictor_5 = extractConvParams(128, 18, 1, 'prediction_layer/box_predictor_5/class_predictor');
+          const box_predictor_0 = {
               box_encoding_predictor: box_encoding_0_predictor,
-              class_predictor: class_predictor_0
+              class_predictor: class_predictor_0,
           };
-          var box_predictor_1 = {
+          const box_predictor_1 = {
               box_encoding_predictor: box_encoding_1_predictor,
-              class_predictor: class_predictor_1
+              class_predictor: class_predictor_1,
           };
-          var box_predictor_2 = {
+          const box_predictor_2 = {
               box_encoding_predictor: box_encoding_2_predictor,
-              class_predictor: class_predictor_2
+              class_predictor: class_predictor_2,
           };
-          var box_predictor_3 = {
+          const box_predictor_3 = {
               box_encoding_predictor: box_encoding_3_predictor,
-              class_predictor: class_predictor_3
+              class_predictor: class_predictor_3,
           };
-          var box_predictor_4 = {
+          const box_predictor_4 = {
               box_encoding_predictor: box_encoding_4_predictor,
-              class_predictor: class_predictor_4
+              class_predictor: class_predictor_4,
           };
-          var box_predictor_5 = {
+          const box_predictor_5 = {
               box_encoding_predictor: box_encoding_5_predictor,
-              class_predictor: class_predictor_5
+              class_predictor: class_predictor_5,
           };
           return {
-              conv_0: conv_0,
-              conv_1: conv_1,
-              conv_2: conv_2,
-              conv_3: conv_3,
-              conv_4: conv_4,
-              conv_5: conv_5,
-              conv_6: conv_6,
-              conv_7: conv_7,
-              box_predictor_0: box_predictor_0,
-              box_predictor_1: box_predictor_1,
-              box_predictor_2: box_predictor_2,
-              box_predictor_3: box_predictor_3,
-              box_predictor_4: box_predictor_4,
-              box_predictor_5: box_predictor_5
+              conv_0,
+              conv_1,
+              conv_2,
+              conv_3,
+              conv_4,
+              conv_5,
+              conv_6,
+              conv_7,
+              box_predictor_0,
+              box_predictor_1,
+              box_predictor_2,
+              box_predictor_3,
+              box_predictor_4,
+              box_predictor_5,
           };
       }
       return {
-          extractMobilenetV1Params: extractMobilenetV1Params,
-          extractPredictionLayerParams: extractPredictionLayerParams
+          extractMobilenetV1Params,
+          extractPredictionLayerParams,
       };
   }
   function extractParams$2(weights) {
-      var paramMappings = [];
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var _b = extractorsFactory$5(extractWeights, paramMappings), extractMobilenetV1Params = _b.extractMobilenetV1Params, extractPredictionLayerParams = _b.extractPredictionLayerParams;
-      var mobilenetv1 = extractMobilenetV1Params();
-      var prediction_layer = extractPredictionLayerParams();
-      var extra_dim = Pn(extractWeights(5118 * 4), [1, 5118, 4]);
-      var output_layer = {
-          extra_dim: extra_dim
+      const paramMappings = [];
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const { extractMobilenetV1Params, extractPredictionLayerParams } = extractorsFactory$5(extractWeights, paramMappings);
+      const mobilenetv1 = extractMobilenetV1Params();
+      const prediction_layer = extractPredictionLayerParams();
+      const extra_dim = Pn(extractWeights(5118 * 4), [1, 5118, 4]);
+      const output_layer = {
+          extra_dim,
       };
       paramMappings.push({ paramPath: 'output_layer/extra_dim' });
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
       return {
           params: {
-              mobilenetv1: mobilenetv1,
-              prediction_layer: prediction_layer,
-              output_layer: output_layer
+              mobilenetv1,
+              prediction_layer,
+              output_layer,
           },
-          paramMappings: paramMappings
+          paramMappings,
       };
   }
 
   function extractorsFactory$4(weightMap, paramMappings) {
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
       function extractPointwiseConvParams(prefix, idx, mappedPrefix) {
-          var filters = extractWeightEntry(prefix + "/Conv2d_" + idx + "_pointwise/weights", 4, mappedPrefix + "/filters");
-          var batch_norm_offset = extractWeightEntry(prefix + "/Conv2d_" + idx + "_pointwise/convolution_bn_offset", 1, mappedPrefix + "/batch_norm_offset");
-          return { filters: filters, batch_norm_offset: batch_norm_offset };
+          const filters = extractWeightEntry(`${prefix}/Conv2d_${idx}_pointwise/weights`, 4, `${mappedPrefix}/filters`);
+          const batch_norm_offset = extractWeightEntry(`${prefix}/Conv2d_${idx}_pointwise/convolution_bn_offset`, 1, `${mappedPrefix}/batch_norm_offset`);
+          return { filters, batch_norm_offset };
       }
       function extractConvPairParams(idx) {
-          var mappedPrefix = "mobilenetv1/conv_" + idx;
-          var prefixDepthwiseConv = "MobilenetV1/Conv2d_" + idx + "_depthwise";
-          var mappedPrefixDepthwiseConv = mappedPrefix + "/depthwise_conv";
-          var mappedPrefixPointwiseConv = mappedPrefix + "/pointwise_conv";
-          var filters = extractWeightEntry(prefixDepthwiseConv + "/depthwise_weights", 4, mappedPrefixDepthwiseConv + "/filters");
-          var batch_norm_scale = extractWeightEntry(prefixDepthwiseConv + "/BatchNorm/gamma", 1, mappedPrefixDepthwiseConv + "/batch_norm_scale");
-          var batch_norm_offset = extractWeightEntry(prefixDepthwiseConv + "/BatchNorm/beta", 1, mappedPrefixDepthwiseConv + "/batch_norm_offset");
-          var batch_norm_mean = extractWeightEntry(prefixDepthwiseConv + "/BatchNorm/moving_mean", 1, mappedPrefixDepthwiseConv + "/batch_norm_mean");
-          var batch_norm_variance = extractWeightEntry(prefixDepthwiseConv + "/BatchNorm/moving_variance", 1, mappedPrefixDepthwiseConv + "/batch_norm_variance");
+          const mappedPrefix = `mobilenetv1/conv_${idx}`;
+          const prefixDepthwiseConv = `MobilenetV1/Conv2d_${idx}_depthwise`;
+          const mappedPrefixDepthwiseConv = `${mappedPrefix}/depthwise_conv`;
+          const mappedPrefixPointwiseConv = `${mappedPrefix}/pointwise_conv`;
+          const filters = extractWeightEntry(`${prefixDepthwiseConv}/depthwise_weights`, 4, `${mappedPrefixDepthwiseConv}/filters`);
+          const batch_norm_scale = extractWeightEntry(`${prefixDepthwiseConv}/BatchNorm/gamma`, 1, `${mappedPrefixDepthwiseConv}/batch_norm_scale`);
+          const batch_norm_offset = extractWeightEntry(`${prefixDepthwiseConv}/BatchNorm/beta`, 1, `${mappedPrefixDepthwiseConv}/batch_norm_offset`);
+          const batch_norm_mean = extractWeightEntry(`${prefixDepthwiseConv}/BatchNorm/moving_mean`, 1, `${mappedPrefixDepthwiseConv}/batch_norm_mean`);
+          const batch_norm_variance = extractWeightEntry(`${prefixDepthwiseConv}/BatchNorm/moving_variance`, 1, `${mappedPrefixDepthwiseConv}/batch_norm_variance`);
           return {
               depthwise_conv: {
-                  filters: filters,
-                  batch_norm_scale: batch_norm_scale,
-                  batch_norm_offset: batch_norm_offset,
-                  batch_norm_mean: batch_norm_mean,
-                  batch_norm_variance: batch_norm_variance
+                  filters,
+                  batch_norm_scale,
+                  batch_norm_offset,
+                  batch_norm_mean,
+                  batch_norm_variance,
               },
-              pointwise_conv: extractPointwiseConvParams('MobilenetV1', idx, mappedPrefixPointwiseConv)
+              pointwise_conv: extractPointwiseConvParams('MobilenetV1', idx, mappedPrefixPointwiseConv),
           };
       }
       function extractMobilenetV1Params() {
@@ -3936,18 +3292,18 @@
               conv_10: extractConvPairParams(10),
               conv_11: extractConvPairParams(11),
               conv_12: extractConvPairParams(12),
-              conv_13: extractConvPairParams(13)
+              conv_13: extractConvPairParams(13),
           };
       }
       function extractConvParams(prefix, mappedPrefix) {
-          var filters = extractWeightEntry(prefix + "/weights", 4, mappedPrefix + "/filters");
-          var bias = extractWeightEntry(prefix + "/biases", 1, mappedPrefix + "/bias");
-          return { filters: filters, bias: bias };
+          const filters = extractWeightEntry(`${prefix}/weights`, 4, `${mappedPrefix}/filters`);
+          const bias = extractWeightEntry(`${prefix}/biases`, 1, `${mappedPrefix}/bias`);
+          return { filters, bias };
       }
       function extractBoxPredictorParams(idx) {
-          var box_encoding_predictor = extractConvParams("Prediction/BoxPredictor_" + idx + "/BoxEncodingPredictor", "prediction_layer/box_predictor_" + idx + "/box_encoding_predictor");
-          var class_predictor = extractConvParams("Prediction/BoxPredictor_" + idx + "/ClassPredictor", "prediction_layer/box_predictor_" + idx + "/class_predictor");
-          return { box_encoding_predictor: box_encoding_predictor, class_predictor: class_predictor };
+          const box_encoding_predictor = extractConvParams(`Prediction/BoxPredictor_${idx}/BoxEncodingPredictor`, `prediction_layer/box_predictor_${idx}/box_encoding_predictor`);
+          const class_predictor = extractConvParams(`Prediction/BoxPredictor_${idx}/ClassPredictor`, `prediction_layer/box_predictor_${idx}/class_predictor`);
+          return { box_encoding_predictor, class_predictor };
       }
       function extractPredictionLayerParams() {
           return {
@@ -3964,57 +3320,57 @@
               box_predictor_2: extractBoxPredictorParams(2),
               box_predictor_3: extractBoxPredictorParams(3),
               box_predictor_4: extractBoxPredictorParams(4),
-              box_predictor_5: extractBoxPredictorParams(5)
+              box_predictor_5: extractBoxPredictorParams(5),
           };
       }
       return {
-          extractMobilenetV1Params: extractMobilenetV1Params,
-          extractPredictionLayerParams: extractPredictionLayerParams
+          extractMobilenetV1Params,
+          extractPredictionLayerParams,
       };
   }
   function extractParamsFromWeigthMap$2(weightMap) {
-      var paramMappings = [];
-      var _a = extractorsFactory$4(weightMap, paramMappings), extractMobilenetV1Params = _a.extractMobilenetV1Params, extractPredictionLayerParams = _a.extractPredictionLayerParams;
-      var extra_dim = weightMap['Output/extra_dim'];
+      const paramMappings = [];
+      const { extractMobilenetV1Params, extractPredictionLayerParams } = extractorsFactory$4(weightMap, paramMappings);
+      const extra_dim = weightMap['Output/extra_dim'];
       paramMappings.push({ originalPath: 'Output/extra_dim', paramPath: 'output_layer/extra_dim' });
       if (!isTensor3D(extra_dim)) {
-          throw new Error("expected weightMap['Output/extra_dim'] to be a Tensor3D, instead have " + extra_dim);
+          throw new Error(`expected weightMap['Output/extra_dim'] to be a Tensor3D, instead have ${extra_dim}`);
       }
-      var params = {
+      const params = {
           mobilenetv1: extractMobilenetV1Params(),
           prediction_layer: extractPredictionLayerParams(),
           output_layer: {
-              extra_dim: extra_dim
-          }
+              extra_dim,
+          },
       };
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   function pointwiseConvLayer(x, params, strides) {
-      return Ze(function () {
-          var out = dl(x, params.filters, strides, 'same');
+      return Ze(() => {
+          let out = dl(x, params.filters, strides, 'same');
           out = Or(out, params.batch_norm_offset);
           return Kr(out, 0, 6);
       });
   }
 
-  var epsilon = 0.0010000000474974513;
+  const epsilon = 0.0010000000474974513;
   function depthwiseConvLayer(x, params, strides) {
-      return Ze(function () {
-          var out = ml(x, params.filters, strides, 'same');
+      return Ze(() => {
+          let out = ml(x, params.filters, strides, 'same');
           out = nc(out, params.batch_norm_mean, params.batch_norm_variance, params.batch_norm_offset, params.batch_norm_scale, epsilon);
           return Kr(out, 0, 6);
       });
   }
   function getStridesForLayerIdx(layerIdx) {
-      return [2, 4, 6, 12].some(function (idx) { return idx === layerIdx; }) ? [2, 2] : [1, 1];
+      return [2, 4, 6, 12].some(idx => idx === layerIdx) ? [2, 2] : [1, 1];
   }
   function mobileNetV1(x, params) {
-      return Ze(function () {
-          var conv11 = null;
-          var out = pointwiseConvLayer(x, params.conv_0, [2, 2]);
-          var convPairParams = [
+      return Ze(() => {
+          let conv11 = null;
+          let out = pointwiseConvLayer(x, params.conv_0, [2, 2]);
+          const convPairParams = [
               params.conv_1,
               params.conv_2,
               params.conv_3,
@@ -4027,11 +3383,11 @@
               params.conv_10,
               params.conv_11,
               params.conv_12,
-              params.conv_13
+              params.conv_13,
           ];
-          convPairParams.forEach(function (param, i) {
-              var layerIdx = i + 1;
-              var depthwiseConvStrides = getStridesForLayerIdx(layerIdx);
+          convPairParams.forEach((param, i) => {
+              const layerIdx = i + 1;
+              const depthwiseConvStrides = getStridesForLayerIdx(layerIdx);
               out = depthwiseConvLayer(out, param.depthwise_conv, depthwiseConvStrides);
               out = pointwiseConvLayer(out, param.pointwise_conv, [1, 1]);
               if (layerIdx === 11) {
@@ -4042,28 +3398,28 @@
               throw new Error('mobileNetV1 - output of conv layer 11 is null');
           }
           return {
-              out: out,
-              conv11: conv11
+              out,
+              conv11: conv11,
           };
       });
   }
 
   function nonMaxSuppression(boxes, scores, maxOutputSize, iouThreshold, scoreThreshold) {
-      var numBoxes = boxes.shape[0];
-      var outputSize = Math.min(maxOutputSize, numBoxes);
-      var candidates = scores
-          .map(function (score, boxIndex) { return ({ score: score, boxIndex: boxIndex }); })
-          .filter(function (c) { return c.score > scoreThreshold; })
-          .sort(function (c1, c2) { return c2.score - c1.score; });
-      var suppressFunc = function (x) { return x <= iouThreshold ? 1 : 0; };
-      var selected = [];
-      candidates.forEach(function (c) {
+      const numBoxes = boxes.shape[0];
+      const outputSize = Math.min(maxOutputSize, numBoxes);
+      const candidates = scores
+          .map((score, boxIndex) => ({ score, boxIndex }))
+          .filter(c => c.score > scoreThreshold)
+          .sort((c1, c2) => c2.score - c1.score);
+      const suppressFunc = (x) => (x <= iouThreshold ? 1 : 0);
+      const selected = [];
+      candidates.forEach(c => {
           if (selected.length >= outputSize) {
               return;
           }
-          var originalScore = c.score;
-          for (var j = selected.length - 1; j >= 0; --j) {
-              var iou = IOU(boxes, c.boxIndex, selected[j]);
+          const originalScore = c.score;
+          for (let j = selected.length - 1; j >= 0; --j) {
+              const iou = IOU(boxes, c.boxIndex, selected[j]);
               if (iou === 0.0) {
                   continue;
               }
@@ -4079,248 +3435,215 @@
       return selected;
   }
   function IOU(boxes, i, j) {
-      var boxesData = boxes.arraySync();
-      var yminI = Math.min(boxesData[i][0], boxesData[i][2]);
-      var xminI = Math.min(boxesData[i][1], boxesData[i][3]);
-      var ymaxI = Math.max(boxesData[i][0], boxesData[i][2]);
-      var xmaxI = Math.max(boxesData[i][1], boxesData[i][3]);
-      var yminJ = Math.min(boxesData[j][0], boxesData[j][2]);
-      var xminJ = Math.min(boxesData[j][1], boxesData[j][3]);
-      var ymaxJ = Math.max(boxesData[j][0], boxesData[j][2]);
-      var xmaxJ = Math.max(boxesData[j][1], boxesData[j][3]);
-      var areaI = (ymaxI - yminI) * (xmaxI - xminI);
-      var areaJ = (ymaxJ - yminJ) * (xmaxJ - xminJ);
+      const boxesData = boxes.arraySync();
+      const yminI = Math.min(boxesData[i][0], boxesData[i][2]);
+      const xminI = Math.min(boxesData[i][1], boxesData[i][3]);
+      const ymaxI = Math.max(boxesData[i][0], boxesData[i][2]);
+      const xmaxI = Math.max(boxesData[i][1], boxesData[i][3]);
+      const yminJ = Math.min(boxesData[j][0], boxesData[j][2]);
+      const xminJ = Math.min(boxesData[j][1], boxesData[j][3]);
+      const ymaxJ = Math.max(boxesData[j][0], boxesData[j][2]);
+      const xmaxJ = Math.max(boxesData[j][1], boxesData[j][3]);
+      const areaI = (ymaxI - yminI) * (xmaxI - xminI);
+      const areaJ = (ymaxJ - yminJ) * (xmaxJ - xminJ);
       if (areaI <= 0 || areaJ <= 0) {
           return 0.0;
       }
-      var intersectionYmin = Math.max(yminI, yminJ);
-      var intersectionXmin = Math.max(xminI, xminJ);
-      var intersectionYmax = Math.min(ymaxI, ymaxJ);
-      var intersectionXmax = Math.min(xmaxI, xmaxJ);
-      var intersectionArea = Math.max(intersectionYmax - intersectionYmin, 0.0) *
+      const intersectionYmin = Math.max(yminI, yminJ);
+      const intersectionXmin = Math.max(xminI, xminJ);
+      const intersectionYmax = Math.min(ymaxI, ymaxJ);
+      const intersectionXmax = Math.min(xmaxI, xmaxJ);
+      const intersectionArea = Math.max(intersectionYmax - intersectionYmin, 0.0) *
           Math.max(intersectionXmax - intersectionXmin, 0.0);
       return intersectionArea / (areaI + areaJ - intersectionArea);
   }
 
   function getCenterCoordinatesAndSizesLayer(x) {
-      var vec = fr(ua(x, [1, 0]));
-      var sizes = [
-          Oo(vec[2], vec[0]),
-          Oo(vec[3], vec[1])
-      ];
-      var centers = [
+      const vec = fr(ua(x, [1, 0]));
+      const sizes = [Oo(vec[2], vec[0]), Oo(vec[3], vec[1])];
+      const centers = [
           Or(vec[0], Bo(sizes[0], On(2))),
-          Or(vec[1], Bo(sizes[1], On(2)))
+          Or(vec[1], Bo(sizes[1], On(2))),
       ];
       return {
-          sizes: sizes,
-          centers: centers
+          sizes,
+          centers,
       };
   }
   function decodeBoxesLayer(x0, x1) {
-      var _a = getCenterCoordinatesAndSizesLayer(x0), sizes = _a.sizes, centers = _a.centers;
-      var vec = fr(ua(x1, [1, 0]));
-      var div0_out = Bo(To($r(Bo(vec[2], On(5))), sizes[0]), On(2));
-      var add0_out = Or(To(Bo(vec[0], On(10)), sizes[0]), centers[0]);
-      var div1_out = Bo(To($r(Bo(vec[3], On(5))), sizes[1]), On(2));
-      var add1_out = Or(To(Bo(vec[1], On(10)), sizes[1]), centers[1]);
+      const { sizes, centers } = getCenterCoordinatesAndSizesLayer(x0);
+      const vec = fr(ua(x1, [1, 0]));
+      const div0_out = Bo(To($r(Bo(vec[2], On(5))), sizes[0]), On(2));
+      const add0_out = Or(To(Bo(vec[0], On(10)), sizes[0]), centers[0]);
+      const div1_out = Bo(To($r(Bo(vec[3], On(5))), sizes[1]), On(2));
+      const add1_out = Or(To(Bo(vec[1], On(10)), sizes[1]), centers[1]);
       return ua(hr([
           Oo(add0_out, div0_out),
           Oo(add1_out, div1_out),
           Or(add0_out, div0_out),
-          Or(add1_out, div1_out)
+          Or(add1_out, div1_out),
       ]), [1, 0]);
   }
   function outputLayer(boxPredictions, classPredictions, params) {
-      return Ze(function () {
-          var batchSize = boxPredictions.shape[0];
-          var boxes = decodeBoxesLayer(ur(wc(params.extra_dim, [batchSize, 1, 1]), [-1, 4]), ur(boxPredictions, [-1, 4]));
-          boxes = ur(boxes, [batchSize, (boxes.shape[0] / batchSize), 4]);
-          var scoresAndClasses = io(Wl(classPredictions, [0, 0, 1], [-1, -1, -1]));
-          var scores = Wl(scoresAndClasses, [0, 0, 0], [-1, -1, 1]);
+      return Ze(() => {
+          const batchSize = boxPredictions.shape[0];
+          let boxes = decodeBoxesLayer(ur(wc(params.extra_dim, [batchSize, 1, 1]), [-1, 4]), ur(boxPredictions, [-1, 4]));
+          boxes = ur(boxes, [batchSize, boxes.shape[0] / batchSize, 4]);
+          const scoresAndClasses = io(Wl(classPredictions, [0, 0, 1], [-1, -1, -1]));
+          let scores = Wl(scoresAndClasses, [0, 0, 0], [-1, -1, 1]);
           scores = ur(scores, [batchSize, scores.shape[1]]);
-          var boxesByBatch = fr(boxes);
-          var scoresByBatch = fr(scores);
+          const boxesByBatch = fr(boxes);
+          const scoresByBatch = fr(scores);
           return {
               boxes: boxesByBatch,
-              scores: scoresByBatch
+              scores: scoresByBatch,
           };
       });
   }
 
   function boxPredictionLayer(x, params) {
-      return Ze(function () {
-          var batchSize = x.shape[0];
-          var boxPredictionEncoding = ur(convLayer$1(x, params.box_encoding_predictor), [batchSize, -1, 1, 4]);
-          var classPrediction = ur(convLayer$1(x, params.class_predictor), [batchSize, -1, 3]);
+      return Ze(() => {
+          const batchSize = x.shape[0];
+          const boxPredictionEncoding = ur(convLayer$1(x, params.box_encoding_predictor), [
+              batchSize,
+              -1,
+              1,
+              4,
+          ]);
+          const classPrediction = ur(convLayer$1(x, params.class_predictor), [batchSize, -1, 3]);
           return {
-              boxPredictionEncoding: boxPredictionEncoding,
-              classPrediction: classPrediction
+              boxPredictionEncoding,
+              classPrediction,
           };
       });
   }
 
   function predictionLayer(x, conv11, params) {
-      return Ze(function () {
-          var conv0 = pointwiseConvLayer(x, params.conv_0, [1, 1]);
-          var conv1 = pointwiseConvLayer(conv0, params.conv_1, [2, 2]);
-          var conv2 = pointwiseConvLayer(conv1, params.conv_2, [1, 1]);
-          var conv3 = pointwiseConvLayer(conv2, params.conv_3, [2, 2]);
-          var conv4 = pointwiseConvLayer(conv3, params.conv_4, [1, 1]);
-          var conv5 = pointwiseConvLayer(conv4, params.conv_5, [2, 2]);
-          var conv6 = pointwiseConvLayer(conv5, params.conv_6, [1, 1]);
-          var conv7 = pointwiseConvLayer(conv6, params.conv_7, [2, 2]);
-          var boxPrediction0 = boxPredictionLayer(conv11, params.box_predictor_0);
-          var boxPrediction1 = boxPredictionLayer(x, params.box_predictor_1);
-          var boxPrediction2 = boxPredictionLayer(conv1, params.box_predictor_2);
-          var boxPrediction3 = boxPredictionLayer(conv3, params.box_predictor_3);
-          var boxPrediction4 = boxPredictionLayer(conv5, params.box_predictor_4);
-          var boxPrediction5 = boxPredictionLayer(conv7, params.box_predictor_5);
-          var boxPredictions = Yn([
+      return Ze(() => {
+          const conv0 = pointwiseConvLayer(x, params.conv_0, [1, 1]);
+          const conv1 = pointwiseConvLayer(conv0, params.conv_1, [2, 2]);
+          const conv2 = pointwiseConvLayer(conv1, params.conv_2, [1, 1]);
+          const conv3 = pointwiseConvLayer(conv2, params.conv_3, [2, 2]);
+          const conv4 = pointwiseConvLayer(conv3, params.conv_4, [1, 1]);
+          const conv5 = pointwiseConvLayer(conv4, params.conv_5, [2, 2]);
+          const conv6 = pointwiseConvLayer(conv5, params.conv_6, [1, 1]);
+          const conv7 = pointwiseConvLayer(conv6, params.conv_7, [2, 2]);
+          const boxPrediction0 = boxPredictionLayer(conv11, params.box_predictor_0);
+          const boxPrediction1 = boxPredictionLayer(x, params.box_predictor_1);
+          const boxPrediction2 = boxPredictionLayer(conv1, params.box_predictor_2);
+          const boxPrediction3 = boxPredictionLayer(conv3, params.box_predictor_3);
+          const boxPrediction4 = boxPredictionLayer(conv5, params.box_predictor_4);
+          const boxPrediction5 = boxPredictionLayer(conv7, params.box_predictor_5);
+          const boxPredictions = Yn([
               boxPrediction0.boxPredictionEncoding,
               boxPrediction1.boxPredictionEncoding,
               boxPrediction2.boxPredictionEncoding,
               boxPrediction3.boxPredictionEncoding,
               boxPrediction4.boxPredictionEncoding,
-              boxPrediction5.boxPredictionEncoding
+              boxPrediction5.boxPredictionEncoding,
           ], 1);
-          var classPredictions = Yn([
+          const classPredictions = Yn([
               boxPrediction0.classPrediction,
               boxPrediction1.classPrediction,
               boxPrediction2.classPrediction,
               boxPrediction3.classPrediction,
               boxPrediction4.classPrediction,
-              boxPrediction5.classPrediction
+              boxPrediction5.classPrediction,
           ], 1);
           return {
-              boxPredictions: boxPredictions,
-              classPredictions: classPredictions
+              boxPredictions,
+              classPredictions,
           };
       });
   }
 
-  var SsdMobilenetv1Options = /** @class */ (function () {
-      function SsdMobilenetv1Options(_a) {
-          var _b = _a === void 0 ? {} : _a, minConfidence = _b.minConfidence, maxResults = _b.maxResults;
+  class SsdMobilenetv1Options {
+      constructor({ minConfidence, maxResults } = {}) {
           this._name = 'SsdMobilenetv1Options';
           this._minConfidence = minConfidence || 0.5;
           this._maxResults = maxResults || 100;
-          if (typeof this._minConfidence !== 'number' || this._minConfidence <= 0 || this._minConfidence >= 1) {
-              throw new Error(this._name + " - expected minConfidence to be a number between 0 and 1");
+          if (typeof this._minConfidence !== 'number' ||
+              this._minConfidence <= 0 ||
+              this._minConfidence >= 1) {
+              throw new Error(`${this._name} - expected minConfidence to be a number between 0 and 1`);
           }
           if (typeof this._maxResults !== 'number') {
-              throw new Error(this._name + " - expected maxResults to be a number");
+              throw new Error(`${this._name} - expected maxResults to be a number`);
           }
       }
-      Object.defineProperty(SsdMobilenetv1Options.prototype, "minConfidence", {
-          get: function () { return this._minConfidence; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(SsdMobilenetv1Options.prototype, "maxResults", {
-          get: function () { return this._maxResults; },
-          enumerable: false,
-          configurable: true
-      });
-      return SsdMobilenetv1Options;
-  }());
-
-  var SsdMobilenetv1 = /** @class */ (function (_super) {
-      __extends(SsdMobilenetv1, _super);
-      function SsdMobilenetv1() {
-          return _super.call(this, 'SsdMobilenetv1') || this;
+      get minConfidence() {
+          return this._minConfidence;
       }
-      SsdMobilenetv1.prototype.forwardInput = function (input) {
-          var params = this.params;
+      get maxResults() {
+          return this._maxResults;
+      }
+  }
+
+  class SsdMobilenetv1 extends NeuralNetwork {
+      constructor() {
+          super('SsdMobilenetv1');
+      }
+      forwardInput(input) {
+          const { params } = this;
           if (!params) {
               throw new Error('SsdMobilenetv1 - load model before inference');
           }
-          return Ze(function () {
-              var batchTensor = input.toBatchTensor(512, false).toFloat();
-              var x = Oo(To(batchTensor, On(0.007843137718737125)), On(1));
-              var features = mobileNetV1(x, params.mobilenetv1);
-              var _a = predictionLayer(features.out, features.conv11, params.prediction_layer), boxPredictions = _a.boxPredictions, classPredictions = _a.classPredictions;
+          return Ze(() => {
+              const batchTensor = input.toBatchTensor(512, false).toFloat();
+              const x = Oo(To(batchTensor, On(0.007843137718737125)), On(1));
+              const features = mobileNetV1(x, params.mobilenetv1);
+              const { boxPredictions, classPredictions } = predictionLayer(features.out, features.conv11, params.prediction_layer);
               return outputLayer(boxPredictions, classPredictions, params.output_layer);
           });
-      };
-      SsdMobilenetv1.prototype.forward = function (input) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent()])];
-                  }
+      }
+      async forward(input) {
+          return this.forwardInput(await toNetInput(input));
+      }
+      async locateFaces(input, options = {}) {
+          const { maxResults, minConfidence } = new SsdMobilenetv1Options(options);
+          const netInput = await toNetInput(input);
+          const { boxes: _boxes, scores: _scores } = this.forwardInput(netInput);
+          // TODO batches
+          const boxes = _boxes[0];
+          const scores = _scores[0];
+          for (let i = 1; i < _boxes.length; i++) {
+              _boxes[i].dispose();
+              _scores[i].dispose();
+          }
+          // TODO find a better way to filter by minConfidence
+          const scoresData = Array.from(await scores.data());
+          const iouThreshold = 0.5;
+          const indices = nonMaxSuppression(boxes, scoresData, maxResults, iouThreshold, minConfidence);
+          const reshapedDims = netInput.getReshapedInputDimensions(0);
+          const inputSize = netInput.inputSize;
+          const padX = inputSize / reshapedDims.width;
+          const padY = inputSize / reshapedDims.height;
+          const boxesData = boxes.arraySync();
+          const results = indices.map(idx => {
+              const [top, bottom] = [Math.max(0, boxesData[idx][0]), Math.min(1.0, boxesData[idx][2])].map(val => val * padY);
+              const [left, right] = [Math.max(0, boxesData[idx][1]), Math.min(1.0, boxesData[idx][3])].map(val => val * padX);
+              return new FaceDetection(scoresData[idx], new Rect(left, top, right - left, bottom - top), {
+                  height: netInput.getInputHeight(0),
+                  width: netInput.getInputWidth(0),
               });
           });
-      };
-      SsdMobilenetv1.prototype.locateFaces = function (input, options) {
-          if (options === void 0) { options = {}; }
-          return __awaiter(this, void 0, void 0, function () {
-              var _a, maxResults, minConfidence, netInput, _b, _boxes, _scores, boxes, scores, i, scoresData, _c, _d, iouThreshold, indices, reshapedDims, inputSize, padX, padY, boxesData, results;
-              return __generator(this, function (_e) {
-                  switch (_e.label) {
-                      case 0:
-                          _a = new SsdMobilenetv1Options(options), maxResults = _a.maxResults, minConfidence = _a.minConfidence;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1:
-                          netInput = _e.sent();
-                          _b = this.forwardInput(netInput), _boxes = _b.boxes, _scores = _b.scores;
-                          boxes = _boxes[0];
-                          scores = _scores[0];
-                          for (i = 1; i < _boxes.length; i++) {
-                              _boxes[i].dispose();
-                              _scores[i].dispose();
-                          }
-                          _d = (_c = Array).from;
-                          return [4 /*yield*/, scores.data()];
-                      case 2:
-                          scoresData = _d.apply(_c, [_e.sent()]);
-                          iouThreshold = 0.5;
-                          indices = nonMaxSuppression(boxes, scoresData, maxResults, iouThreshold, minConfidence);
-                          reshapedDims = netInput.getReshapedInputDimensions(0);
-                          inputSize = netInput.inputSize;
-                          padX = inputSize / reshapedDims.width;
-                          padY = inputSize / reshapedDims.height;
-                          boxesData = boxes.arraySync();
-                          results = indices
-                              .map(function (idx) {
-                              var _a = [
-                                  Math.max(0, boxesData[idx][0]),
-                                  Math.min(1.0, boxesData[idx][2])
-                              ].map(function (val) { return val * padY; }), top = _a[0], bottom = _a[1];
-                              var _b = [
-                                  Math.max(0, boxesData[idx][1]),
-                                  Math.min(1.0, boxesData[idx][3])
-                              ].map(function (val) { return val * padX; }), left = _b[0], right = _b[1];
-                              return new FaceDetection(scoresData[idx], new Rect(left, top, right - left, bottom - top), {
-                                  height: netInput.getInputHeight(0),
-                                  width: netInput.getInputWidth(0)
-                              });
-                          });
-                          boxes.dispose();
-                          scores.dispose();
-                          return [2 /*return*/, results];
-                  }
-              });
-          });
-      };
-      SsdMobilenetv1.prototype.getDefaultModelName = function () {
+          boxes.dispose();
+          scores.dispose();
+          return results;
+      }
+      getDefaultModelName() {
           return 'ssd_mobilenetv1_model';
-      };
-      SsdMobilenetv1.prototype.extractParamsFromWeigthMap = function (weightMap) {
+      }
+      extractParamsFromWeigthMap(weightMap) {
           return extractParamsFromWeigthMap$2(weightMap);
-      };
-      SsdMobilenetv1.prototype.extractParams = function (weights) {
+      }
+      extractParams(weights) {
           return extractParams$2(weights);
-      };
-      return SsdMobilenetv1;
-  }(NeuralNetwork));
+      }
+  }
 
   function createSsdMobilenetv1(weights) {
-      var net = new SsdMobilenetv1();
+      const net = new SsdMobilenetv1();
       net.extractWeights(weights);
       return net;
   }
@@ -4328,72 +3651,73 @@
       return createSsdMobilenetv1(weights);
   }
   // alias for backward compatibily
-  var FaceDetectionNet = /** @class */ (function (_super) {
-      __extends(FaceDetectionNet, _super);
-      function FaceDetectionNet() {
-          return _super !== null && _super.apply(this, arguments) || this;
-      }
-      return FaceDetectionNet;
-  }(SsdMobilenetv1));
+  class FaceDetectionNet extends SsdMobilenetv1 {
+  }
 
-  var IOU_THRESHOLD$1 = 0.4;
-  var BOX_ANCHORS$1 = [
+  const IOU_THRESHOLD$1 = 0.4;
+  const BOX_ANCHORS$1 = [
       new Point(0.738768, 0.874946),
       new Point(2.42204, 2.65704),
       new Point(4.30971, 7.04493),
       new Point(10.246, 4.59428),
-      new Point(12.6868, 11.8741)
+      new Point(12.6868, 11.8741),
   ];
-  var BOX_ANCHORS_SEPARABLE = [
+  const BOX_ANCHORS_SEPARABLE = [
       new Point(1.603231, 2.094468),
       new Point(6.041143, 7.080126),
       new Point(2.882459, 3.518061),
       new Point(4.266906, 5.178857),
-      new Point(9.041765, 10.66308)
+      new Point(9.041765, 10.66308),
   ];
-  var MEAN_RGB_SEPARABLE = [117.001, 114.697, 97.404];
-  var DEFAULT_MODEL_NAME = 'tiny_yolov2_model';
-  var DEFAULT_MODEL_NAME_SEPARABLE_CONV = 'tiny_yolov2_separable_conv_model';
+  const MEAN_RGB_SEPARABLE = [117.001, 114.697, 97.404];
+  const DEFAULT_MODEL_NAME = 'tiny_yolov2_model';
+  const DEFAULT_MODEL_NAME_SEPARABLE_CONV = 'tiny_yolov2_separable_conv_model';
 
-  var isNumber = function (arg) { return typeof arg === 'number'; };
+  const isNumber = (arg) => typeof arg === 'number';
   function validateConfig(config) {
       if (!config) {
-          throw new Error("invalid config: " + config);
+          throw new Error(`invalid config: ${config}`);
       }
       if (typeof config.withSeparableConvs !== 'boolean') {
-          throw new Error("config.withSeparableConvs has to be a boolean, have: " + config.withSeparableConvs);
+          throw new Error(`config.withSeparableConvs has to be a boolean, have: ${config.withSeparableConvs}`);
       }
       if (!isNumber(config.iouThreshold) || config.iouThreshold < 0 || config.iouThreshold > 1.0) {
-          throw new Error("config.iouThreshold has to be a number between [0, 1], have: " + config.iouThreshold);
+          throw new Error(`config.iouThreshold has to be a number between [0, 1], have: ${config.iouThreshold}`);
       }
-      if (!Array.isArray(config.classes)
-          || !config.classes.length
-          || !config.classes.every(function (c) { return typeof c === 'string'; })) {
-          throw new Error("config.classes has to be an array class names: string[], have: " + JSON.stringify(config.classes));
+      if (!Array.isArray(config.classes) ||
+          !config.classes.length ||
+          !config.classes.every((c) => typeof c === 'string')) {
+          throw new Error(`config.classes has to be an array class names: string[], have: ${JSON.stringify(config.classes)}`);
       }
-      if (!Array.isArray(config.anchors)
-          || !config.anchors.length
-          || !config.anchors.map(function (a) { return a || {}; }).every(function (a) { return isNumber(a.x) && isNumber(a.y); })) {
-          throw new Error("config.anchors has to be an array of { x: number, y: number }, have: " + JSON.stringify(config.anchors));
+      if (!Array.isArray(config.anchors) ||
+          !config.anchors.length ||
+          !config.anchors.map((a) => a || {}).every((a) => isNumber(a.x) && isNumber(a.y))) {
+          throw new Error(`config.anchors has to be an array of { x: number, y: number }, have: ${JSON.stringify(config.anchors)}`);
       }
-      if (config.meanRgb && (!Array.isArray(config.meanRgb)
-          || config.meanRgb.length !== 3
-          || !config.meanRgb.every(isNumber))) {
-          throw new Error("config.meanRgb has to be an array of shape [number, number, number], have: " + JSON.stringify(config.meanRgb));
+      if (config.meanRgb &&
+          (!Array.isArray(config.meanRgb) ||
+              config.meanRgb.length !== 3 ||
+              !config.meanRgb.every(isNumber))) {
+          throw new Error(`config.meanRgb has to be an array of shape [number, number, number], have: ${JSON.stringify(config.meanRgb)}`);
       }
   }
 
   function leaky(x) {
-      return Ze(function () {
-          var min = To(x, On(0.10000000149011612));
+      return Ze(() => {
+          const min = To(x, On(0.10000000149011612));
           return Or(ah(Oo(x, min)), min);
           //return tf.maximum(x, min)
       });
   }
 
   function convWithBatchNorm(x, params) {
-      return Ze(function () {
-          var out = Ic(x, [[0, 0], [1, 1], [1, 1], [0, 0]]);
+      return Ze(() => {
+          let out = Ic(x, [
+              [0, 0],
+              [1, 1],
+              [1, 1],
+              [0, 0],
+          ]);
           out = dl(out, params.conv.filters, [1, 1], 'valid');
           out = Oo(out, params.bn.sub);
           out = To(out, params.bn.truediv);
@@ -4403,8 +3727,13 @@
   }
 
   function depthwiseSeparableConv(x, params) {
-      return Ze(function () {
-          var out = Ic(x, [[0, 0], [1, 1], [1, 1], [0, 0]]);
+      return Ze(() => {
+          let out = Ic(x, [
+              [0, 0],
+              [1, 1],
+              [1, 1],
+              [0, 0],
+          ]);
           out = bl(out, params.depthwise_filter, params.pointwise_filter, [1, 1], 'valid');
           out = Or(out, params.bias);
           return leaky(out);
@@ -4412,96 +3741,99 @@
   }
 
   function extractorsFactory$3(extractWeights, paramMappings) {
-      var extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
+      const extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
       function extractBatchNormParams(size, mappedPrefix) {
-          var sub = Mn(extractWeights(size));
-          var truediv = Mn(extractWeights(size));
-          paramMappings.push({ paramPath: mappedPrefix + "/sub" }, { paramPath: mappedPrefix + "/truediv" });
-          return { sub: sub, truediv: truediv };
+          const sub = Mn(extractWeights(size));
+          const truediv = Mn(extractWeights(size));
+          paramMappings.push({ paramPath: `${mappedPrefix}/sub` }, { paramPath: `${mappedPrefix}/truediv` });
+          return { sub, truediv };
       }
       function extractConvWithBatchNormParams(channelsIn, channelsOut, mappedPrefix) {
-          var conv = extractConvParams(channelsIn, channelsOut, 3, mappedPrefix + "/conv");
-          var bn = extractBatchNormParams(channelsOut, mappedPrefix + "/bn");
-          return { conv: conv, bn: bn };
+          const conv = extractConvParams(channelsIn, channelsOut, 3, `${mappedPrefix}/conv`);
+          const bn = extractBatchNormParams(channelsOut, `${mappedPrefix}/bn`);
+          return { conv, bn };
       }
-      var extractSeparableConvParams = extractSeparableConvParamsFactory(extractWeights, paramMappings);
+      const extractSeparableConvParams = extractSeparableConvParamsFactory(extractWeights, paramMappings);
       return {
-          extractConvParams: extractConvParams,
-          extractConvWithBatchNormParams: extractConvWithBatchNormParams,
-          extractSeparableConvParams: extractSeparableConvParams
+          extractConvParams,
+          extractConvWithBatchNormParams,
+          extractSeparableConvParams,
       };
   }
   function extractParams$1(weights, config, boxEncodingSize, filterSizes) {
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var paramMappings = [];
-      var _b = extractorsFactory$3(extractWeights, paramMappings), extractConvParams = _b.extractConvParams, extractConvWithBatchNormParams = _b.extractConvWithBatchNormParams, extractSeparableConvParams = _b.extractSeparableConvParams;
-      var params;
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const paramMappings = [];
+      const { extractConvParams, extractConvWithBatchNormParams, extractSeparableConvParams } = extractorsFactory$3(extractWeights, paramMappings);
+      let params;
       if (config.withSeparableConvs) {
-          var s0 = filterSizes[0], s1 = filterSizes[1], s2 = filterSizes[2], s3 = filterSizes[3], s4 = filterSizes[4], s5 = filterSizes[5], s6 = filterSizes[6], s7 = filterSizes[7], s8 = filterSizes[8];
-          var conv0 = config.isFirstLayerConv2d
+          const [s0, s1, s2, s3, s4, s5, s6, s7, s8] = filterSizes;
+          const conv0 = config.isFirstLayerConv2d
               ? extractConvParams(s0, s1, 3, 'conv0')
               : extractSeparableConvParams(s0, s1, 'conv0');
-          var conv1 = extractSeparableConvParams(s1, s2, 'conv1');
-          var conv2 = extractSeparableConvParams(s2, s3, 'conv2');
-          var conv3 = extractSeparableConvParams(s3, s4, 'conv3');
-          var conv4 = extractSeparableConvParams(s4, s5, 'conv4');
-          var conv5 = extractSeparableConvParams(s5, s6, 'conv5');
-          var conv6 = s7 ? extractSeparableConvParams(s6, s7, 'conv6') : undefined;
-          var conv7 = s8 ? extractSeparableConvParams(s7, s8, 'conv7') : undefined;
-          var conv8 = extractConvParams(s8 || s7 || s6, 5 * boxEncodingSize, 1, 'conv8');
-          params = { conv0: conv0, conv1: conv1, conv2: conv2, conv3: conv3, conv4: conv4, conv5: conv5, conv6: conv6, conv7: conv7, conv8: conv8 };
+          const conv1 = extractSeparableConvParams(s1, s2, 'conv1');
+          const conv2 = extractSeparableConvParams(s2, s3, 'conv2');
+          const conv3 = extractSeparableConvParams(s3, s4, 'conv3');
+          const conv4 = extractSeparableConvParams(s4, s5, 'conv4');
+          const conv5 = extractSeparableConvParams(s5, s6, 'conv5');
+          const conv6 = s7 ? extractSeparableConvParams(s6, s7, 'conv6') : undefined;
+          const conv7 = s8 ? extractSeparableConvParams(s7, s8, 'conv7') : undefined;
+          const conv8 = extractConvParams(s8 || s7 || s6, 5 * boxEncodingSize, 1, 'conv8');
+          params = { conv0, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8 };
       }
       else {
-          var s0 = filterSizes[0], s1 = filterSizes[1], s2 = filterSizes[2], s3 = filterSizes[3], s4 = filterSizes[4], s5 = filterSizes[5], s6 = filterSizes[6], s7 = filterSizes[7], s8 = filterSizes[8];
-          var conv0 = extractConvWithBatchNormParams(s0, s1, 'conv0');
-          var conv1 = extractConvWithBatchNormParams(s1, s2, 'conv1');
-          var conv2 = extractConvWithBatchNormParams(s2, s3, 'conv2');
-          var conv3 = extractConvWithBatchNormParams(s3, s4, 'conv3');
-          var conv4 = extractConvWithBatchNormParams(s4, s5, 'conv4');
-          var conv5 = extractConvWithBatchNormParams(s5, s6, 'conv5');
-          var conv6 = extractConvWithBatchNormParams(s6, s7, 'conv6');
-          var conv7 = extractConvWithBatchNormParams(s7, s8, 'conv7');
-          var conv8 = extractConvParams(s8, 5 * boxEncodingSize, 1, 'conv8');
-          params = { conv0: conv0, conv1: conv1, conv2: conv2, conv3: conv3, conv4: conv4, conv5: conv5, conv6: conv6, conv7: conv7, conv8: conv8 };
+          const [s0, s1, s2, s3, s4, s5, s6, s7, s8] = filterSizes;
+          const conv0 = extractConvWithBatchNormParams(s0, s1, 'conv0');
+          const conv1 = extractConvWithBatchNormParams(s1, s2, 'conv1');
+          const conv2 = extractConvWithBatchNormParams(s2, s3, 'conv2');
+          const conv3 = extractConvWithBatchNormParams(s3, s4, 'conv3');
+          const conv4 = extractConvWithBatchNormParams(s4, s5, 'conv4');
+          const conv5 = extractConvWithBatchNormParams(s5, s6, 'conv5');
+          const conv6 = extractConvWithBatchNormParams(s6, s7, 'conv6');
+          const conv7 = extractConvWithBatchNormParams(s7, s8, 'conv7');
+          const conv8 = extractConvParams(s8, 5 * boxEncodingSize, 1, 'conv8');
+          params = { conv0, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8 };
       }
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   function extractorsFactory$2(weightMap, paramMappings) {
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
       function extractBatchNormParams(prefix) {
-          var sub = extractWeightEntry(prefix + "/sub", 1);
-          var truediv = extractWeightEntry(prefix + "/truediv", 1);
-          return { sub: sub, truediv: truediv };
+          const sub = extractWeightEntry(`${prefix}/sub`, 1);
+          const truediv = extractWeightEntry(`${prefix}/truediv`, 1);
+          return { sub, truediv };
       }
       function extractConvParams(prefix) {
-          var filters = extractWeightEntry(prefix + "/filters", 4);
-          var bias = extractWeightEntry(prefix + "/bias", 1);
-          return { filters: filters, bias: bias };
+          const filters = extractWeightEntry(`${prefix}/filters`, 4);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
+          return { filters, bias };
       }
       function extractConvWithBatchNormParams(prefix) {
-          var conv = extractConvParams(prefix + "/conv");
-          var bn = extractBatchNormParams(prefix + "/bn");
-          return { conv: conv, bn: bn };
+          const conv = extractConvParams(`${prefix}/conv`);
+          const bn = extractBatchNormParams(`${prefix}/bn`);
+          return { conv, bn };
       }
-      var extractSeparableConvParams = loadSeparableConvParamsFactory(extractWeightEntry);
+      const extractSeparableConvParams = loadSeparableConvParamsFactory(extractWeightEntry);
       return {
-          extractConvParams: extractConvParams,
-          extractConvWithBatchNormParams: extractConvWithBatchNormParams,
-          extractSeparableConvParams: extractSeparableConvParams
+          extractConvParams,
+          extractConvWithBatchNormParams,
+          extractSeparableConvParams,
       };
   }
   function extractParamsFromWeigthMap$1(weightMap, config) {
-      var paramMappings = [];
-      var _a = extractorsFactory$2(weightMap, paramMappings), extractConvParams = _a.extractConvParams, extractConvWithBatchNormParams = _a.extractConvWithBatchNormParams, extractSeparableConvParams = _a.extractSeparableConvParams;
-      var params;
+      var _a;
+      const paramMappings = [];
+      const { extractConvParams, extractConvWithBatchNormParams, extractSeparableConvParams } = extractorsFactory$2(weightMap, paramMappings);
+      let params;
       if (config.withSeparableConvs) {
-          var numFilters = (config.filterSizes && config.filterSizes.length || 9);
+          const numFilters = ((_a = config.filterSizes) === null || _a === void 0 ? void 0 : _a.length) || 9;
           params = {
-              conv0: config.isFirstLayerConv2d ? extractConvParams('conv0') : extractSeparableConvParams('conv0'),
+              conv0: config.isFirstLayerConv2d
+                  ? extractConvParams('conv0')
+                  : extractSeparableConvParams('conv0'),
               conv1: extractSeparableConvParams('conv1'),
               conv2: extractSeparableConvParams('conv2'),
               conv3: extractSeparableConvParams('conv3'),
@@ -4509,7 +3841,7 @@
               conv5: extractSeparableConvParams('conv5'),
               conv6: numFilters > 7 ? extractSeparableConvParams('conv6') : undefined,
               conv7: numFilters > 8 ? extractSeparableConvParams('conv7') : undefined,
-              conv8: extractConvParams('conv8')
+              conv8: extractConvParams('conv8'),
           };
       }
       else {
@@ -4522,11 +3854,11 @@
               conv5: extractConvWithBatchNormParams('conv5'),
               conv6: extractConvWithBatchNormParams('conv6'),
               conv7: extractConvWithBatchNormParams('conv7'),
-              conv8: extractConvParams('conv8')
+              conv8: extractConvParams('conv8'),
           };
       }
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: params, paramMappings: paramMappings };
+      return { params, paramMappings };
   }
 
   exports.TinyYolov2SizeType = void 0;
@@ -4536,63 +3868,45 @@
       TinyYolov2SizeType[TinyYolov2SizeType["MD"] = 416] = "MD";
       TinyYolov2SizeType[TinyYolov2SizeType["LG"] = 608] = "LG";
   })(exports.TinyYolov2SizeType || (exports.TinyYolov2SizeType = {}));
-  var TinyYolov2Options = /** @class */ (function () {
-      function TinyYolov2Options(_a) {
-          var _b = _a === void 0 ? {} : _a, inputSize = _b.inputSize, scoreThreshold = _b.scoreThreshold;
+  class TinyYolov2Options {
+      constructor({ inputSize, scoreThreshold } = {}) {
           this._name = 'TinyYolov2Options';
           this._inputSize = inputSize || 416;
           this._scoreThreshold = scoreThreshold || 0.5;
           if (typeof this._inputSize !== 'number' || this._inputSize % 32 !== 0) {
-              throw new Error(this._name + " - expected inputSize to be a number divisible by 32");
+              throw new Error(`${this._name} - expected inputSize to be a number divisible by 32`);
           }
-          if (typeof this._scoreThreshold !== 'number' || this._scoreThreshold <= 0 || this._scoreThreshold >= 1) {
-              throw new Error(this._name + " - expected scoreThreshold to be a number between 0 and 1");
+          if (typeof this._scoreThreshold !== 'number' ||
+              this._scoreThreshold <= 0 ||
+              this._scoreThreshold >= 1) {
+              throw new Error(`${this._name} - expected scoreThreshold to be a number between 0 and 1`);
           }
       }
-      Object.defineProperty(TinyYolov2Options.prototype, "inputSize", {
-          get: function () { return this._inputSize; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(TinyYolov2Options.prototype, "scoreThreshold", {
-          get: function () { return this._scoreThreshold; },
-          enumerable: false,
-          configurable: true
-      });
-      return TinyYolov2Options;
-  }());
+      get inputSize() {
+          return this._inputSize;
+      }
+      get scoreThreshold() {
+          return this._scoreThreshold;
+      }
+  }
 
-  var TinyYolov2Base = /** @class */ (function (_super) {
-      __extends(TinyYolov2Base, _super);
-      function TinyYolov2Base(config) {
-          var _this = _super.call(this, 'TinyYolov2') || this;
+  class TinyYolov2Base extends NeuralNetwork {
+      constructor(config) {
+          super('TinyYolov2');
           validateConfig(config);
-          _this._config = config;
-          return _this;
+          this._config = config;
       }
-      Object.defineProperty(TinyYolov2Base.prototype, "config", {
-          get: function () {
-              return this._config;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(TinyYolov2Base.prototype, "withClassScores", {
-          get: function () {
-              return this.config.withClassScores || this.config.classes.length > 1;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(TinyYolov2Base.prototype, "boxEncodingSize", {
-          get: function () {
-              return 5 + (this.withClassScores ? this.config.classes.length : 0);
-          },
-          enumerable: false,
-          configurable: true
-      });
-      TinyYolov2Base.prototype.runTinyYolov2 = function (x, params) {
-          var out = convWithBatchNorm(x, params.conv0);
+      get config() {
+          return this._config;
+      }
+      get withClassScores() {
+          return this.config.withClassScores || this.config.classes.length > 1;
+      }
+      get boxEncodingSize() {
+          return 5 + (this.withClassScores ? this.config.classes.length : 0);
+      }
+      runTinyYolov2(x, params) {
+          let out = convWithBatchNorm(x, params.conv0);
           out = _l(out, [2, 2], [2, 2], 'same');
           out = convWithBatchNorm(out, params.conv1);
           out = _l(out, [2, 2], [2, 2], 'same');
@@ -4607,9 +3921,9 @@
           out = convWithBatchNorm(out, params.conv6);
           out = convWithBatchNorm(out, params.conv7);
           return convLayer$1(out, params.conv8, 'valid', false);
-      };
-      TinyYolov2Base.prototype.runMobilenet = function (x, params) {
-          var out = this.config.isFirstLayerConv2d
+      }
+      runMobilenet(x, params) {
+          let out = this.config.isFirstLayerConv2d
               ? leaky(convLayer$1(x, params.conv0, 'valid', false))
               : depthwiseSeparableConv(x, params.conv0);
           out = _l(out, [2, 2], [2, 2], 'same');
@@ -4626,526 +3940,371 @@
           out = params.conv6 ? depthwiseSeparableConv(out, params.conv6) : out;
           out = params.conv7 ? depthwiseSeparableConv(out, params.conv7) : out;
           return convLayer$1(out, params.conv8, 'valid', false);
-      };
-      TinyYolov2Base.prototype.forwardInput = function (input, inputSize) {
-          var _this = this;
-          var params = this.params;
+      }
+      forwardInput(input, inputSize) {
+          const { params } = this;
           if (!params) {
               throw new Error('TinyYolov2 - load model before inference');
           }
-          return Ze(function () {
-              var batchTensor = input.toBatchTensor(inputSize, false).toFloat();
-              batchTensor = _this.config.meanRgb
-                  ? normalize$1(batchTensor, _this.config.meanRgb)
-                  : batchTensor;
+          return Ze(() => {
+              let batchTensor = input.toBatchTensor(inputSize, false).toFloat();
+              batchTensor = this.config.meanRgb ? normalize$1(batchTensor, this.config.meanRgb) : batchTensor;
               batchTensor = batchTensor.div(On(256));
-              return _this.config.withSeparableConvs
-                  ? _this.runMobilenet(batchTensor, params)
-                  : _this.runTinyYolov2(batchTensor, params);
+              return this.config.withSeparableConvs
+                  ? this.runMobilenet(batchTensor, params)
+                  : this.runTinyYolov2(batchTensor, params);
           });
-      };
-      TinyYolov2Base.prototype.forward = function (input, inputSize) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [4 /*yield*/, _a.apply(this, [_b.sent(), inputSize])];
-                      case 2: return [2 /*return*/, _b.sent()];
-                  }
-              });
-          });
-      };
-      TinyYolov2Base.prototype.detect = function (input, forwardParams) {
-          if (forwardParams === void 0) { forwardParams = {}; }
-          return __awaiter(this, void 0, void 0, function () {
-              var _a, inputSize, scoreThreshold, netInput, out, out0, inputDimensions, results, boxes, scores, classScores, classNames, indices, detections;
-              var _this = this;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = new TinyYolov2Options(forwardParams), inputSize = _a.inputSize, scoreThreshold = _a.scoreThreshold;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1:
-                          netInput = _b.sent();
-                          return [4 /*yield*/, this.forwardInput(netInput, inputSize)];
-                      case 2:
-                          out = _b.sent();
-                          out0 = Ze(function () { return fr(out)[0].expandDims(); });
-                          inputDimensions = {
-                              width: netInput.getInputWidth(0),
-                              height: netInput.getInputHeight(0)
-                          };
-                          return [4 /*yield*/, this.extractBoxes(out0, netInput.getReshapedInputDimensions(0), scoreThreshold)];
-                      case 3:
-                          results = _b.sent();
-                          out.dispose();
-                          out0.dispose();
-                          boxes = results.map(function (res) { return res.box; });
-                          scores = results.map(function (res) { return res.score; });
-                          classScores = results.map(function (res) { return res.classScore; });
-                          classNames = results.map(function (res) { return _this.config.classes[res.label]; });
-                          indices = nonMaxSuppression$1(boxes.map(function (box) { return box.rescale(inputSize); }), scores, this.config.iouThreshold, true);
-                          detections = indices.map(function (idx) {
-                              return new ObjectDetection(scores[idx], classScores[idx], classNames[idx], boxes[idx], inputDimensions);
-                          });
-                          return [2 /*return*/, detections];
-                  }
-              });
-          });
-      };
-      TinyYolov2Base.prototype.getDefaultModelName = function () {
+      }
+      async forward(input, inputSize) {
+          return await this.forwardInput(await toNetInput(input), inputSize);
+      }
+      async detect(input, forwardParams = {}) {
+          const { inputSize, scoreThreshold } = new TinyYolov2Options(forwardParams);
+          const netInput = await toNetInput(input);
+          const out = await this.forwardInput(netInput, inputSize);
+          const out0 = Ze(() => fr(out)[0].expandDims());
+          const inputDimensions = {
+              width: netInput.getInputWidth(0),
+              height: netInput.getInputHeight(0),
+          };
+          const results = await this.extractBoxes(out0, netInput.getReshapedInputDimensions(0), scoreThreshold);
+          out.dispose();
+          out0.dispose();
+          const boxes = results.map(res => res.box);
+          const scores = results.map(res => res.score);
+          const classScores = results.map(res => res.classScore);
+          const classNames = results.map(res => this.config.classes[res.label]);
+          const indices = nonMaxSuppression$1(boxes.map(box => box.rescale(inputSize)), scores, this.config.iouThreshold, true);
+          const detections = indices.map(idx => new ObjectDetection(scores[idx], classScores[idx], classNames[idx], boxes[idx], inputDimensions));
+          return detections;
+      }
+      getDefaultModelName() {
           return '';
-      };
-      TinyYolov2Base.prototype.extractParamsFromWeigthMap = function (weightMap) {
+      }
+      extractParamsFromWeigthMap(weightMap) {
           return extractParamsFromWeigthMap$1(weightMap, this.config);
-      };
-      TinyYolov2Base.prototype.extractParams = function (weights) {
-          var filterSizes = this.config.filterSizes || TinyYolov2Base.DEFAULT_FILTER_SIZES;
-          var numFilters = filterSizes ? filterSizes.length : undefined;
+      }
+      extractParams(weights) {
+          const filterSizes = this.config.filterSizes || TinyYolov2Base.DEFAULT_FILTER_SIZES;
+          const numFilters = filterSizes ? filterSizes.length : undefined;
           if (numFilters !== 7 && numFilters !== 8 && numFilters !== 9) {
-              throw new Error("TinyYolov2 - expected 7 | 8 | 9 convolutional filters, but found " + numFilters + " filterSizes in config");
+              throw new Error(`TinyYolov2 - expected 7 | 8 | 9 convolutional filters, but found ${numFilters} filterSizes in config`);
           }
           return extractParams$1(weights, this.config, this.boxEncodingSize, filterSizes);
-      };
-      TinyYolov2Base.prototype.extractBoxes = function (outputTensor, inputBlobDimensions, scoreThreshold) {
-          return __awaiter(this, void 0, void 0, function () {
-              var width, height, inputSize, correctionFactorX, correctionFactorY, numCells, numBoxes, _a, boxesTensor, scoresTensor, classScoresTensor, results, scoresData, boxesData, row, col, anchor, score, ctX, ctY, width_1, height_1, x, y, pos, _b, classScore, label, _c;
-              var _this = this;
-              return __generator(this, function (_d) {
-                  switch (_d.label) {
-                      case 0:
-                          width = inputBlobDimensions.width, height = inputBlobDimensions.height;
-                          inputSize = Math.max(width, height);
-                          correctionFactorX = inputSize / width;
-                          correctionFactorY = inputSize / height;
-                          numCells = outputTensor.shape[1];
-                          numBoxes = this.config.anchors.length;
-                          _a = Ze(function () {
-                              var reshaped = outputTensor.reshape([numCells, numCells, numBoxes, _this.boxEncodingSize]);
-                              var boxes = reshaped.slice([0, 0, 0, 0], [numCells, numCells, numBoxes, 4]);
-                              var scores = reshaped.slice([0, 0, 0, 4], [numCells, numCells, numBoxes, 1]);
-                              var classScores = _this.withClassScores
-                                  ? ia(reshaped.slice([0, 0, 0, 5], [numCells, numCells, numBoxes, _this.config.classes.length]), 3)
-                                  : On(0);
-                              return [boxes, scores, classScores];
-                          }), boxesTensor = _a[0], scoresTensor = _a[1], classScoresTensor = _a[2];
-                          results = [];
-                          return [4 /*yield*/, scoresTensor.array()];
-                      case 1:
-                          scoresData = _d.sent();
-                          return [4 /*yield*/, boxesTensor.array()];
-                      case 2:
-                          boxesData = _d.sent();
-                          row = 0;
-                          _d.label = 3;
-                      case 3:
-                          if (!(row < numCells)) return [3 /*break*/, 12];
-                          col = 0;
-                          _d.label = 4;
-                      case 4:
-                          if (!(col < numCells)) return [3 /*break*/, 11];
-                          anchor = 0;
-                          _d.label = 5;
-                      case 5:
-                          if (!(anchor < numBoxes)) return [3 /*break*/, 10];
-                          score = sigmoid(scoresData[row][col][anchor][0]);
-                          if (!(!scoreThreshold || score > scoreThreshold)) return [3 /*break*/, 9];
-                          ctX = ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX;
-                          ctY = ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY;
-                          width_1 = ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) / numCells) * correctionFactorX;
-                          height_1 = ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) / numCells) * correctionFactorY;
-                          x = (ctX - (width_1 / 2));
-                          y = (ctY - (height_1 / 2));
-                          pos = { row: row, col: col, anchor: anchor };
-                          if (!this.withClassScores) return [3 /*break*/, 7];
-                          return [4 /*yield*/, this.extractPredictedClass(classScoresTensor, pos)];
-                      case 6:
-                          _c = _d.sent();
-                          return [3 /*break*/, 8];
-                      case 7:
-                          _c = { classScore: 1, label: 0 };
-                          _d.label = 8;
-                      case 8:
-                          _b = _c, classScore = _b.classScore, label = _b.label;
-                          results.push(__assign({ box: new BoundingBox(x, y, x + width_1, y + height_1), score: score, classScore: score * classScore, label: label }, pos));
-                          _d.label = 9;
-                      case 9:
-                          anchor++;
-                          return [3 /*break*/, 5];
-                      case 10:
-                          col++;
-                          return [3 /*break*/, 4];
-                      case 11:
-                          row++;
-                          return [3 /*break*/, 3];
-                      case 12:
-                          boxesTensor.dispose();
-                          scoresTensor.dispose();
-                          classScoresTensor.dispose();
-                          return [2 /*return*/, results];
-                  }
-              });
+      }
+      async extractBoxes(outputTensor, inputBlobDimensions, scoreThreshold) {
+          const { width, height } = inputBlobDimensions;
+          const inputSize = Math.max(width, height);
+          const correctionFactorX = inputSize / width;
+          const correctionFactorY = inputSize / height;
+          const numCells = outputTensor.shape[1];
+          const numBoxes = this.config.anchors.length;
+          const [boxesTensor, scoresTensor, classScoresTensor] = Ze(() => {
+              const reshaped = outputTensor.reshape([numCells, numCells, numBoxes, this.boxEncodingSize]);
+              const boxes = reshaped.slice([0, 0, 0, 0], [numCells, numCells, numBoxes, 4]);
+              const scores = reshaped.slice([0, 0, 0, 4], [numCells, numCells, numBoxes, 1]);
+              const classScores = this.withClassScores
+                  ? ia(reshaped.slice([0, 0, 0, 5], [numCells, numCells, numBoxes, this.config.classes.length]), 3)
+                  : On(0);
+              return [boxes, scores, classScores];
           });
-      };
-      TinyYolov2Base.prototype.extractPredictedClass = function (classesTensor, pos) {
-          return __awaiter(this, void 0, void 0, function () {
-              var row, col, anchor, classesData;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0:
-                          row = pos.row, col = pos.col, anchor = pos.anchor;
-                          return [4 /*yield*/, classesTensor.array()];
-                      case 1:
-                          classesData = _a.sent();
-                          return [2 /*return*/, Array(this.config.classes.length).fill(0)
-                                  .map(function (_, i) { return classesData[row][col][anchor][i]; })
-                                  .map(function (classScore, label) { return ({
-                                  classScore: classScore,
-                                  label: label
-                              }); })
-                                  .reduce(function (max, curr) { return max.classScore > curr.classScore ? max : curr; })];
+          const results = [];
+          const scoresData = await scoresTensor.array();
+          const boxesData = await boxesTensor.array();
+          for (let row = 0; row < numCells; row++) {
+              for (let col = 0; col < numCells; col++) {
+                  for (let anchor = 0; anchor < numBoxes; anchor++) {
+                      const score = sigmoid(scoresData[row][col][anchor][0]);
+                      if (!scoreThreshold || score > scoreThreshold) {
+                          const ctX = ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX;
+                          const ctY = ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY;
+                          const width = ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) /
+                              numCells) *
+                              correctionFactorX;
+                          const height = ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) /
+                              numCells) *
+                              correctionFactorY;
+                          const x = ctX - width / 2;
+                          const y = ctY - height / 2;
+                          const pos = { row, col, anchor };
+                          const { classScore, label } = this.withClassScores
+                              ? await this.extractPredictedClass(classScoresTensor, pos)
+                              : { classScore: 1, label: 0 };
+                          results.push(Object.assign({ box: new BoundingBox(x, y, x + width, y + height), score: score, classScore: score * classScore, label }, pos));
+                      }
                   }
-              });
-          });
-      };
-      TinyYolov2Base.DEFAULT_FILTER_SIZES = [
-          3, 16, 32, 64, 128, 256, 512, 1024, 1024
-      ];
-      return TinyYolov2Base;
-  }(NeuralNetwork));
+              }
+          }
+          boxesTensor.dispose();
+          scoresTensor.dispose();
+          classScoresTensor.dispose();
+          return results;
+      }
+      async extractPredictedClass(classesTensor, pos) {
+          const { row, col, anchor } = pos;
+          const classesData = await classesTensor.array();
+          return Array(this.config.classes.length)
+              .fill(0)
+              .map((_, i) => classesData[row][col][anchor][i])
+              .map((classScore, label) => ({
+              classScore,
+              label,
+          }))
+              .reduce((max, curr) => (max.classScore > curr.classScore ? max : curr));
+      }
+  }
+  TinyYolov2Base.DEFAULT_FILTER_SIZES = [3, 16, 32, 64, 128, 256, 512, 1024, 1024];
 
-  var TinyYolov2 = /** @class */ (function (_super) {
-      __extends(TinyYolov2, _super);
-      function TinyYolov2(withSeparableConvs) {
-          if (withSeparableConvs === void 0) { withSeparableConvs = true; }
-          var _this = this;
-          var config = Object.assign({}, {
-              withSeparableConvs: withSeparableConvs,
+  class TinyYolov2 extends TinyYolov2Base {
+      constructor(withSeparableConvs = true) {
+          const config = Object.assign({}, {
+              withSeparableConvs,
               iouThreshold: IOU_THRESHOLD$1,
-              classes: ['face']
+              classes: ['face'],
           }, withSeparableConvs
               ? {
                   anchors: BOX_ANCHORS_SEPARABLE,
-                  meanRgb: MEAN_RGB_SEPARABLE
+                  meanRgb: MEAN_RGB_SEPARABLE,
               }
               : {
                   anchors: BOX_ANCHORS$1,
-                  withClassScores: true
+                  withClassScores: true,
               });
-          _this = _super.call(this, config) || this;
-          return _this;
+          super(config);
       }
-      Object.defineProperty(TinyYolov2.prototype, "withSeparableConvs", {
-          get: function () {
-              return this.config.withSeparableConvs;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(TinyYolov2.prototype, "anchors", {
-          get: function () {
-              return this.config.anchors;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      TinyYolov2.prototype.locateFaces = function (input, forwardParams) {
-          return __awaiter(this, void 0, void 0, function () {
-              var objectDetections;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.detect(input, forwardParams)];
-                      case 1:
-                          objectDetections = _a.sent();
-                          return [2 /*return*/, objectDetections.map(function (det) { return new FaceDetection(det.score, det.relativeBox, { width: det.imageWidth, height: det.imageHeight }); })];
-                  }
-              });
-          });
-      };
-      TinyYolov2.prototype.getDefaultModelName = function () {
+      get withSeparableConvs() {
+          return this.config.withSeparableConvs;
+      }
+      get anchors() {
+          return this.config.anchors;
+      }
+      async locateFaces(input, forwardParams) {
+          const objectDetections = await this.detect(input, forwardParams);
+          return objectDetections.map(det => new FaceDetection(det.score, det.relativeBox, {
+              width: det.imageWidth,
+              height: det.imageHeight,
+          }));
+      }
+      getDefaultModelName() {
           return this.withSeparableConvs ? DEFAULT_MODEL_NAME_SEPARABLE_CONV : DEFAULT_MODEL_NAME;
-      };
-      TinyYolov2.prototype.extractParamsFromWeigthMap = function (weightMap) {
-          return _super.prototype.extractParamsFromWeigthMap.call(this, weightMap);
-      };
-      return TinyYolov2;
-  }(TinyYolov2Base));
+      }
+      extractParamsFromWeigthMap(weightMap) {
+          return super.extractParamsFromWeigthMap(weightMap);
+      }
+  }
 
-  function createTinyYolov2(weights, withSeparableConvs) {
-      if (withSeparableConvs === void 0) { withSeparableConvs = true; }
-      var net = new TinyYolov2(withSeparableConvs);
+  function createTinyYolov2(weights, withSeparableConvs = true) {
+      const net = new TinyYolov2(withSeparableConvs);
       net.extractWeights(weights);
       return net;
   }
 
-  var TinyFaceDetectorOptions = /** @class */ (function (_super) {
-      __extends(TinyFaceDetectorOptions, _super);
-      function TinyFaceDetectorOptions() {
-          var _this = _super !== null && _super.apply(this, arguments) || this;
-          _this._name = 'TinyFaceDetectorOptions';
-          return _this;
+  class TinyFaceDetectorOptions extends TinyYolov2Options {
+      constructor() {
+          super(...arguments);
+          this._name = 'TinyFaceDetectorOptions';
       }
-      return TinyFaceDetectorOptions;
-  }(TinyYolov2Options));
-
-  var ComposableTask = /** @class */ (function () {
-      function ComposableTask() {
-      }
-      ComposableTask.prototype.then = function (onfulfilled) {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = onfulfilled;
-                          return [4 /*yield*/, this.run()];
-                      case 1: return [2 /*return*/, _a.apply(void 0, [_b.sent()])];
-                  }
-              });
-          });
-      };
-      ComposableTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              return __generator(this, function (_a) {
-                  throw new Error('ComposableTask - run is not implemented');
-              });
-          });
-      };
-      return ComposableTask;
-  }());
-
-  function extractAllFacesAndComputeResults(parentResults, input, computeResults, extractedFaces, getRectForAlignment) {
-      if (getRectForAlignment === void 0) { getRectForAlignment = function (_a) {
-          var alignedRect = _a.alignedRect;
-          return alignedRect;
-      }; }
-      return __awaiter(this, void 0, void 0, function () {
-          var faceBoxes, faces, _a, _b, results;
-          return __generator(this, function (_c) {
-              switch (_c.label) {
-                  case 0:
-                      faceBoxes = parentResults.map(function (parentResult) {
-                          return isWithFaceLandmarks(parentResult)
-                              ? getRectForAlignment(parentResult)
-                              : parentResult.detection;
-                      });
-                      _a = extractedFaces;
-                      if (_a) return [3 /*break*/, 5];
-                      if (!(input instanceof wt)) return [3 /*break*/, 2];
-                      return [4 /*yield*/, extractFaceTensors(input, faceBoxes)];
-                  case 1:
-                      _b = _c.sent();
-                      return [3 /*break*/, 4];
-                  case 2: return [4 /*yield*/, extractFaces(input, faceBoxes)];
-                  case 3:
-                      _b = _c.sent();
-                      _c.label = 4;
-                  case 4:
-                      _a = (_b);
-                      _c.label = 5;
-                  case 5:
-                      faces = _a;
-                      return [4 /*yield*/, computeResults(faces)];
-                  case 6:
-                      results = _c.sent();
-                      faces.forEach(function (f) { return f instanceof wt && f.dispose(); });
-                      return [2 /*return*/, results];
-              }
-          });
-      });
   }
-  function extractSingleFaceAndComputeResult(parentResult, input, computeResult, extractedFaces, getRectForAlignment) {
-      return __awaiter(this, void 0, void 0, function () {
-          var _this = this;
-          return __generator(this, function (_a) {
-              return [2 /*return*/, extractAllFacesAndComputeResults([parentResult], input, function (faces) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
-                      return [2 /*return*/, computeResult(faces[0])];
-                  }); }); }, extractedFaces, getRectForAlignment)];
-          });
+
+  class ComposableTask {
+      // biome-ignore lint/suspicious/noThenProperty: This class is intentionally designed to be thenable
+      async then(onfulfilled) {
+          return onfulfilled(await this.run());
+      }
+      async run() {
+          throw new Error('ComposableTask - run is not implemented');
+      }
+  }
+
+  async function extractAllFacesAndComputeResults(parentResults, input, computeResults, extractedFaces, getRectForAlignment = ({ alignedRect }) => alignedRect) {
+      const faceBoxes = parentResults.map(parentResult => isWithFaceLandmarks(parentResult) ? getRectForAlignment(parentResult) : parentResult.detection);
+      const faces = extractedFaces ||
+          (input instanceof wt
+              ? await extractFaceTensors(input, faceBoxes)
+              : await extractFaces(input, faceBoxes));
+      const results = await computeResults(faces);
+      faces.forEach(f => {
+          if (f instanceof wt) {
+              f.dispose();
+          }
       });
+      return results;
+  }
+  async function extractSingleFaceAndComputeResult(parentResult, input, computeResult, extractedFaces, getRectForAlignment) {
+      return extractAllFacesAndComputeResults([parentResult], input, async (faces) => computeResult(faces[0]), extractedFaces, getRectForAlignment);
   }
 
   function bgrToRgbTensor(tensor) {
-      return Ze(function () { return hr(fr(tensor, 3).reverse(), 3); });
+      return Ze(() => hr(fr(tensor, 3).reverse(), 3));
   }
 
-  var CELL_STRIDE = 2;
-  var CELL_SIZE = 12;
+  const CELL_STRIDE = 2;
+  const CELL_SIZE = 12;
 
   function extractorsFactory$1(extractWeights, paramMappings) {
-      var extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
-      var extractFCParams = extractFCParamsFactory(extractWeights, paramMappings);
+      const extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
+      const extractFCParams = extractFCParamsFactory(extractWeights, paramMappings);
       function extractPReluParams(size, paramPath) {
-          var alpha = Mn(extractWeights(size));
-          paramMappings.push({ paramPath: paramPath });
+          const alpha = Mn(extractWeights(size));
+          paramMappings.push({ paramPath });
           return alpha;
       }
-      function extractSharedParams(numFilters, mappedPrefix, isRnet) {
-          if (isRnet === void 0) { isRnet = false; }
-          var conv1 = extractConvParams(numFilters[0], numFilters[1], 3, mappedPrefix + "/conv1");
-          var prelu1_alpha = extractPReluParams(numFilters[1], mappedPrefix + "/prelu1_alpha");
-          var conv2 = extractConvParams(numFilters[1], numFilters[2], 3, mappedPrefix + "/conv2");
-          var prelu2_alpha = extractPReluParams(numFilters[2], mappedPrefix + "/prelu2_alpha");
-          var conv3 = extractConvParams(numFilters[2], numFilters[3], isRnet ? 2 : 3, mappedPrefix + "/conv3");
-          var prelu3_alpha = extractPReluParams(numFilters[3], mappedPrefix + "/prelu3_alpha");
-          return { conv1: conv1, prelu1_alpha: prelu1_alpha, conv2: conv2, prelu2_alpha: prelu2_alpha, conv3: conv3, prelu3_alpha: prelu3_alpha };
+      function extractSharedParams(numFilters, mappedPrefix, isRnet = false) {
+          const conv1 = extractConvParams(numFilters[0], numFilters[1], 3, `${mappedPrefix}/conv1`);
+          const prelu1_alpha = extractPReluParams(numFilters[1], `${mappedPrefix}/prelu1_alpha`);
+          const conv2 = extractConvParams(numFilters[1], numFilters[2], 3, `${mappedPrefix}/conv2`);
+          const prelu2_alpha = extractPReluParams(numFilters[2], `${mappedPrefix}/prelu2_alpha`);
+          const conv3 = extractConvParams(numFilters[2], numFilters[3], isRnet ? 2 : 3, `${mappedPrefix}/conv3`);
+          const prelu3_alpha = extractPReluParams(numFilters[3], `${mappedPrefix}/prelu3_alpha`);
+          return { conv1, prelu1_alpha, conv2, prelu2_alpha, conv3, prelu3_alpha };
       }
       function extractPNetParams() {
-          var sharedParams = extractSharedParams([3, 10, 16, 32], 'pnet');
-          var conv4_1 = extractConvParams(32, 2, 1, 'pnet/conv4_1');
-          var conv4_2 = extractConvParams(32, 4, 1, 'pnet/conv4_2');
-          return __assign(__assign({}, sharedParams), { conv4_1: conv4_1, conv4_2: conv4_2 });
+          const sharedParams = extractSharedParams([3, 10, 16, 32], 'pnet');
+          const conv4_1 = extractConvParams(32, 2, 1, 'pnet/conv4_1');
+          const conv4_2 = extractConvParams(32, 4, 1, 'pnet/conv4_2');
+          return Object.assign(Object.assign({}, sharedParams), { conv4_1, conv4_2 });
       }
       function extractRNetParams() {
-          var sharedParams = extractSharedParams([3, 28, 48, 64], 'rnet', true);
-          var fc1 = extractFCParams(576, 128, 'rnet/fc1');
-          var prelu4_alpha = extractPReluParams(128, 'rnet/prelu4_alpha');
-          var fc2_1 = extractFCParams(128, 2, 'rnet/fc2_1');
-          var fc2_2 = extractFCParams(128, 4, 'rnet/fc2_2');
-          return __assign(__assign({}, sharedParams), { fc1: fc1, prelu4_alpha: prelu4_alpha, fc2_1: fc2_1, fc2_2: fc2_2 });
+          const sharedParams = extractSharedParams([3, 28, 48, 64], 'rnet', true);
+          const fc1 = extractFCParams(576, 128, 'rnet/fc1');
+          const prelu4_alpha = extractPReluParams(128, 'rnet/prelu4_alpha');
+          const fc2_1 = extractFCParams(128, 2, 'rnet/fc2_1');
+          const fc2_2 = extractFCParams(128, 4, 'rnet/fc2_2');
+          return Object.assign(Object.assign({}, sharedParams), { fc1, prelu4_alpha, fc2_1, fc2_2 });
       }
       function extractONetParams() {
-          var sharedParams = extractSharedParams([3, 32, 64, 64], 'onet');
-          var conv4 = extractConvParams(64, 128, 2, 'onet/conv4');
-          var prelu4_alpha = extractPReluParams(128, 'onet/prelu4_alpha');
-          var fc1 = extractFCParams(1152, 256, 'onet/fc1');
-          var prelu5_alpha = extractPReluParams(256, 'onet/prelu5_alpha');
-          var fc2_1 = extractFCParams(256, 2, 'onet/fc2_1');
-          var fc2_2 = extractFCParams(256, 4, 'onet/fc2_2');
-          var fc2_3 = extractFCParams(256, 10, 'onet/fc2_3');
-          return __assign(__assign({}, sharedParams), { conv4: conv4, prelu4_alpha: prelu4_alpha, fc1: fc1, prelu5_alpha: prelu5_alpha, fc2_1: fc2_1, fc2_2: fc2_2, fc2_3: fc2_3 });
+          const sharedParams = extractSharedParams([3, 32, 64, 64], 'onet');
+          const conv4 = extractConvParams(64, 128, 2, 'onet/conv4');
+          const prelu4_alpha = extractPReluParams(128, 'onet/prelu4_alpha');
+          const fc1 = extractFCParams(1152, 256, 'onet/fc1');
+          const prelu5_alpha = extractPReluParams(256, 'onet/prelu5_alpha');
+          const fc2_1 = extractFCParams(256, 2, 'onet/fc2_1');
+          const fc2_2 = extractFCParams(256, 4, 'onet/fc2_2');
+          const fc2_3 = extractFCParams(256, 10, 'onet/fc2_3');
+          return Object.assign(Object.assign({}, sharedParams), { conv4, prelu4_alpha, fc1, prelu5_alpha, fc2_1, fc2_2, fc2_3 });
       }
       return {
-          extractPNetParams: extractPNetParams,
-          extractRNetParams: extractRNetParams,
-          extractONetParams: extractONetParams
+          extractPNetParams,
+          extractRNetParams,
+          extractONetParams,
       };
   }
   function extractParams(weights) {
-      var _a = extractWeightsFactory(weights), extractWeights = _a.extractWeights, getRemainingWeights = _a.getRemainingWeights;
-      var paramMappings = [];
-      var _b = extractorsFactory$1(extractWeights, paramMappings), extractPNetParams = _b.extractPNetParams, extractRNetParams = _b.extractRNetParams, extractONetParams = _b.extractONetParams;
-      var pnet = extractPNetParams();
-      var rnet = extractRNetParams();
-      var onet = extractONetParams();
+      const { extractWeights, getRemainingWeights } = extractWeightsFactory(weights);
+      const paramMappings = [];
+      const { extractPNetParams, extractRNetParams, extractONetParams } = extractorsFactory$1(extractWeights, paramMappings);
+      const pnet = extractPNetParams();
+      const rnet = extractRNetParams();
+      const onet = extractONetParams();
       if (getRemainingWeights().length !== 0) {
-          throw new Error("weights remaing after extract: " + getRemainingWeights().length);
+          throw new Error(`weights remaing after extract: ${getRemainingWeights().length}`);
       }
-      return { params: { pnet: pnet, rnet: rnet, onet: onet }, paramMappings: paramMappings };
+      return { params: { pnet, rnet, onet }, paramMappings };
   }
 
   function extractorsFactory(weightMap, paramMappings) {
-      var extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
+      const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
       function extractConvParams(prefix) {
-          var filters = extractWeightEntry(prefix + "/weights", 4, prefix + "/filters");
-          var bias = extractWeightEntry(prefix + "/bias", 1);
-          return { filters: filters, bias: bias };
+          const filters = extractWeightEntry(`${prefix}/weights`, 4, `${prefix}/filters`);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
+          return { filters, bias };
       }
       function extractFCParams(prefix) {
-          var weights = extractWeightEntry(prefix + "/weights", 2);
-          var bias = extractWeightEntry(prefix + "/bias", 1);
-          return { weights: weights, bias: bias };
+          const weights = extractWeightEntry(`${prefix}/weights`, 2);
+          const bias = extractWeightEntry(`${prefix}/bias`, 1);
+          return { weights, bias };
       }
       function extractPReluParams(paramPath) {
           return extractWeightEntry(paramPath, 1);
       }
       function extractSharedParams(prefix) {
-          var conv1 = extractConvParams(prefix + "/conv1");
-          var prelu1_alpha = extractPReluParams(prefix + "/prelu1_alpha");
-          var conv2 = extractConvParams(prefix + "/conv2");
-          var prelu2_alpha = extractPReluParams(prefix + "/prelu2_alpha");
-          var conv3 = extractConvParams(prefix + "/conv3");
-          var prelu3_alpha = extractPReluParams(prefix + "/prelu3_alpha");
-          return { conv1: conv1, prelu1_alpha: prelu1_alpha, conv2: conv2, prelu2_alpha: prelu2_alpha, conv3: conv3, prelu3_alpha: prelu3_alpha };
+          const conv1 = extractConvParams(`${prefix}/conv1`);
+          const prelu1_alpha = extractPReluParams(`${prefix}/prelu1_alpha`);
+          const conv2 = extractConvParams(`${prefix}/conv2`);
+          const prelu2_alpha = extractPReluParams(`${prefix}/prelu2_alpha`);
+          const conv3 = extractConvParams(`${prefix}/conv3`);
+          const prelu3_alpha = extractPReluParams(`${prefix}/prelu3_alpha`);
+          return { conv1, prelu1_alpha, conv2, prelu2_alpha, conv3, prelu3_alpha };
       }
       function extractPNetParams() {
-          var sharedParams = extractSharedParams('pnet');
-          var conv4_1 = extractConvParams('pnet/conv4_1');
-          var conv4_2 = extractConvParams('pnet/conv4_2');
-          return __assign(__assign({}, sharedParams), { conv4_1: conv4_1, conv4_2: conv4_2 });
+          const sharedParams = extractSharedParams('pnet');
+          const conv4_1 = extractConvParams('pnet/conv4_1');
+          const conv4_2 = extractConvParams('pnet/conv4_2');
+          return Object.assign(Object.assign({}, sharedParams), { conv4_1, conv4_2 });
       }
       function extractRNetParams() {
-          var sharedParams = extractSharedParams('rnet');
-          var fc1 = extractFCParams('rnet/fc1');
-          var prelu4_alpha = extractPReluParams('rnet/prelu4_alpha');
-          var fc2_1 = extractFCParams('rnet/fc2_1');
-          var fc2_2 = extractFCParams('rnet/fc2_2');
-          return __assign(__assign({}, sharedParams), { fc1: fc1, prelu4_alpha: prelu4_alpha, fc2_1: fc2_1, fc2_2: fc2_2 });
+          const sharedParams = extractSharedParams('rnet');
+          const fc1 = extractFCParams('rnet/fc1');
+          const prelu4_alpha = extractPReluParams('rnet/prelu4_alpha');
+          const fc2_1 = extractFCParams('rnet/fc2_1');
+          const fc2_2 = extractFCParams('rnet/fc2_2');
+          return Object.assign(Object.assign({}, sharedParams), { fc1, prelu4_alpha, fc2_1, fc2_2 });
       }
       function extractONetParams() {
-          var sharedParams = extractSharedParams('onet');
-          var conv4 = extractConvParams('onet/conv4');
-          var prelu4_alpha = extractPReluParams('onet/prelu4_alpha');
-          var fc1 = extractFCParams('onet/fc1');
-          var prelu5_alpha = extractPReluParams('onet/prelu5_alpha');
-          var fc2_1 = extractFCParams('onet/fc2_1');
-          var fc2_2 = extractFCParams('onet/fc2_2');
-          var fc2_3 = extractFCParams('onet/fc2_3');
-          return __assign(__assign({}, sharedParams), { conv4: conv4, prelu4_alpha: prelu4_alpha, fc1: fc1, prelu5_alpha: prelu5_alpha, fc2_1: fc2_1, fc2_2: fc2_2, fc2_3: fc2_3 });
+          const sharedParams = extractSharedParams('onet');
+          const conv4 = extractConvParams('onet/conv4');
+          const prelu4_alpha = extractPReluParams('onet/prelu4_alpha');
+          const fc1 = extractFCParams('onet/fc1');
+          const prelu5_alpha = extractPReluParams('onet/prelu5_alpha');
+          const fc2_1 = extractFCParams('onet/fc2_1');
+          const fc2_2 = extractFCParams('onet/fc2_2');
+          const fc2_3 = extractFCParams('onet/fc2_3');
+          return Object.assign(Object.assign({}, sharedParams), { conv4, prelu4_alpha, fc1, prelu5_alpha, fc2_1, fc2_2, fc2_3 });
       }
       return {
-          extractPNetParams: extractPNetParams,
-          extractRNetParams: extractRNetParams,
-          extractONetParams: extractONetParams
+          extractPNetParams,
+          extractRNetParams,
+          extractONetParams,
       };
   }
   function extractParamsFromWeigthMap(weightMap) {
-      var paramMappings = [];
-      var _a = extractorsFactory(weightMap, paramMappings), extractPNetParams = _a.extractPNetParams, extractRNetParams = _a.extractRNetParams, extractONetParams = _a.extractONetParams;
-      var pnet = extractPNetParams();
-      var rnet = extractRNetParams();
-      var onet = extractONetParams();
+      const paramMappings = [];
+      const { extractPNetParams, extractRNetParams, extractONetParams } = extractorsFactory(weightMap, paramMappings);
+      const pnet = extractPNetParams();
+      const rnet = extractRNetParams();
+      const onet = extractONetParams();
       disposeUnusedWeightTensors(weightMap, paramMappings);
-      return { params: { pnet: pnet, rnet: rnet, onet: onet }, paramMappings: paramMappings };
+      return { params: { pnet, rnet, onet }, paramMappings };
   }
 
-  function getSizesForScale(scale, _a) {
-      var height = _a[0], width = _a[1];
+  function getSizesForScale(scale, [height, width]) {
       return {
           height: Math.floor(height * scale),
-          width: Math.floor(width * scale)
+          width: Math.floor(width * scale),
       };
   }
 
   function pyramidDown(minFaceSize, scaleFactor, dims) {
-      var height = dims[0], width = dims[1];
-      var m = CELL_SIZE / minFaceSize;
-      var scales = [];
-      var minLayer = Math.min(height, width) * m;
-      var exp = 0;
+      const [height, width] = dims;
+      const m = CELL_SIZE / minFaceSize;
+      const scales = [];
+      let minLayer = Math.min(height, width) * m;
+      let exp = 0;
       while (minLayer >= 12) {
-          scales.push(m * Math.pow(scaleFactor, exp));
+          scales.push(m * scaleFactor ** exp);
           minLayer = minLayer * scaleFactor;
           exp += 1;
       }
       return scales;
   }
 
-  var MtcnnBox = /** @class */ (function (_super) {
-      __extends(MtcnnBox, _super);
-      function MtcnnBox(left, top, right, bottom) {
-          return _super.call(this, { left: left, top: top, right: right, bottom: bottom }, true) || this;
+  class MtcnnBox extends Box {
+      constructor(left, top, right, bottom) {
+          super({ left, top, right, bottom }, true);
       }
-      return MtcnnBox;
-  }(Box));
+  }
 
   function normalize(x) {
-      return Ze(function () { return To(Oo(x, On(127.5)), On(0.0078125)); });
+      return Ze(() => To(Oo(x, On(127.5)), On(0.0078125)));
   }
 
   function prelu(x, alpha) {
-      return Ze(function () {
-          return Or(ah(x), To(alpha, no(ah(no(x)))));
-      });
+      return Ze(() => Or(ah(x), To(alpha, no(ah(no(x))))));
   }
 
-  function sharedLayer(x, params, isPnet) {
-      if (isPnet === void 0) { isPnet = false; }
-      return Ze(function () {
-          var out = convLayer$1(x, params.conv1, 'valid');
+  function sharedLayer(x, params, isPnet = false) {
+      return Ze(() => {
+          let out = convLayer$1(x, params.conv1, 'valid');
           out = prelu(out, params.prelu1_alpha);
           out = _l(out, isPnet ? [2, 2] : [3, 3], [2, 2], 'same');
           out = convLayer$1(out, params.conv2, 'valid');
@@ -5158,504 +4317,391 @@
   }
 
   function PNet(x, params) {
-      return Ze(function () {
-          var out = sharedLayer(x, params, true);
-          var conv = convLayer$1(out, params.conv4_1, 'valid');
-          var max = sr($l(conv, 3), 3);
-          var prob = ia(Oo(conv, max), 3);
-          var regions = convLayer$1(out, params.conv4_2, 'valid');
-          return { prob: prob, regions: regions };
+      return Ze(() => {
+          const out = sharedLayer(x, params, true);
+          const conv = convLayer$1(out, params.conv4_1, 'valid');
+          const max = sr($l(conv, 3), 3);
+          const prob = ia(Oo(conv, max), 3);
+          const regions = convLayer$1(out, params.conv4_2, 'valid');
+          return { prob, regions };
       });
   }
 
   function rescaleAndNormalize(x, scale) {
-      return Ze(function () {
-          var _a = getSizesForScale(scale, x.shape.slice(1)), height = _a.height, width = _a.width;
-          var resized = nf.resizeBilinear(x, [height, width]);
-          var normalized = normalize(resized);
+      return Ze(() => {
+          const { height, width } = getSizesForScale(scale, x.shape.slice(1));
+          const resized = nf.resizeBilinear(x, [height, width]);
+          const normalized = normalize(resized);
           return ua(normalized, [0, 2, 1, 3]);
       });
   }
   function extractBoundingBoxes(scoresTensor, regionsTensor, scale, scoreThreshold) {
       // TODO: fix this!, maybe better to use tf.gather here
-      var indices = [];
-      var scoresData = scoresTensor.arraySync();
-      for (var y = 0; y < scoresTensor.shape[0]; y++) {
-          for (var x = 0; x < scoresTensor.shape[1]; x++) {
+      const indices = [];
+      const scoresData = scoresTensor.arraySync();
+      for (let y = 0; y < scoresTensor.shape[0]; y++) {
+          for (let x = 0; x < scoresTensor.shape[1]; x++) {
               if (scoresData[y][x] >= scoreThreshold) {
                   indices.push(new Point(x, y));
               }
           }
       }
-      var boundingBoxes = indices.map(function (idx) {
-          var cell = new BoundingBox(Math.round((idx.y * CELL_STRIDE + 1) / scale), Math.round((idx.x * CELL_STRIDE + 1) / scale), Math.round((idx.y * CELL_STRIDE + CELL_SIZE) / scale), Math.round((idx.x * CELL_STRIDE + CELL_SIZE) / scale));
-          var score = scoresData[idx.y][idx.x];
-          var regionsData = regionsTensor.arraySync();
-          var region = new MtcnnBox(regionsData[idx.y][idx.x][0], regionsData[idx.y][idx.x][1], regionsData[idx.y][idx.x][2], regionsData[idx.y][idx.x][3]);
+      const boundingBoxes = indices.map(idx => {
+          const cell = new BoundingBox(Math.round((idx.y * CELL_STRIDE + 1) / scale), Math.round((idx.x * CELL_STRIDE + 1) / scale), Math.round((idx.y * CELL_STRIDE + CELL_SIZE) / scale), Math.round((idx.x * CELL_STRIDE + CELL_SIZE) / scale));
+          const score = scoresData[idx.y][idx.x];
+          const regionsData = regionsTensor.arraySync();
+          const region = new MtcnnBox(regionsData[idx.y][idx.x][0], regionsData[idx.y][idx.x][1], regionsData[idx.y][idx.x][2], regionsData[idx.y][idx.x][3]);
           return {
-              cell: cell,
-              score: score,
-              region: region
+              cell,
+              score,
+              region,
           };
       });
       return boundingBoxes;
   }
   function stage1(imgTensor, scales, scoreThreshold, params, stats) {
       stats.stage1 = [];
-      var pnetOutputs = scales.map(function (scale) { return Ze(function () {
-          var statsForScale = { scale: scale };
-          var resized = rescaleAndNormalize(imgTensor, scale);
-          var ts = Date.now();
-          var _a = PNet(resized, params), prob = _a.prob, regions = _a.regions;
+      const pnetOutputs = scales.map(scale => Ze(() => {
+          const statsForScale = { scale };
+          const resized = rescaleAndNormalize(imgTensor, scale);
+          const ts = Date.now();
+          const { prob, regions } = PNet(resized, params);
           statsForScale.pnet = Date.now() - ts;
-          var scoresTensor = fr(fr(prob, 3)[1])[0];
-          var regionsTensor = fr(regions)[0];
+          const scoresTensor = fr(fr(prob, 3)[1])[0];
+          const regionsTensor = fr(regions)[0];
           return {
-              scoresTensor: scoresTensor,
-              regionsTensor: regionsTensor,
-              scale: scale,
-              statsForScale: statsForScale
+              scoresTensor,
+              regionsTensor,
+              scale,
+              statsForScale,
           };
-      }); });
-      var boxesForScale = pnetOutputs.map(function (_a) {
-          var scoresTensor = _a.scoresTensor, regionsTensor = _a.regionsTensor, scale = _a.scale, statsForScale = _a.statsForScale;
-          var boundingBoxes = extractBoundingBoxes(scoresTensor, regionsTensor, scale, scoreThreshold);
+      }));
+      const boxesForScale = pnetOutputs.map(({ scoresTensor, regionsTensor, scale, statsForScale }) => {
+          const boundingBoxes = extractBoundingBoxes(scoresTensor, regionsTensor, scale, scoreThreshold);
           scoresTensor.dispose();
           regionsTensor.dispose();
           if (!boundingBoxes.length) {
               stats.stage1.push(statsForScale);
               return [];
           }
-          var ts = Date.now();
-          var indices = nonMaxSuppression$1(boundingBoxes.map(function (bbox) { return bbox.cell; }), boundingBoxes.map(function (bbox) { return bbox.score; }), 0.5);
+          const ts = Date.now();
+          const indices = nonMaxSuppression$1(boundingBoxes.map(bbox => bbox.cell), boundingBoxes.map(bbox => bbox.score), 0.5);
           statsForScale.nms = Date.now() - ts;
           statsForScale.numBoxes = indices.length;
           stats.stage1.push(statsForScale);
-          return indices.map(function (boxIdx) { return boundingBoxes[boxIdx]; });
+          return indices.map(boxIdx => boundingBoxes[boxIdx]);
       });
-      var allBoxes = boxesForScale.reduce(function (all, boxes) { return all.concat(boxes); }, []);
-      var finalBoxes = [];
-      var finalScores = [];
+      const allBoxes = boxesForScale.reduce((all, boxes) => all.concat(boxes), []);
+      let finalBoxes = [];
+      let finalScores = [];
       if (allBoxes.length > 0) {
-          var ts = Date.now();
-          var indices = nonMaxSuppression$1(allBoxes.map(function (bbox) { return bbox.cell; }), allBoxes.map(function (bbox) { return bbox.score; }), 0.7);
+          const ts = Date.now();
+          const indices = nonMaxSuppression$1(allBoxes.map(bbox => bbox.cell), allBoxes.map(bbox => bbox.score), 0.7);
           stats.stage1_nms = Date.now() - ts;
-          finalScores = indices.map(function (idx) { return allBoxes[idx].score; });
+          finalScores = indices.map(idx => allBoxes[idx].score);
           finalBoxes = indices
-              .map(function (idx) { return allBoxes[idx]; })
-              .map(function (_a) {
-              var cell = _a.cell, region = _a.region;
-              return new BoundingBox(cell.left + (region.left * cell.width), cell.top + (region.top * cell.height), cell.right + (region.right * cell.width), cell.bottom + (region.bottom * cell.height)).toSquare().round();
-          });
+              .map(idx => allBoxes[idx])
+              .map(({ cell, region }) => new BoundingBox(cell.left + region.left * cell.width, cell.top + region.top * cell.height, cell.right + region.right * cell.width, cell.bottom + region.bottom * cell.height)
+              .toSquare()
+              .round());
       }
       return {
           boxes: finalBoxes,
-          scores: finalScores
+          scores: finalScores,
       };
   }
 
-  function extractImagePatches(img, boxes, _a) {
-      var width = _a.width, height = _a.height;
-      return __awaiter(this, void 0, void 0, function () {
-          var imgCtx, bitmaps, imagePatchesDatas;
-          var _this = this;
-          return __generator(this, function (_b) {
-              switch (_b.label) {
-                  case 0:
-                      imgCtx = getContext2dOrThrow(img);
-                      return [4 /*yield*/, Promise.all(boxes.map(function (box) { return __awaiter(_this, void 0, void 0, function () {
-                              var _a, y, ey, x, ex, fromX, fromY, imgData;
-                              return __generator(this, function (_b) {
-                                  _a = box.padAtBorders(img.height, img.width), y = _a.y, ey = _a.ey, x = _a.x, ex = _a.ex;
-                                  fromX = x - 1;
-                                  fromY = y - 1;
-                                  imgData = imgCtx.getImageData(fromX, fromY, (ex - fromX), (ey - fromY));
-                                  return [2 /*return*/, env.isNodejs() ? createCanvasFromMedia(imgData) : createImageBitmap(imgData)];
-                              });
-                          }); }))];
-                  case 1:
-                      bitmaps = _b.sent();
-                      imagePatchesDatas = [];
-                      bitmaps.forEach(function (bmp) {
-                          var patch = createCanvas({ width: width, height: height });
-                          var patchCtx = getContext2dOrThrow(patch);
-                          patchCtx.drawImage(bmp, 0, 0, width, height);
-                          var data = patchCtx.getImageData(0, 0, width, height).data;
-                          var currData = [];
-                          // RGBA -> BGR
-                          for (var i = 0; i < data.length; i += 4) {
-                              currData.push(data[i + 2]);
-                              currData.push(data[i + 1]);
-                              currData.push(data[i]);
-                          }
-                          imagePatchesDatas.push(currData);
-                      });
-                      return [2 /*return*/, imagePatchesDatas.map(function (data) {
-                              var t = Ze(function () {
-                                  var imagePatchTensor = ua(Ln(data, [1, width, height, 3]), [0, 2, 1, 3]).toFloat();
-                                  return normalize(imagePatchTensor);
-                              });
-                              return t;
-                          })];
-              }
+  async function extractImagePatches(img, boxes, { width, height }) {
+      const imgCtx = getContext2dOrThrow(img);
+      const bitmaps = await Promise.all(boxes.map(async (box) => {
+          // TODO: correct padding
+          const { y, ey, x, ex } = box.padAtBorders(img.height, img.width);
+          const fromX = x - 1;
+          const fromY = y - 1;
+          const imgData = imgCtx.getImageData(fromX, fromY, ex - fromX, ey - fromY);
+          return env.isNodejs() ? createCanvasFromMedia(imgData) : createImageBitmap(imgData);
+      }));
+      const imagePatchesDatas = [];
+      bitmaps.forEach(bmp => {
+          const patch = createCanvas({ width, height });
+          const patchCtx = getContext2dOrThrow(patch);
+          patchCtx.drawImage(bmp, 0, 0, width, height);
+          const { data } = patchCtx.getImageData(0, 0, width, height);
+          const currData = [];
+          // RGBA -> BGR
+          for (let i = 0; i < data.length; i += 4) {
+              currData.push(data[i + 2]);
+              currData.push(data[i + 1]);
+              currData.push(data[i]);
+          }
+          imagePatchesDatas.push(currData);
+      });
+      return imagePatchesDatas.map(data => {
+          const t = Ze(() => {
+              const imagePatchTensor = ua(Ln(data, [1, width, height, 3]), [0, 2, 1, 3])
+                  .toFloat();
+              return normalize(imagePatchTensor);
           });
+          return t;
       });
   }
 
   function RNet(x, params) {
-      return Ze(function () {
-          var convOut = sharedLayer(x, params);
-          var vectorized = ur(convOut, [convOut.shape[0], params.fc1.weights.shape[0]]);
-          var fc1 = fullyConnectedLayer(vectorized, params.fc1);
-          var prelu4 = prelu(fc1, params.prelu4_alpha);
-          var fc2_1 = fullyConnectedLayer(prelu4, params.fc2_1);
-          var max = sr($l(fc2_1, 1), 1);
-          var prob = ia(Oo(fc2_1, max), 1);
-          var regions = fullyConnectedLayer(prelu4, params.fc2_2);
-          var scores = fr(prob, 1)[1];
-          return { scores: scores, regions: regions };
+      return Ze(() => {
+          const convOut = sharedLayer(x, params);
+          const vectorized = ur(convOut, [
+              convOut.shape[0],
+              params.fc1.weights.shape[0],
+          ]);
+          const fc1 = fullyConnectedLayer(vectorized, params.fc1);
+          const prelu4 = prelu(fc1, params.prelu4_alpha);
+          const fc2_1 = fullyConnectedLayer(prelu4, params.fc2_1);
+          const max = sr($l(fc2_1, 1), 1);
+          const prob = ia(Oo(fc2_1, max), 1);
+          const regions = fullyConnectedLayer(prelu4, params.fc2_2);
+          const scores = fr(prob, 1)[1];
+          return { scores, regions };
       });
   }
 
-  function stage2(img, inputBoxes, scoreThreshold, params, stats) {
-      return __awaiter(this, void 0, void 0, function () {
-          var ts, rnetInputs, rnetOuts, scoresTensor, scores, _a, _b, indices, filteredBoxes, filteredScores, finalBoxes, finalScores, indicesNms, regions_1;
-          return __generator(this, function (_c) {
-              switch (_c.label) {
-                  case 0:
-                      ts = Date.now();
-                      return [4 /*yield*/, extractImagePatches(img, inputBoxes, { width: 24, height: 24 })];
-                  case 1:
-                      rnetInputs = _c.sent();
-                      stats.stage2_extractImagePatches = Date.now() - ts;
-                      ts = Date.now();
-                      rnetOuts = rnetInputs.map(function (rnetInput) {
-                          var out = RNet(rnetInput, params);
-                          rnetInput.dispose();
-                          return out;
-                      });
-                      stats.stage2_rnet = Date.now() - ts;
-                      scoresTensor = rnetOuts.length > 1
-                          ? Yn(rnetOuts.map(function (out) { return out.scores; }))
-                          : rnetOuts[0].scores;
-                      _b = (_a = Array).from;
-                      return [4 /*yield*/, scoresTensor.data()];
-                  case 2:
-                      scores = _b.apply(_a, [_c.sent()]);
-                      scoresTensor.dispose();
-                      indices = scores
-                          .map(function (score, idx) { return ({ score: score, idx: idx }); })
-                          .filter(function (c) { return c.score > scoreThreshold; })
-                          .map(function (_a) {
-                          var idx = _a.idx;
-                          return idx;
-                      });
-                      filteredBoxes = indices.map(function (idx) { return inputBoxes[idx]; });
-                      filteredScores = indices.map(function (idx) { return scores[idx]; });
-                      finalBoxes = [];
-                      finalScores = [];
-                      if (filteredBoxes.length > 0) {
-                          ts = Date.now();
-                          indicesNms = nonMaxSuppression$1(filteredBoxes, filteredScores, 0.7);
-                          stats.stage2_nms = Date.now() - ts;
-                          regions_1 = indicesNms.map(function (idx) {
-                              var regionsData = rnetOuts[indices[idx]].regions.arraySync();
-                              return new MtcnnBox(regionsData[0][0], regionsData[0][1], regionsData[0][2], regionsData[0][3]);
-                          });
-                          finalScores = indicesNms.map(function (idx) { return filteredScores[idx]; });
-                          finalBoxes = indicesNms.map(function (idx, i) { return filteredBoxes[idx].calibrate(regions_1[i]); });
-                      }
-                      rnetOuts.forEach(function (t) {
-                          t.regions.dispose();
-                          t.scores.dispose();
-                      });
-                      return [2 /*return*/, {
-                              boxes: finalBoxes,
-                              scores: finalScores
-                          }];
-              }
-          });
+  async function stage2(img, inputBoxes, scoreThreshold, params, stats) {
+      let ts = Date.now();
+      const rnetInputs = await extractImagePatches(img, inputBoxes, { width: 24, height: 24 });
+      stats.stage2_extractImagePatches = Date.now() - ts;
+      ts = Date.now();
+      const rnetOuts = rnetInputs.map(rnetInput => {
+          const out = RNet(rnetInput, params);
+          rnetInput.dispose();
+          return out;
       });
+      stats.stage2_rnet = Date.now() - ts;
+      const scoresTensor = rnetOuts.length > 1 ? Yn(rnetOuts.map(out => out.scores)) : rnetOuts[0].scores;
+      const scores = Array.from(await scoresTensor.data());
+      scoresTensor.dispose();
+      const indices = scores
+          .map((score, idx) => ({ score, idx }))
+          .filter(c => c.score > scoreThreshold)
+          .map(({ idx }) => idx);
+      const filteredBoxes = indices.map(idx => inputBoxes[idx]);
+      const filteredScores = indices.map(idx => scores[idx]);
+      let finalBoxes = [];
+      let finalScores = [];
+      if (filteredBoxes.length > 0) {
+          ts = Date.now();
+          const indicesNms = nonMaxSuppression$1(filteredBoxes, filteredScores, 0.7);
+          stats.stage2_nms = Date.now() - ts;
+          const regions = indicesNms.map(idx => {
+              const regionsData = rnetOuts[indices[idx]].regions.arraySync();
+              return new MtcnnBox(regionsData[0][0], regionsData[0][1], regionsData[0][2], regionsData[0][3]);
+          });
+          finalScores = indicesNms.map(idx => filteredScores[idx]);
+          finalBoxes = indicesNms.map((idx, i) => filteredBoxes[idx].calibrate(regions[i]));
+      }
+      rnetOuts.forEach(t => {
+          t.regions.dispose();
+          t.scores.dispose();
+      });
+      return {
+          boxes: finalBoxes,
+          scores: finalScores,
+      };
   }
 
   function ONet(x, params) {
-      return Ze(function () {
-          var out = sharedLayer(x, params);
+      return Ze(() => {
+          let out = sharedLayer(x, params);
           out = _l(out, [2, 2], [2, 2], 'same');
           out = convLayer$1(out, params.conv4, 'valid');
           out = prelu(out, params.prelu4_alpha);
-          var vectorized = ur(out, [out.shape[0], params.fc1.weights.shape[0]]);
-          var fc1 = fullyConnectedLayer(vectorized, params.fc1);
-          var prelu5 = prelu(fc1, params.prelu5_alpha);
-          var fc2_1 = fullyConnectedLayer(prelu5, params.fc2_1);
-          var max = sr($l(fc2_1, 1), 1);
-          var prob = ia(Oo(fc2_1, max), 1);
-          var regions = fullyConnectedLayer(prelu5, params.fc2_2);
-          var points = fullyConnectedLayer(prelu5, params.fc2_3);
-          var scores = fr(prob, 1)[1];
-          return { scores: scores, regions: regions, points: points };
+          const vectorized = ur(out, [out.shape[0], params.fc1.weights.shape[0]]);
+          const fc1 = fullyConnectedLayer(vectorized, params.fc1);
+          const prelu5 = prelu(fc1, params.prelu5_alpha);
+          const fc2_1 = fullyConnectedLayer(prelu5, params.fc2_1);
+          const max = sr($l(fc2_1, 1), 1);
+          const prob = ia(Oo(fc2_1, max), 1);
+          const regions = fullyConnectedLayer(prelu5, params.fc2_2);
+          const points = fullyConnectedLayer(prelu5, params.fc2_3);
+          const scores = fr(prob, 1)[1];
+          return { scores, regions, points };
       });
   }
 
-  function stage3(img, inputBoxes, scoreThreshold, params, stats) {
-      return __awaiter(this, void 0, void 0, function () {
-          var ts, onetInputs, onetOuts, scoresTensor, scores, _a, _b, indices, filteredRegions, filteredBoxes, filteredScores, finalBoxes, finalScores, points, indicesNms;
-          return __generator(this, function (_c) {
-              switch (_c.label) {
-                  case 0:
-                      ts = Date.now();
-                      return [4 /*yield*/, extractImagePatches(img, inputBoxes, { width: 48, height: 48 })];
-                  case 1:
-                      onetInputs = _c.sent();
-                      stats.stage3_extractImagePatches = Date.now() - ts;
-                      ts = Date.now();
-                      onetOuts = onetInputs.map(function (onetInput) {
-                          var out = ONet(onetInput, params);
-                          onetInput.dispose();
-                          return out;
-                      });
-                      stats.stage3_onet = Date.now() - ts;
-                      scoresTensor = onetOuts.length > 1
-                          ? Yn(onetOuts.map(function (out) { return out.scores; }))
-                          : onetOuts[0].scores;
-                      _b = (_a = Array).from;
-                      return [4 /*yield*/, scoresTensor.data()];
-                  case 2:
-                      scores = _b.apply(_a, [_c.sent()]);
-                      scoresTensor.dispose();
-                      indices = scores
-                          .map(function (score, idx) { return ({ score: score, idx: idx }); })
-                          .filter(function (c) { return c.score > scoreThreshold; })
-                          .map(function (_a) {
-                          var idx = _a.idx;
-                          return idx;
-                      });
-                      filteredRegions = indices.map(function (idx) {
-                          var regionsData = onetOuts[idx].regions.arraySync();
-                          return new MtcnnBox(regionsData[0][0], regionsData[0][1], regionsData[0][2], regionsData[0][3]);
-                      });
-                      filteredBoxes = indices
-                          .map(function (idx, i) { return inputBoxes[idx].calibrate(filteredRegions[i]); });
-                      filteredScores = indices.map(function (idx) { return scores[idx]; });
-                      finalBoxes = [];
-                      finalScores = [];
-                      points = [];
-                      if (filteredBoxes.length > 0) {
-                          ts = Date.now();
-                          indicesNms = nonMaxSuppression$1(filteredBoxes, filteredScores, 0.7, false);
-                          stats.stage3_nms = Date.now() - ts;
-                          finalBoxes = indicesNms.map(function (idx) { return filteredBoxes[idx]; });
-                          finalScores = indicesNms.map(function (idx) { return filteredScores[idx]; });
-                          points = indicesNms.map(function (idx, i) {
-                              return Array(5).fill(0).map(function (_, ptIdx) {
-                                  var pointsData = onetOuts[idx].points.arraySync();
-                                  return new Point(((pointsData[0][ptIdx] * (finalBoxes[i].width + 1)) + finalBoxes[i].left), ((pointsData[0][ptIdx + 5] * (finalBoxes[i].height + 1)) + finalBoxes[i].top));
-                              });
-                          });
-                      }
-                      onetOuts.forEach(function (t) {
-                          t.regions.dispose();
-                          t.scores.dispose();
-                          t.points.dispose();
-                      });
-                      return [2 /*return*/, {
-                              boxes: finalBoxes,
-                              scores: finalScores,
-                              points: points
-                          }];
-              }
-          });
+  async function stage3(img, inputBoxes, scoreThreshold, params, stats) {
+      let ts = Date.now();
+      const onetInputs = await extractImagePatches(img, inputBoxes, { width: 48, height: 48 });
+      stats.stage3_extractImagePatches = Date.now() - ts;
+      ts = Date.now();
+      const onetOuts = onetInputs.map(onetInput => {
+          const out = ONet(onetInput, params);
+          onetInput.dispose();
+          return out;
       });
-  }
-
-  var Mtcnn = /** @class */ (function (_super) {
-      __extends(Mtcnn, _super);
-      function Mtcnn() {
-          return _super.call(this, 'Mtcnn') || this;
+      stats.stage3_onet = Date.now() - ts;
+      const scoresTensor = onetOuts.length > 1 ? Yn(onetOuts.map(out => out.scores)) : onetOuts[0].scores;
+      const scores = Array.from(await scoresTensor.data());
+      scoresTensor.dispose();
+      const indices = scores
+          .map((score, idx) => ({ score, idx }))
+          .filter(c => c.score > scoreThreshold)
+          .map(({ idx }) => idx);
+      const filteredRegions = indices.map(idx => {
+          const regionsData = onetOuts[idx].regions.arraySync();
+          return new MtcnnBox(regionsData[0][0], regionsData[0][1], regionsData[0][2], regionsData[0][3]);
+      });
+      const filteredBoxes = indices.map((idx, i) => inputBoxes[idx].calibrate(filteredRegions[i]));
+      const filteredScores = indices.map(idx => scores[idx]);
+      let finalBoxes = [];
+      let finalScores = [];
+      let points = [];
+      if (filteredBoxes.length > 0) {
+          ts = Date.now();
+          const indicesNms = nonMaxSuppression$1(filteredBoxes, filteredScores, 0.7, false);
+          stats.stage3_nms = Date.now() - ts;
+          finalBoxes = indicesNms.map(idx => filteredBoxes[idx]);
+          finalScores = indicesNms.map(idx => filteredScores[idx]);
+          points = indicesNms.map((idx, i) => Array(5)
+              .fill(0)
+              .map((_, ptIdx) => {
+              const pointsData = onetOuts[idx].points.arraySync();
+              return new Point(pointsData[0][ptIdx] * (finalBoxes[i].width + 1) + finalBoxes[i].left, pointsData[0][ptIdx + 5] * (finalBoxes[i].height + 1) + finalBoxes[i].top);
+          }));
       }
-      Mtcnn.prototype.load = function (weightsOrUrl) {
-          return __awaiter(this, void 0, void 0, function () {
-              return __generator(this, function (_a) {
-                  console.warn('mtcnn is deprecated and will be removed soon');
-                  return [2 /*return*/, _super.prototype.load.call(this, weightsOrUrl)];
-              });
-          });
+      onetOuts.forEach(t => {
+          t.regions.dispose();
+          t.scores.dispose();
+          t.points.dispose();
+      });
+      return {
+          boxes: finalBoxes,
+          scores: finalScores,
+          points,
       };
-      Mtcnn.prototype.loadFromDisk = function (filePath) {
-          return __awaiter(this, void 0, void 0, function () {
-              return __generator(this, function (_a) {
-                  console.warn('mtcnn is deprecated and will be removed soon');
-                  return [2 /*return*/, _super.prototype.loadFromDisk.call(this, filePath)];
-              });
-          });
-      };
-      Mtcnn.prototype.forwardInput = function (input, forwardParams) {
-          if (forwardParams === void 0) { forwardParams = {}; }
-          return __awaiter(this, void 0, void 0, function () {
-              var params, inputCanvas, stats, tsTotal, imgTensor, onReturn, _a, height, width, _b, minFaceSize, scaleFactor, maxNumScales, scoreThresholds, scaleSteps, scales, ts, out1, out2, out3, results;
-              return __generator(this, function (_c) {
-                  switch (_c.label) {
-                      case 0:
-                          params = this.params;
-                          if (!params) {
-                              throw new Error('Mtcnn - load model before inference');
-                          }
-                          inputCanvas = input.canvases[0];
-                          if (!inputCanvas) {
-                              throw new Error('Mtcnn - inputCanvas is not defined, note that passing tensors into Mtcnn.forwardInput is not supported yet.');
-                          }
-                          stats = {};
-                          tsTotal = Date.now();
-                          imgTensor = Ze(function () {
-                              return bgrToRgbTensor(sr(Vd.fromPixels(inputCanvas)).toFloat());
-                          });
-                          onReturn = function (results) {
-                              // dispose tensors on return
-                              imgTensor.dispose();
-                              stats.total = Date.now() - tsTotal;
-                              return results;
-                          };
-                          _a = imgTensor.shape.slice(1), height = _a[0], width = _a[1];
-                          _b = new MtcnnOptions(forwardParams), minFaceSize = _b.minFaceSize, scaleFactor = _b.scaleFactor, maxNumScales = _b.maxNumScales, scoreThresholds = _b.scoreThresholds, scaleSteps = _b.scaleSteps;
-                          scales = (scaleSteps || pyramidDown(minFaceSize, scaleFactor, [height, width]))
-                              .filter(function (scale) {
-                              var sizes = getSizesForScale(scale, [height, width]);
-                              return Math.min(sizes.width, sizes.height) > CELL_SIZE;
-                          })
-                              .slice(0, maxNumScales);
-                          stats.scales = scales;
-                          stats.pyramid = scales.map(function (scale) { return getSizesForScale(scale, [height, width]); });
-                          ts = Date.now();
-                          return [4 /*yield*/, stage1(imgTensor, scales, scoreThresholds[0], params.pnet, stats)];
-                      case 1:
-                          out1 = _c.sent();
-                          stats.total_stage1 = Date.now() - ts;
-                          if (!out1.boxes.length) {
-                              return [2 /*return*/, onReturn({ results: [], stats: stats })];
-                          }
-                          stats.stage2_numInputBoxes = out1.boxes.length;
-                          // using the inputCanvas to extract and resize the image patches, since it is faster
-                          // than doing this on the gpu
-                          ts = Date.now();
-                          return [4 /*yield*/, stage2(inputCanvas, out1.boxes, scoreThresholds[1], params.rnet, stats)];
-                      case 2:
-                          out2 = _c.sent();
-                          stats.total_stage2 = Date.now() - ts;
-                          if (!out2.boxes.length) {
-                              return [2 /*return*/, onReturn({ results: [], stats: stats })];
-                          }
-                          stats.stage3_numInputBoxes = out2.boxes.length;
-                          ts = Date.now();
-                          return [4 /*yield*/, stage3(inputCanvas, out2.boxes, scoreThresholds[2], params.onet, stats)];
-                      case 3:
-                          out3 = _c.sent();
-                          stats.total_stage3 = Date.now() - ts;
-                          results = out3.boxes.map(function (box, idx) { return extendWithFaceLandmarks(extendWithFaceDetection({}, new FaceDetection(out3.scores[idx], new Rect(box.left / width, box.top / height, box.width / width, box.height / height), {
-                              height: height,
-                              width: width
-                          })), new FaceLandmarks5(out3.points[idx].map(function (pt) { return pt.sub(new Point(box.left, box.top)).div(new Point(box.width, box.height)); }), { width: box.width, height: box.height })); });
-                          return [2 /*return*/, onReturn({ results: results, stats: stats })];
-                  }
-              });
-          });
-      };
-      Mtcnn.prototype.forward = function (input, forwardParams) {
-          if (forwardParams === void 0) { forwardParams = {}; }
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [4 /*yield*/, _a.apply(this, [_b.sent(), forwardParams])];
-                      case 2: return [2 /*return*/, (_b.sent()).results];
-                  }
-              });
-          });
-      };
-      Mtcnn.prototype.forwardWithStats = function (input, forwardParams) {
-          if (forwardParams === void 0) { forwardParams = {}; }
-          return __awaiter(this, void 0, void 0, function () {
-              var _a;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this.forwardInput;
-                          return [4 /*yield*/, toNetInput(input)];
-                      case 1: return [2 /*return*/, _a.apply(this, [_b.sent(), forwardParams])];
-                  }
-              });
-          });
-      };
-      Mtcnn.prototype.getDefaultModelName = function () {
-          return 'mtcnn_model';
-      };
-      Mtcnn.prototype.extractParamsFromWeigthMap = function (weightMap) {
-          return extractParamsFromWeigthMap(weightMap);
-      };
-      Mtcnn.prototype.extractParams = function (weights) {
-          return extractParams(weights);
-      };
-      return Mtcnn;
-  }(NeuralNetwork));
+  }
 
-  var IOU_THRESHOLD = 0.4;
-  var BOX_ANCHORS = [
+  class Mtcnn extends NeuralNetwork {
+      constructor() {
+          super('Mtcnn');
+      }
+      async load(weightsOrUrl) {
+          console.warn('mtcnn is deprecated and will be removed soon');
+          return super.load(weightsOrUrl);
+      }
+      async loadFromDisk(filePath) {
+          console.warn('mtcnn is deprecated and will be removed soon');
+          return super.loadFromDisk(filePath);
+      }
+      async forwardInput(input, forwardParams = {}) {
+          const { params } = this;
+          if (!params) {
+              throw new Error('Mtcnn - load model before inference');
+          }
+          const inputCanvas = input.canvases[0];
+          if (!inputCanvas) {
+              throw new Error('Mtcnn - inputCanvas is not defined, note that passing tensors into Mtcnn.forwardInput is not supported yet.');
+          }
+          const stats = {};
+          const tsTotal = Date.now();
+          const imgTensor = Ze(() => bgrToRgbTensor(sr(Vd.fromPixels(inputCanvas)).toFloat()));
+          const onReturn = (results) => {
+              // dispose tensors on return
+              imgTensor.dispose();
+              stats.total = Date.now() - tsTotal;
+              return { results, stats };
+          };
+          const [height, width] = imgTensor.shape.slice(1);
+          const { minFaceSize, scaleFactor, maxNumScales, scoreThresholds, scaleSteps } = new MtcnnOptions(forwardParams);
+          const scales = (scaleSteps || pyramidDown(minFaceSize, scaleFactor, [height, width]))
+              .filter(scale => {
+              const sizes = getSizesForScale(scale, [height, width]);
+              return Math.min(sizes.width, sizes.height) > CELL_SIZE;
+          })
+              .slice(0, maxNumScales);
+          stats.scales = scales;
+          stats.pyramid = scales.map(scale => getSizesForScale(scale, [height, width]));
+          let ts = Date.now();
+          const out1 = await stage1(imgTensor, scales, scoreThresholds[0], params.pnet, stats);
+          stats.total_stage1 = Date.now() - ts;
+          if (!out1.boxes.length) {
+              return onReturn([]);
+          }
+          stats.stage2_numInputBoxes = out1.boxes.length;
+          // using the inputCanvas to extract and resize the image patches, since it is faster
+          // than doing this on the gpu
+          ts = Date.now();
+          const out2 = await stage2(inputCanvas, out1.boxes, scoreThresholds[1], params.rnet, stats);
+          stats.total_stage2 = Date.now() - ts;
+          if (!out2.boxes.length) {
+              return onReturn([]);
+          }
+          stats.stage3_numInputBoxes = out2.boxes.length;
+          ts = Date.now();
+          const out3 = await stage3(inputCanvas, out2.boxes, scoreThresholds[2], params.onet, stats);
+          stats.total_stage3 = Date.now() - ts;
+          const results = out3.boxes.map((box, idx) => extendWithFaceLandmarks(extendWithFaceDetection({}, new FaceDetection(out3.scores[idx], new Rect(box.left / width, box.top / height, box.width / width, box.height / height), {
+              height,
+              width,
+          })), new FaceLandmarks5(out3.points[idx].map(pt => pt.sub(new Point(box.left, box.top)).div(new Point(box.width, box.height))), { width: box.width, height: box.height })));
+          return onReturn(results);
+      }
+      async forward(input, forwardParams = {}) {
+          return (await this.forwardInput(await toNetInput(input), forwardParams)).results;
+      }
+      async forwardWithStats(input, forwardParams = {}) {
+          return this.forwardInput(await toNetInput(input), forwardParams);
+      }
+      getDefaultModelName() {
+          return 'mtcnn_model';
+      }
+      extractParamsFromWeigthMap(weightMap) {
+          return extractParamsFromWeigthMap(weightMap);
+      }
+      extractParams(weights) {
+          return extractParams(weights);
+      }
+  }
+
+  const IOU_THRESHOLD = 0.4;
+  const BOX_ANCHORS = [
       new Point(1.603231, 2.094468),
       new Point(6.041143, 7.080126),
       new Point(2.882459, 3.518061),
       new Point(4.266906, 5.178857),
-      new Point(9.041765, 10.66308)
+      new Point(9.041765, 10.66308),
   ];
-  var MEAN_RGB = [117.001, 114.697, 97.404];
+  const MEAN_RGB = [117.001, 114.697, 97.404];
 
-  var TinyFaceDetector = /** @class */ (function (_super) {
-      __extends(TinyFaceDetector, _super);
-      function TinyFaceDetector() {
-          var _this = this;
-          var config = {
+  class TinyFaceDetector extends TinyYolov2Base {
+      constructor() {
+          const config = {
               withSeparableConvs: true,
               iouThreshold: IOU_THRESHOLD,
               classes: ['face'],
               anchors: BOX_ANCHORS,
               meanRgb: MEAN_RGB,
               isFirstLayerConv2d: true,
-              filterSizes: [3, 16, 32, 64, 128, 256, 512]
+              filterSizes: [3, 16, 32, 64, 128, 256, 512],
           };
-          _this = _super.call(this, config) || this;
-          return _this;
+          super(config);
       }
-      Object.defineProperty(TinyFaceDetector.prototype, "anchors", {
-          get: function () {
-              return this.config.anchors;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      TinyFaceDetector.prototype.locateFaces = function (input, forwardParams) {
-          return __awaiter(this, void 0, void 0, function () {
-              var objectDetections;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.detect(input, forwardParams)];
-                      case 1:
-                          objectDetections = _a.sent();
-                          return [2 /*return*/, objectDetections.map(function (det) { return new FaceDetection(det.score, det.relativeBox, { width: det.imageWidth, height: det.imageHeight }); })];
-                  }
-              });
-          });
-      };
-      TinyFaceDetector.prototype.getDefaultModelName = function () {
+      get anchors() {
+          return this.config.anchors;
+      }
+      async locateFaces(input, forwardParams) {
+          const objectDetections = await this.detect(input, forwardParams);
+          return objectDetections.map(det => new FaceDetection(det.score, det.relativeBox, {
+              width: det.imageWidth,
+              height: det.imageHeight,
+          }));
+      }
+      getDefaultModelName() {
           return 'tiny_face_detector_model';
-      };
-      TinyFaceDetector.prototype.extractParamsFromWeigthMap = function (weightMap) {
-          return _super.prototype.extractParamsFromWeigthMap.call(this, weightMap);
-      };
-      return TinyFaceDetector;
-  }(TinyYolov2Base));
+      }
+      extractParamsFromWeigthMap(weightMap) {
+          return super.extractParamsFromWeigthMap(weightMap);
+      }
+  }
 
-  var nets = {
+  const nets = {
       ssdMobilenetv1: new SsdMobilenetv1(),
       tinyFaceDetector: new TinyFaceDetector(),
       tinyYolov2: new TinyYolov2(),
@@ -5664,7 +4710,7 @@
       faceLandmark68TinyNet: new FaceLandmark68TinyNet(),
       faceRecognitionNet: new FaceRecognitionNet(),
       faceExpressionNet: new FaceExpressionNet(),
-      ageGenderNet: new AgeGenderNet()
+      ageGenderNet: new AgeGenderNet(),
   };
   /**
    * Attempts to detect all faces in an image using SSD Mobilenetv1 Network.
@@ -5673,9 +4719,7 @@
    * @param options (optional, default: see SsdMobilenetv1Options constructor for default parameters).
    * @returns Bounding box of each face with score.
    */
-  var ssdMobilenetv1 = function (input, options) {
-      return nets.ssdMobilenetv1.locateFaces(input, options);
-  };
+  const ssdMobilenetv1 = (input, options) => nets.ssdMobilenetv1.locateFaces(input, options);
   /**
    * Attempts to detect all faces in an image using the Tiny Face Detector.
    *
@@ -5683,9 +4727,7 @@
    * @param options (optional, default: see TinyFaceDetectorOptions constructor for default parameters).
    * @returns Bounding box of each face with score.
    */
-  var tinyFaceDetector = function (input, options) {
-      return nets.tinyFaceDetector.locateFaces(input, options);
-  };
+  const tinyFaceDetector = (input, options) => nets.tinyFaceDetector.locateFaces(input, options);
   /**
    * Attempts to detect all faces in an image using the Tiny Yolov2 Network.
    *
@@ -5693,9 +4735,7 @@
    * @param options (optional, default: see TinyYolov2Options constructor for default parameters).
    * @returns Bounding box of each face with score.
    */
-  var tinyYolov2 = function (input, options) {
-      return nets.tinyYolov2.locateFaces(input, options);
-  };
+  const tinyYolov2 = (input, options) => nets.tinyYolov2.locateFaces(input, options);
   /**
    * Attempts to detect all faces in an image and the 5 point face landmarks
    * of each detected face using the MTCNN Network.
@@ -5704,9 +4744,7 @@
    * @param options (optional, default: see MtcnnOptions constructor for default parameters).
    * @returns Bounding box of each face with score and 5 point face landmarks.
    */
-  var mtcnn = function (input, options) {
-      return nets.mtcnn.forward(input, options);
-  };
+  const mtcnn = (input, options) => nets.mtcnn.forward(input, options);
   /**
    * Detects the 68 point face landmark positions of the face shown in an image.
    *
@@ -5714,9 +4752,7 @@
    * also be an array of input images, which will be batch processed.
    * @returns 68 point face landmarks or array thereof in case of batch input.
    */
-  var detectFaceLandmarks = function (input) {
-      return nets.faceLandmark68Net.detectLandmarks(input);
-  };
+  const detectFaceLandmarks = (input) => nets.faceLandmark68Net.detectLandmarks(input);
   /**
    * Detects the 68 point face landmark positions of the face shown in an image
    * using a tinier version of the 68 point face landmark model, which is slightly
@@ -5726,9 +4762,7 @@
    * also be an array of input images, which will be batch processed.
    * @returns 68 point face landmarks or array thereof in case of batch input.
    */
-  var detectFaceLandmarksTiny = function (input) {
-      return nets.faceLandmark68TinyNet.detectLandmarks(input);
-  };
+  const detectFaceLandmarksTiny = (input) => nets.faceLandmark68TinyNet.detectLandmarks(input);
   /**
    * Computes a 128 entry vector (face descriptor / face embeddings) from the face shown in an image,
    * which uniquely represents the features of that persons face. The computed face descriptor can
@@ -5739,9 +4773,7 @@
    * also be an array of input images, which will be batch processed.
    * @returns Face descriptor with 128 entries or array thereof in case of batch input.
    */
-  var computeFaceDescriptor = function (input) {
-      return nets.faceRecognitionNet.computeFaceDescriptor(input);
-  };
+  const computeFaceDescriptor = (input) => nets.faceRecognitionNet.computeFaceDescriptor(input);
   /**
    * Recognizes the facial expressions from a face image.
    *
@@ -5749,9 +4781,7 @@
    * also be an array of input images, which will be batch processed.
    * @returns Facial expressions with corresponding probabilities or array thereof in case of batch input.
    */
-  var recognizeFaceExpressions = function (input) {
-      return nets.faceExpressionNet.predictExpressions(input);
-  };
+  const recognizeFaceExpressions = (input) => nets.faceExpressionNet.predictExpressions(input);
   /**
    * Predicts age and gender from a face image.
    *
@@ -5759,616 +4789,325 @@
    * also be an array of input images, which will be batch processed.
    * @returns Predictions with age, gender and gender probability or array thereof in case of batch input.
    */
-  var predictAgeAndGender = function (input) {
-      return nets.ageGenderNet.predictAgeAndGender(input);
-  };
-  var loadSsdMobilenetv1Model = function (url) { return nets.ssdMobilenetv1.load(url); };
-  var loadTinyFaceDetectorModel = function (url) { return nets.tinyFaceDetector.load(url); };
-  var loadMtcnnModel = function (url) { return nets.mtcnn.load(url); };
-  var loadTinyYolov2Model = function (url) { return nets.tinyYolov2.load(url); };
-  var loadFaceLandmarkModel = function (url) { return nets.faceLandmark68Net.load(url); };
-  var loadFaceLandmarkTinyModel = function (url) { return nets.faceLandmark68TinyNet.load(url); };
-  var loadFaceRecognitionModel = function (url) { return nets.faceRecognitionNet.load(url); };
-  var loadFaceExpressionModel = function (url) { return nets.faceExpressionNet.load(url); };
-  var loadAgeGenderModel = function (url) { return nets.ageGenderNet.load(url); };
+  const predictAgeAndGender = (input) => nets.ageGenderNet.predictAgeAndGender(input);
+  const loadSsdMobilenetv1Model = (url) => nets.ssdMobilenetv1.load(url);
+  const loadTinyFaceDetectorModel = (url) => nets.tinyFaceDetector.load(url);
+  const loadMtcnnModel = (url) => nets.mtcnn.load(url);
+  const loadTinyYolov2Model = (url) => nets.tinyYolov2.load(url);
+  const loadFaceLandmarkModel = (url) => nets.faceLandmark68Net.load(url);
+  const loadFaceLandmarkTinyModel = (url) => nets.faceLandmark68TinyNet.load(url);
+  const loadFaceRecognitionModel = (url) => nets.faceRecognitionNet.load(url);
+  const loadFaceExpressionModel = (url) => nets.faceExpressionNet.load(url);
+  const loadAgeGenderModel = (url) => nets.ageGenderNet.load(url);
   // backward compatibility
-  var loadFaceDetectionModel = loadSsdMobilenetv1Model;
-  var locateFaces = ssdMobilenetv1;
-  var detectLandmarks = detectFaceLandmarks;
+  const loadFaceDetectionModel = loadSsdMobilenetv1Model;
+  const locateFaces = ssdMobilenetv1;
+  const detectLandmarks = detectFaceLandmarks;
 
-  var PredictFaceExpressionsTaskBase = /** @class */ (function (_super) {
-      __extends(PredictFaceExpressionsTaskBase, _super);
-      function PredictFaceExpressionsTaskBase(parentTask, input, extractedFaces) {
-          var _this = _super.call(this) || this;
-          _this.parentTask = parentTask;
-          _this.input = input;
-          _this.extractedFaces = extractedFaces;
-          return _this;
+  class PredictFaceExpressionsTaskBase extends ComposableTask {
+      constructor(parentTask, input, extractedFaces) {
+          super();
+          this.parentTask = parentTask;
+          this.input = input;
+          this.extractedFaces = extractedFaces;
       }
-      return PredictFaceExpressionsTaskBase;
-  }(ComposableTask));
-  var PredictAllFaceExpressionsTask = /** @class */ (function (_super) {
-      __extends(PredictAllFaceExpressionsTask, _super);
-      function PredictAllFaceExpressionsTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
+  }
+  class PredictAllFaceExpressionsTask extends PredictFaceExpressionsTaskBase {
+      async run() {
+          const parentResults = await this.parentTask;
+          const faceExpressionsByFace = await extractAllFacesAndComputeResults(parentResults, this.input, async (faces) => await Promise.all(faces.map(face => nets.faceExpressionNet.predictExpressions(face))), this.extractedFaces);
+          return parentResults.map((parentResult, i) => extendWithFaceExpressions(parentResult, faceExpressionsByFace[i]));
       }
-      PredictAllFaceExpressionsTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResults, faceExpressionsByFace;
-              var _this = this;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResults = _a.sent();
-                          return [4 /*yield*/, extractAllFacesAndComputeResults(parentResults, this.input, function (faces) { return __awaiter(_this, void 0, void 0, function () {
-                                  return __generator(this, function (_a) {
-                                      switch (_a.label) {
-                                          case 0: return [4 /*yield*/, Promise.all(faces.map(function (face) { return nets.faceExpressionNet.predictExpressions(face); }))];
-                                          case 1: return [2 /*return*/, _a.sent()];
-                                      }
-                                  });
-                              }); }, this.extractedFaces)];
-                      case 2:
-                          faceExpressionsByFace = _a.sent();
-                          return [2 /*return*/, parentResults.map(function (parentResult, i) { return extendWithFaceExpressions(parentResult, faceExpressionsByFace[i]); })];
-                  }
-              });
-          });
-      };
-      PredictAllFaceExpressionsTask.prototype.withAgeAndGender = function () {
+      withAgeAndGender() {
           return new PredictAllAgeAndGenderTask(this, this.input);
-      };
-      return PredictAllFaceExpressionsTask;
-  }(PredictFaceExpressionsTaskBase));
-  var PredictSingleFaceExpressionsTask = /** @class */ (function (_super) {
-      __extends(PredictSingleFaceExpressionsTask, _super);
-      function PredictSingleFaceExpressionsTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      PredictSingleFaceExpressionsTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResult, faceExpressions;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResult = _a.sent();
-                          if (!parentResult) {
-                              return [2 /*return*/];
-                          }
-                          return [4 /*yield*/, extractSingleFaceAndComputeResult(parentResult, this.input, function (face) { return nets.faceExpressionNet.predictExpressions(face); }, this.extractedFaces)];
-                      case 2:
-                          faceExpressions = _a.sent();
-                          return [2 /*return*/, extendWithFaceExpressions(parentResult, faceExpressions)];
-                  }
-              });
-          });
-      };
-      PredictSingleFaceExpressionsTask.prototype.withAgeAndGender = function () {
+  }
+  class PredictSingleFaceExpressionsTask extends PredictFaceExpressionsTaskBase {
+      async run() {
+          const parentResult = await this.parentTask;
+          if (!parentResult) {
+              return;
+          }
+          const faceExpressions = await extractSingleFaceAndComputeResult(parentResult, this.input, face => nets.faceExpressionNet.predictExpressions(face), this.extractedFaces);
+          return extendWithFaceExpressions(parentResult, faceExpressions);
+      }
+      withAgeAndGender() {
           return new PredictSingleAgeAndGenderTask(this, this.input);
-      };
-      return PredictSingleFaceExpressionsTask;
-  }(PredictFaceExpressionsTaskBase));
-  var PredictAllFaceExpressionsWithFaceAlignmentTask = /** @class */ (function (_super) {
-      __extends(PredictAllFaceExpressionsWithFaceAlignmentTask, _super);
-      function PredictAllFaceExpressionsWithFaceAlignmentTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      PredictAllFaceExpressionsWithFaceAlignmentTask.prototype.withAgeAndGender = function () {
+  }
+  class PredictAllFaceExpressionsWithFaceAlignmentTask extends PredictAllFaceExpressionsTask {
+      withAgeAndGender() {
           return new PredictAllAgeAndGenderWithFaceAlignmentTask(this, this.input);
-      };
-      PredictAllFaceExpressionsWithFaceAlignmentTask.prototype.withFaceDescriptors = function () {
+      }
+      withFaceDescriptors() {
           return new ComputeAllFaceDescriptorsTask(this, this.input);
-      };
-      return PredictAllFaceExpressionsWithFaceAlignmentTask;
-  }(PredictAllFaceExpressionsTask));
-  var PredictSingleFaceExpressionsWithFaceAlignmentTask = /** @class */ (function (_super) {
-      __extends(PredictSingleFaceExpressionsWithFaceAlignmentTask, _super);
-      function PredictSingleFaceExpressionsWithFaceAlignmentTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      PredictSingleFaceExpressionsWithFaceAlignmentTask.prototype.withAgeAndGender = function () {
+  }
+  class PredictSingleFaceExpressionsWithFaceAlignmentTask extends PredictSingleFaceExpressionsTask {
+      withAgeAndGender() {
           return new PredictSingleAgeAndGenderWithFaceAlignmentTask(this, this.input);
-      };
-      PredictSingleFaceExpressionsWithFaceAlignmentTask.prototype.withFaceDescriptor = function () {
+      }
+      withFaceDescriptor() {
           return new ComputeSingleFaceDescriptorTask(this, this.input);
-      };
-      return PredictSingleFaceExpressionsWithFaceAlignmentTask;
-  }(PredictSingleFaceExpressionsTask));
+      }
+  }
 
-  var PredictAgeAndGenderTaskBase = /** @class */ (function (_super) {
-      __extends(PredictAgeAndGenderTaskBase, _super);
-      function PredictAgeAndGenderTaskBase(parentTask, input, extractedFaces) {
-          var _this = _super.call(this) || this;
-          _this.parentTask = parentTask;
-          _this.input = input;
-          _this.extractedFaces = extractedFaces;
-          return _this;
+  class PredictAgeAndGenderTaskBase extends ComposableTask {
+      constructor(parentTask, input, extractedFaces) {
+          super();
+          this.parentTask = parentTask;
+          this.input = input;
+          this.extractedFaces = extractedFaces;
       }
-      return PredictAgeAndGenderTaskBase;
-  }(ComposableTask));
-  var PredictAllAgeAndGenderTask = /** @class */ (function (_super) {
-      __extends(PredictAllAgeAndGenderTask, _super);
-      function PredictAllAgeAndGenderTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
-      }
-      PredictAllAgeAndGenderTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResults, ageAndGenderByFace;
-              var _this = this;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResults = _a.sent();
-                          return [4 /*yield*/, extractAllFacesAndComputeResults(parentResults, this.input, function (faces) { return __awaiter(_this, void 0, void 0, function () {
-                                  return __generator(this, function (_a) {
-                                      switch (_a.label) {
-                                          case 0: return [4 /*yield*/, Promise.all(faces.map(function (face) { return nets.ageGenderNet.predictAgeAndGender(face); }))];
-                                          case 1: return [2 /*return*/, _a.sent()];
-                                      }
-                                  });
-                              }); }, this.extractedFaces)];
-                      case 2:
-                          ageAndGenderByFace = _a.sent();
-                          return [2 /*return*/, parentResults.map(function (parentResult, i) {
-                                  var _a = ageAndGenderByFace[i], age = _a.age, gender = _a.gender, genderProbability = _a.genderProbability;
-                                  return extendWithAge(extendWithGender(parentResult, gender, genderProbability), age);
-                              })];
-                  }
-              });
+  }
+  class PredictAllAgeAndGenderTask extends PredictAgeAndGenderTaskBase {
+      async run() {
+          const parentResults = await this.parentTask;
+          const ageAndGenderByFace = await extractAllFacesAndComputeResults(parentResults, this.input, async (faces) => await Promise.all(faces.map(face => nets.ageGenderNet.predictAgeAndGender(face))), this.extractedFaces);
+          return parentResults.map((parentResult, i) => {
+              const { age, gender, genderProbability } = ageAndGenderByFace[i];
+              return extendWithAge(extendWithGender(parentResult, gender, genderProbability), age);
           });
-      };
-      PredictAllAgeAndGenderTask.prototype.withFaceExpressions = function () {
+      }
+      withFaceExpressions() {
           return new PredictAllFaceExpressionsTask(this, this.input);
-      };
-      return PredictAllAgeAndGenderTask;
-  }(PredictAgeAndGenderTaskBase));
-  var PredictSingleAgeAndGenderTask = /** @class */ (function (_super) {
-      __extends(PredictSingleAgeAndGenderTask, _super);
-      function PredictSingleAgeAndGenderTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      PredictSingleAgeAndGenderTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResult, _a, age, gender, genderProbability;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResult = _b.sent();
-                          if (!parentResult) {
-                              return [2 /*return*/];
-                          }
-                          return [4 /*yield*/, extractSingleFaceAndComputeResult(parentResult, this.input, function (face) { return nets.ageGenderNet.predictAgeAndGender(face); }, this.extractedFaces)];
-                      case 2:
-                          _a = _b.sent(), age = _a.age, gender = _a.gender, genderProbability = _a.genderProbability;
-                          return [2 /*return*/, extendWithAge(extendWithGender(parentResult, gender, genderProbability), age)];
-                  }
-              });
-          });
-      };
-      PredictSingleAgeAndGenderTask.prototype.withFaceExpressions = function () {
+  }
+  class PredictSingleAgeAndGenderTask extends PredictAgeAndGenderTaskBase {
+      async run() {
+          const parentResult = await this.parentTask;
+          if (!parentResult) {
+              return;
+          }
+          const { age, gender, genderProbability } = await extractSingleFaceAndComputeResult(parentResult, this.input, face => nets.ageGenderNet.predictAgeAndGender(face), this.extractedFaces);
+          return extendWithAge(extendWithGender(parentResult, gender, genderProbability), age);
+      }
+      withFaceExpressions() {
           return new PredictSingleFaceExpressionsTask(this, this.input);
-      };
-      return PredictSingleAgeAndGenderTask;
-  }(PredictAgeAndGenderTaskBase));
-  var PredictAllAgeAndGenderWithFaceAlignmentTask = /** @class */ (function (_super) {
-      __extends(PredictAllAgeAndGenderWithFaceAlignmentTask, _super);
-      function PredictAllAgeAndGenderWithFaceAlignmentTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      PredictAllAgeAndGenderWithFaceAlignmentTask.prototype.withFaceExpressions = function () {
+  }
+  class PredictAllAgeAndGenderWithFaceAlignmentTask extends PredictAllAgeAndGenderTask {
+      withFaceExpressions() {
           return new PredictAllFaceExpressionsWithFaceAlignmentTask(this, this.input);
-      };
-      PredictAllAgeAndGenderWithFaceAlignmentTask.prototype.withFaceDescriptors = function () {
+      }
+      withFaceDescriptors() {
           return new ComputeAllFaceDescriptorsTask(this, this.input);
-      };
-      return PredictAllAgeAndGenderWithFaceAlignmentTask;
-  }(PredictAllAgeAndGenderTask));
-  var PredictSingleAgeAndGenderWithFaceAlignmentTask = /** @class */ (function (_super) {
-      __extends(PredictSingleAgeAndGenderWithFaceAlignmentTask, _super);
-      function PredictSingleAgeAndGenderWithFaceAlignmentTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      PredictSingleAgeAndGenderWithFaceAlignmentTask.prototype.withFaceExpressions = function () {
+  }
+  class PredictSingleAgeAndGenderWithFaceAlignmentTask extends PredictSingleAgeAndGenderTask {
+      withFaceExpressions() {
           return new PredictSingleFaceExpressionsWithFaceAlignmentTask(this, this.input);
-      };
-      PredictSingleAgeAndGenderWithFaceAlignmentTask.prototype.withFaceDescriptor = function () {
+      }
+      withFaceDescriptor() {
           return new ComputeSingleFaceDescriptorTask(this, this.input);
-      };
-      return PredictSingleAgeAndGenderWithFaceAlignmentTask;
-  }(PredictSingleAgeAndGenderTask));
+      }
+  }
 
-  var ComputeFaceDescriptorsTaskBase = /** @class */ (function (_super) {
-      __extends(ComputeFaceDescriptorsTaskBase, _super);
-      function ComputeFaceDescriptorsTaskBase(parentTask, input) {
-          var _this = _super.call(this) || this;
-          _this.parentTask = parentTask;
-          _this.input = input;
-          return _this;
+  class ComputeFaceDescriptorsTaskBase extends ComposableTask {
+      constructor(parentTask, input) {
+          super();
+          this.parentTask = parentTask;
+          this.input = input;
       }
-      return ComputeFaceDescriptorsTaskBase;
-  }(ComposableTask));
-  var ComputeAllFaceDescriptorsTask = /** @class */ (function (_super) {
-      __extends(ComputeAllFaceDescriptorsTask, _super);
-      function ComputeAllFaceDescriptorsTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
+  }
+  class ComputeAllFaceDescriptorsTask extends ComputeFaceDescriptorsTaskBase {
+      async run() {
+          const parentResults = await this.parentTask;
+          const descriptors = await extractAllFacesAndComputeResults(parentResults, this.input, faces => Promise.all(faces.map(face => nets.faceRecognitionNet.computeFaceDescriptor(face))), null, parentResult => parentResult.landmarks.align(null, { useDlibAlignment: true }));
+          return descriptors.map((descriptor, i) => extendWithFaceDescriptor(parentResults[i], descriptor));
       }
-      ComputeAllFaceDescriptorsTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResults, descriptors;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResults = _a.sent();
-                          return [4 /*yield*/, extractAllFacesAndComputeResults(parentResults, this.input, function (faces) { return Promise.all(faces.map(function (face) {
-                                  return nets.faceRecognitionNet.computeFaceDescriptor(face);
-                              })); }, null, function (parentResult) { return parentResult.landmarks.align(null, { useDlibAlignment: true }); })];
-                      case 2:
-                          descriptors = _a.sent();
-                          return [2 /*return*/, descriptors.map(function (descriptor, i) { return extendWithFaceDescriptor(parentResults[i], descriptor); })];
-                  }
-              });
-          });
-      };
-      ComputeAllFaceDescriptorsTask.prototype.withFaceExpressions = function () {
+      withFaceExpressions() {
           return new PredictAllFaceExpressionsWithFaceAlignmentTask(this, this.input);
-      };
-      ComputeAllFaceDescriptorsTask.prototype.withAgeAndGender = function () {
-          return new PredictAllAgeAndGenderWithFaceAlignmentTask(this, this.input);
-      };
-      return ComputeAllFaceDescriptorsTask;
-  }(ComputeFaceDescriptorsTaskBase));
-  var ComputeSingleFaceDescriptorTask = /** @class */ (function (_super) {
-      __extends(ComputeSingleFaceDescriptorTask, _super);
-      function ComputeSingleFaceDescriptorTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      ComputeSingleFaceDescriptorTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResult, descriptor;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResult = _a.sent();
-                          if (!parentResult) {
-                              return [2 /*return*/];
-                          }
-                          return [4 /*yield*/, extractSingleFaceAndComputeResult(parentResult, this.input, function (face) { return nets.faceRecognitionNet.computeFaceDescriptor(face); }, null, function (parentResult) { return parentResult.landmarks.align(null, { useDlibAlignment: true }); })];
-                      case 2:
-                          descriptor = _a.sent();
-                          return [2 /*return*/, extendWithFaceDescriptor(parentResult, descriptor)];
-                  }
-              });
-          });
-      };
-      ComputeSingleFaceDescriptorTask.prototype.withFaceExpressions = function () {
+      withAgeAndGender() {
+          return new PredictAllAgeAndGenderWithFaceAlignmentTask(this, this.input);
+      }
+  }
+  class ComputeSingleFaceDescriptorTask extends ComputeFaceDescriptorsTaskBase {
+      async run() {
+          const parentResult = await this.parentTask;
+          if (!parentResult) {
+              return;
+          }
+          const descriptor = await extractSingleFaceAndComputeResult(parentResult, this.input, face => nets.faceRecognitionNet.computeFaceDescriptor(face), null, parentResult => parentResult.landmarks.align(null, { useDlibAlignment: true }));
+          return extendWithFaceDescriptor(parentResult, descriptor);
+      }
+      withFaceExpressions() {
           return new PredictSingleFaceExpressionsWithFaceAlignmentTask(this, this.input);
-      };
-      ComputeSingleFaceDescriptorTask.prototype.withAgeAndGender = function () {
+      }
+      withAgeAndGender() {
           return new PredictSingleAgeAndGenderWithFaceAlignmentTask(this, this.input);
-      };
-      return ComputeSingleFaceDescriptorTask;
-  }(ComputeFaceDescriptorsTaskBase));
+      }
+  }
 
-  var DetectFaceLandmarksTaskBase = /** @class */ (function (_super) {
-      __extends(DetectFaceLandmarksTaskBase, _super);
-      function DetectFaceLandmarksTaskBase(parentTask, input, useTinyLandmarkNet) {
-          var _this = _super.call(this) || this;
-          _this.parentTask = parentTask;
-          _this.input = input;
-          _this.useTinyLandmarkNet = useTinyLandmarkNet;
-          return _this;
+  class DetectFaceLandmarksTaskBase extends ComposableTask {
+      constructor(parentTask, input, useTinyLandmarkNet) {
+          super();
+          this.parentTask = parentTask;
+          this.input = input;
+          this.useTinyLandmarkNet = useTinyLandmarkNet;
       }
-      Object.defineProperty(DetectFaceLandmarksTaskBase.prototype, "landmarkNet", {
-          get: function () {
-              return this.useTinyLandmarkNet
-                  ? nets.faceLandmark68TinyNet
-                  : nets.faceLandmark68Net;
-          },
-          enumerable: false,
-          configurable: true
-      });
-      return DetectFaceLandmarksTaskBase;
-  }(ComposableTask));
-  var DetectAllFaceLandmarksTask = /** @class */ (function (_super) {
-      __extends(DetectAllFaceLandmarksTask, _super);
-      function DetectAllFaceLandmarksTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
+      get landmarkNet() {
+          return this.useTinyLandmarkNet ? nets.faceLandmark68TinyNet : nets.faceLandmark68Net;
       }
-      DetectAllFaceLandmarksTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResults, detections, faces, _a, faceLandmarksByFace;
-              var _this = this;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResults = _b.sent();
-                          detections = parentResults.map(function (res) { return res.detection; });
-                          if (!(this.input instanceof wt)) return [3 /*break*/, 3];
-                          return [4 /*yield*/, extractFaceTensors(this.input, detections)];
-                      case 2:
-                          _a = _b.sent();
-                          return [3 /*break*/, 5];
-                      case 3: return [4 /*yield*/, extractFaces(this.input, detections)];
-                      case 4:
-                          _a = _b.sent();
-                          _b.label = 5;
-                      case 5:
-                          faces = _a;
-                          return [4 /*yield*/, Promise.all(faces.map(function (face) { return _this.landmarkNet.detectLandmarks(face); }))];
-                      case 6:
-                          faceLandmarksByFace = _b.sent();
-                          faces.forEach(function (f) { return f instanceof wt && f.dispose(); });
-                          return [2 /*return*/, parentResults.map(function (parentResult, i) {
-                                  return extendWithFaceLandmarks(parentResult, faceLandmarksByFace[i]);
-                              })];
-                  }
-              });
+  }
+  class DetectAllFaceLandmarksTask extends DetectFaceLandmarksTaskBase {
+      async run() {
+          const parentResults = await this.parentTask;
+          const detections = parentResults.map(res => res.detection);
+          const faces = this.input instanceof wt
+              ? await extractFaceTensors(this.input, detections)
+              : await extractFaces(this.input, detections);
+          const faceLandmarksByFace = (await Promise.all(faces.map(face => this.landmarkNet.detectLandmarks(face))));
+          faces.forEach(f => {
+              if (f instanceof wt) {
+                  f.dispose();
+              }
           });
-      };
-      DetectAllFaceLandmarksTask.prototype.withFaceExpressions = function () {
+          return parentResults.map((parentResult, i) => extendWithFaceLandmarks(parentResult, faceLandmarksByFace[i]));
+      }
+      withFaceExpressions() {
           return new PredictAllFaceExpressionsWithFaceAlignmentTask(this, this.input);
-      };
-      DetectAllFaceLandmarksTask.prototype.withAgeAndGender = function () {
+      }
+      withAgeAndGender() {
           return new PredictAllAgeAndGenderWithFaceAlignmentTask(this, this.input);
-      };
-      DetectAllFaceLandmarksTask.prototype.withFaceDescriptors = function () {
+      }
+      withFaceDescriptors() {
           return new ComputeAllFaceDescriptorsTask(this, this.input);
-      };
-      return DetectAllFaceLandmarksTask;
-  }(DetectFaceLandmarksTaskBase));
-  var DetectSingleFaceLandmarksTask = /** @class */ (function (_super) {
-      __extends(DetectSingleFaceLandmarksTask, _super);
-      function DetectSingleFaceLandmarksTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      DetectSingleFaceLandmarksTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var parentResult, detection, faces, _a, landmarks;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0: return [4 /*yield*/, this.parentTask];
-                      case 1:
-                          parentResult = _b.sent();
-                          if (!parentResult) {
-                              return [2 /*return*/];
-                          }
-                          detection = parentResult.detection;
-                          if (!(this.input instanceof wt)) return [3 /*break*/, 3];
-                          return [4 /*yield*/, extractFaceTensors(this.input, [detection])];
-                      case 2:
-                          _a = _b.sent();
-                          return [3 /*break*/, 5];
-                      case 3: return [4 /*yield*/, extractFaces(this.input, [detection])];
-                      case 4:
-                          _a = _b.sent();
-                          _b.label = 5;
-                      case 5:
-                          faces = _a;
-                          return [4 /*yield*/, this.landmarkNet.detectLandmarks(faces[0])];
-                      case 6:
-                          landmarks = _b.sent();
-                          faces.forEach(function (f) { return f instanceof wt && f.dispose(); });
-                          return [2 /*return*/, extendWithFaceLandmarks(parentResult, landmarks)];
-                  }
-              });
+  }
+  class DetectSingleFaceLandmarksTask extends DetectFaceLandmarksTaskBase {
+      async run() {
+          const parentResult = await this.parentTask;
+          if (!parentResult) {
+              return;
+          }
+          const { detection } = parentResult;
+          const faces = this.input instanceof wt
+              ? await extractFaceTensors(this.input, [detection])
+              : await extractFaces(this.input, [detection]);
+          const landmarks = (await this.landmarkNet.detectLandmarks(faces[0]));
+          faces.forEach(f => {
+              if (f instanceof wt) {
+                  f.dispose();
+              }
           });
-      };
-      DetectSingleFaceLandmarksTask.prototype.withFaceExpressions = function () {
+          return extendWithFaceLandmarks(parentResult, landmarks);
+      }
+      withFaceExpressions() {
           return new PredictSingleFaceExpressionsWithFaceAlignmentTask(this, this.input);
-      };
-      DetectSingleFaceLandmarksTask.prototype.withAgeAndGender = function () {
+      }
+      withAgeAndGender() {
           return new PredictSingleAgeAndGenderWithFaceAlignmentTask(this, this.input);
-      };
-      DetectSingleFaceLandmarksTask.prototype.withFaceDescriptor = function () {
+      }
+      withFaceDescriptor() {
           return new ComputeSingleFaceDescriptorTask(this, this.input);
-      };
-      return DetectSingleFaceLandmarksTask;
-  }(DetectFaceLandmarksTaskBase));
+      }
+  }
 
-  var DetectFacesTaskBase = /** @class */ (function (_super) {
-      __extends(DetectFacesTaskBase, _super);
-      function DetectFacesTaskBase(input, options) {
-          if (options === void 0) { options = new SsdMobilenetv1Options(); }
-          var _this = _super.call(this) || this;
-          _this.input = input;
-          _this.options = options;
-          return _this;
+  class DetectFacesTaskBase extends ComposableTask {
+      constructor(input, options = new SsdMobilenetv1Options()) {
+          super();
+          this.input = input;
+          this.options = options;
       }
-      return DetectFacesTaskBase;
-  }(ComposableTask));
-  var DetectAllFacesTask = /** @class */ (function (_super) {
-      __extends(DetectAllFacesTask, _super);
-      function DetectAllFacesTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
+  }
+  class DetectAllFacesTask extends DetectFacesTaskBase {
+      async run() {
+          const { input, options } = this;
+          if (options instanceof MtcnnOptions) {
+              return (await nets.mtcnn.forward(input, options)).map(result => result.detection);
+          }
+          const faceDetectionFunction = options instanceof TinyFaceDetectorOptions
+              ? (input) => nets.tinyFaceDetector.locateFaces(input, options)
+              : options instanceof SsdMobilenetv1Options
+                  ? (input) => nets.ssdMobilenetv1.locateFaces(input, options)
+                  : options instanceof TinyYolov2Options
+                      ? (input) => nets.tinyYolov2.locateFaces(input, options)
+                      : null;
+          if (!faceDetectionFunction) {
+              throw new Error('detectFaces - expected options to be instance of TinyFaceDetectorOptions | SsdMobilenetv1Options | MtcnnOptions | TinyYolov2Options');
+          }
+          return faceDetectionFunction(input);
       }
-      DetectAllFacesTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var _a, input, options, faceDetectionFunction;
-              return __generator(this, function (_b) {
-                  switch (_b.label) {
-                      case 0:
-                          _a = this, input = _a.input, options = _a.options;
-                          if (!(options instanceof MtcnnOptions)) return [3 /*break*/, 2];
-                          return [4 /*yield*/, nets.mtcnn.forward(input, options)];
-                      case 1: return [2 /*return*/, (_b.sent())
-                              .map(function (result) { return result.detection; })];
-                      case 2:
-                          faceDetectionFunction = options instanceof TinyFaceDetectorOptions
-                              ? function (input) { return nets.tinyFaceDetector.locateFaces(input, options); }
-                              : (options instanceof SsdMobilenetv1Options
-                                  ? function (input) { return nets.ssdMobilenetv1.locateFaces(input, options); }
-                                  : (options instanceof TinyYolov2Options
-                                      ? function (input) { return nets.tinyYolov2.locateFaces(input, options); }
-                                      : null));
-                          if (!faceDetectionFunction) {
-                              throw new Error('detectFaces - expected options to be instance of TinyFaceDetectorOptions | SsdMobilenetv1Options | MtcnnOptions | TinyYolov2Options');
-                          }
-                          return [2 /*return*/, faceDetectionFunction(input)];
-                  }
-              });
-          });
-      };
-      DetectAllFacesTask.prototype.runAndExtendWithFaceDetections = function () {
-          var _this = this;
-          return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
-              var detections;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.run()];
-                      case 1:
-                          detections = _a.sent();
-                          return [2 /*return*/, res(detections.map(function (detection) { return extendWithFaceDetection({}, detection); }))];
-                  }
-              });
-          }); });
-      };
-      DetectAllFacesTask.prototype.withFaceLandmarks = function (useTinyLandmarkNet) {
-          if (useTinyLandmarkNet === void 0) { useTinyLandmarkNet = false; }
+      async runAndExtendWithFaceDetections() {
+          const detections = await this.run();
+          return detections.map(detection => extendWithFaceDetection({}, detection));
+      }
+      withFaceLandmarks(useTinyLandmarkNet = false) {
           return new DetectAllFaceLandmarksTask(this.runAndExtendWithFaceDetections(), this.input, useTinyLandmarkNet);
-      };
-      DetectAllFacesTask.prototype.withFaceExpressions = function () {
-          return new PredictAllFaceExpressionsTask(this.runAndExtendWithFaceDetections(), this.input);
-      };
-      DetectAllFacesTask.prototype.withAgeAndGender = function () {
-          return new PredictAllAgeAndGenderTask(this.runAndExtendWithFaceDetections(), this.input);
-      };
-      return DetectAllFacesTask;
-  }(DetectFacesTaskBase));
-  var DetectSingleFaceTask = /** @class */ (function (_super) {
-      __extends(DetectSingleFaceTask, _super);
-      function DetectSingleFaceTask() {
-          return _super !== null && _super.apply(this, arguments) || this;
       }
-      DetectSingleFaceTask.prototype.run = function () {
-          return __awaiter(this, void 0, void 0, function () {
-              var faceDetections, faceDetectionWithHighestScore;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, new DetectAllFacesTask(this.input, this.options)];
-                      case 1:
-                          faceDetections = _a.sent();
-                          faceDetectionWithHighestScore = faceDetections[0];
-                          faceDetections.forEach(function (faceDetection) {
-                              if (faceDetection.score > faceDetectionWithHighestScore.score) {
-                                  faceDetectionWithHighestScore = faceDetection;
-                              }
-                          });
-                          return [2 /*return*/, faceDetectionWithHighestScore];
-                  }
-              });
+      withFaceExpressions() {
+          return new PredictAllFaceExpressionsTask(this.runAndExtendWithFaceDetections(), this.input);
+      }
+      withAgeAndGender() {
+          return new PredictAllAgeAndGenderTask(this.runAndExtendWithFaceDetections(), this.input);
+      }
+  }
+  class DetectSingleFaceTask extends DetectFacesTaskBase {
+      async run() {
+          const faceDetections = await new DetectAllFacesTask(this.input, this.options);
+          let faceDetectionWithHighestScore = faceDetections[0];
+          faceDetections.forEach(faceDetection => {
+              if (faceDetection.score > faceDetectionWithHighestScore.score) {
+                  faceDetectionWithHighestScore = faceDetection;
+              }
           });
-      };
-      DetectSingleFaceTask.prototype.runAndExtendWithFaceDetection = function () {
-          var _this = this;
-          return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
-              var detection;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0: return [4 /*yield*/, this.run()];
-                      case 1:
-                          detection = _a.sent();
-                          return [2 /*return*/, res(detection ? extendWithFaceDetection({}, detection) : undefined)];
-                  }
-              });
-          }); });
-      };
-      DetectSingleFaceTask.prototype.withFaceLandmarks = function (useTinyLandmarkNet) {
-          if (useTinyLandmarkNet === void 0) { useTinyLandmarkNet = false; }
+          return faceDetectionWithHighestScore;
+      }
+      async runAndExtendWithFaceDetection() {
+          const detection = await this.run();
+          return detection ? extendWithFaceDetection({}, detection) : undefined;
+      }
+      withFaceLandmarks(useTinyLandmarkNet = false) {
           return new DetectSingleFaceLandmarksTask(this.runAndExtendWithFaceDetection(), this.input, useTinyLandmarkNet);
-      };
-      DetectSingleFaceTask.prototype.withFaceExpressions = function () {
+      }
+      withFaceExpressions() {
           return new PredictSingleFaceExpressionsTask(this.runAndExtendWithFaceDetection(), this.input);
-      };
-      DetectSingleFaceTask.prototype.withAgeAndGender = function () {
+      }
+      withAgeAndGender() {
           return new PredictSingleAgeAndGenderTask(this.runAndExtendWithFaceDetection(), this.input);
-      };
-      return DetectSingleFaceTask;
-  }(DetectFacesTaskBase));
+      }
+  }
 
-  function detectSingleFace(input, options) {
-      if (options === void 0) { options = new SsdMobilenetv1Options(); }
+  function detectSingleFace(input, options = new SsdMobilenetv1Options()) {
       return new DetectSingleFaceTask(input, options);
   }
-  function detectAllFaces(input, options) {
-      if (options === void 0) { options = new SsdMobilenetv1Options(); }
+  function detectAllFaces(input, options = new SsdMobilenetv1Options()) {
       return new DetectAllFacesTask(input, options);
   }
 
   // export allFaces API for backward compatibility
-  function allFacesSsdMobilenetv1(input, minConfidence) {
-      return __awaiter(this, void 0, void 0, function () {
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0:
-                      console.warn('allFacesSsdMobilenetv1 is deprecated and will be removed soon, use the high level api instead');
-                      return [4 /*yield*/, detectAllFaces(input, new SsdMobilenetv1Options(minConfidence ? { minConfidence: minConfidence } : {}))
-                              .withFaceLandmarks()
-                              .withFaceDescriptors()];
-                  case 1: return [2 /*return*/, _a.sent()];
-              }
-          });
-      });
+  async function allFacesSsdMobilenetv1(input, minConfidence) {
+      console.warn('allFacesSsdMobilenetv1 is deprecated and will be removed soon, use the high level api instead');
+      return await detectAllFaces(input, new SsdMobilenetv1Options(minConfidence ? { minConfidence } : {}))
+          .withFaceLandmarks()
+          .withFaceDescriptors();
   }
-  function allFacesTinyYolov2(input, forwardParams) {
-      if (forwardParams === void 0) { forwardParams = {}; }
-      return __awaiter(this, void 0, void 0, function () {
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0:
-                      console.warn('allFacesTinyYolov2 is deprecated and will be removed soon, use the high level api instead');
-                      return [4 /*yield*/, detectAllFaces(input, new TinyYolov2Options(forwardParams))
-                              .withFaceLandmarks()
-                              .withFaceDescriptors()];
-                  case 1: return [2 /*return*/, _a.sent()];
-              }
-          });
-      });
+  async function allFacesTinyYolov2(input, forwardParams = {}) {
+      console.warn('allFacesTinyYolov2 is deprecated and will be removed soon, use the high level api instead');
+      return await detectAllFaces(input, new TinyYolov2Options(forwardParams))
+          .withFaceLandmarks()
+          .withFaceDescriptors();
   }
-  function allFacesMtcnn(input, forwardParams) {
-      if (forwardParams === void 0) { forwardParams = {}; }
-      return __awaiter(this, void 0, void 0, function () {
-          return __generator(this, function (_a) {
-              switch (_a.label) {
-                  case 0:
-                      console.warn('allFacesMtcnn is deprecated and will be removed soon, use the high level api instead');
-                      return [4 /*yield*/, detectAllFaces(input, new MtcnnOptions(forwardParams))
-                              .withFaceLandmarks()
-                              .withFaceDescriptors()];
-                  case 1: return [2 /*return*/, _a.sent()];
-              }
-          });
-      });
+  async function allFacesMtcnn(input, forwardParams = {}) {
+      console.warn('allFacesMtcnn is deprecated and will be removed soon, use the high level api instead');
+      return await detectAllFaces(input, new MtcnnOptions(forwardParams))
+          .withFaceLandmarks()
+          .withFaceDescriptors();
   }
-  var allFaces = allFacesSsdMobilenetv1;
+  const allFaces = allFacesSsdMobilenetv1;
 
-  function euclideanDistance(arr1, arr2) {
-      if (arr1.length !== arr2.length)
-          throw new Error('euclideanDistance: arr1.length !== arr2.length');
-      var desc1 = Array.from(arr1);
-      var desc2 = Array.from(arr2);
-      return Math.sqrt(desc1
-          .map(function (val, i) { return val - desc2[i]; })
-          .reduce(function (res, diff) { return res + Math.pow(diff, 2); }, 0));
-  }
-
-  var FaceMatcher = /** @class */ (function () {
-      function FaceMatcher(inputs, distanceThreshold) {
-          if (distanceThreshold === void 0) { distanceThreshold = 0.6; }
+  class FaceMatcher {
+      constructor(inputs, distanceThreshold = 0.6) {
           this._distanceThreshold = distanceThreshold;
-          var inputArray = Array.isArray(inputs) ? inputs : [inputs];
+          const inputArray = Array.isArray(inputs) ? inputs : [inputs];
           if (!inputArray.length) {
-              throw new Error("FaceRecognizer.constructor - expected atleast one input");
+              throw new Error(`FaceRecognizer.constructor - expected atleast one input`);
           }
-          var count = 1;
-          var createUniqueLabel = function () { return "person " + count++; };
-          this._labeledDescriptors = inputArray.map(function (desc) {
+          let count = 1;
+          const createUniqueLabel = () => `person ${count++}`;
+          this._labeledDescriptors = inputArray.map(desc => {
               if (desc instanceof LabeledFaceDescriptors) {
                   return desc;
               }
@@ -6378,77 +5117,59 @@
               if (desc.descriptor && desc.descriptor instanceof Float32Array) {
                   return new LabeledFaceDescriptors(createUniqueLabel(), [desc.descriptor]);
               }
-              throw new Error("FaceRecognizer.constructor - expected inputs to be of type LabeledFaceDescriptors | WithFaceDescriptor<any> | Float32Array | Array<LabeledFaceDescriptors | WithFaceDescriptor<any> | Float32Array>");
+              throw new Error(`FaceRecognizer.constructor - expected inputs to be of type LabeledFaceDescriptors | WithFaceDescriptor<any> | Float32Array | Array<LabeledFaceDescriptors | WithFaceDescriptor<any> | Float32Array>`);
           });
       }
-      Object.defineProperty(FaceMatcher.prototype, "labeledDescriptors", {
-          get: function () { return this._labeledDescriptors; },
-          enumerable: false,
-          configurable: true
-      });
-      Object.defineProperty(FaceMatcher.prototype, "distanceThreshold", {
-          get: function () { return this._distanceThreshold; },
-          enumerable: false,
-          configurable: true
-      });
-      FaceMatcher.prototype.computeMeanDistance = function (queryDescriptor, descriptors) {
-          return descriptors
-              .map(function (d) { return euclideanDistance(d, queryDescriptor); })
-              .reduce(function (d1, d2) { return d1 + d2; }, 0)
-              / (descriptors.length || 1);
-      };
-      FaceMatcher.prototype.matchDescriptor = function (queryDescriptor) {
-          var _this = this;
+      get labeledDescriptors() {
+          return this._labeledDescriptors;
+      }
+      get distanceThreshold() {
+          return this._distanceThreshold;
+      }
+      computeMeanDistance(queryDescriptor, descriptors) {
+          return (descriptors.map(d => euclideanDistance(d, queryDescriptor)).reduce((d1, d2) => d1 + d2, 0) /
+              (descriptors.length || 1));
+      }
+      matchDescriptor(queryDescriptor) {
           return this.labeledDescriptors
-              .map(function (_a) {
-              var descriptors = _a.descriptors, label = _a.label;
-              return new FaceMatch(label, _this.computeMeanDistance(queryDescriptor, descriptors));
-          })
-              .reduce(function (best, curr) { return best.distance < curr.distance ? best : curr; });
-      };
-      FaceMatcher.prototype.findBestMatch = function (queryDescriptor) {
-          var bestMatch = this.matchDescriptor(queryDescriptor);
+              .map(({ descriptors, label }) => new FaceMatch(label, this.computeMeanDistance(queryDescriptor, descriptors)))
+              .reduce((best, curr) => (best.distance < curr.distance ? best : curr));
+      }
+      findBestMatch(queryDescriptor) {
+          const bestMatch = this.matchDescriptor(queryDescriptor);
           return bestMatch.distance < this.distanceThreshold
               ? bestMatch
               : new FaceMatch('unknown', bestMatch.distance);
-      };
-      FaceMatcher.prototype.toJSON = function () {
+      }
+      toJSON() {
           return {
               distanceThreshold: this.distanceThreshold,
-              labeledDescriptors: this.labeledDescriptors.map(function (ld) { return ld.toJSON(); })
+              labeledDescriptors: this.labeledDescriptors.map(ld => ld.toJSON()),
           };
-      };
-      FaceMatcher.fromJSON = function (json) {
-          var labeledDescriptors = json.labeledDescriptors
-              .map(function (ld) { return LabeledFaceDescriptors.fromJSON(ld); });
+      }
+      static fromJSON(json) {
+          const labeledDescriptors = json.labeledDescriptors.map((ld) => LabeledFaceDescriptors.fromJSON(ld));
           return new FaceMatcher(labeledDescriptors, json.distanceThreshold);
-      };
-      return FaceMatcher;
-  }());
-
-  function createMtcnn(weights) {
-      var net = new Mtcnn();
-      net.extractWeights(weights);
-      return net;
+      }
   }
 
-  function createTinyFaceDetector(weights) {
-      var net = new TinyFaceDetector();
+  function createMtcnn(weights) {
+      const net = new Mtcnn();
       net.extractWeights(weights);
       return net;
   }
 
   function resizeResults(results, dimensions) {
-      var _a = new Dimensions(dimensions.width, dimensions.height), width = _a.width, height = _a.height;
+      const { width, height } = new Dimensions(dimensions.width, dimensions.height);
       if (width <= 0 || height <= 0) {
-          throw new Error("resizeResults - invalid dimensions: " + JSON.stringify({ width: width, height: height }));
+          throw new Error(`resizeResults - invalid dimensions: ${JSON.stringify({ width, height })}`);
       }
       if (Array.isArray(results)) {
-          return results.map(function (obj) { return resizeResults(obj, { width: width, height: height }); });
+          return results.map(obj => resizeResults(obj, { width, height }));
       }
       if (isWithFaceLandmarks(results)) {
-          var resizedDetection = results.detection.forSize(width, height);
-          var resizedLandmarks = results.unshiftedLandmarks.forSize(resizedDetection.box.width, resizedDetection.box.height);
+          const resizedDetection = results.detection.forSize(width, height);
+          const resizedLandmarks = results.unshiftedLandmarks.forSize(resizedDetection.box.width, resizedDetection.box.height);
           return extendWithFaceLandmarks(extendWithFaceDetection(results, resizedDetection), resizedLandmarks);
       }
       if (isWithFaceDetection(results)) {
@@ -6458,6 +5179,12 @@
           return results.forSize(width, height);
       }
       return results;
+  }
+
+  function createTinyFaceDetector(weights) {
+      const net = new TinyFaceDetector();
+      net.extractWeights(weights);
+      return net;
   }
 
   exports.AgeGenderNet = AgeGenderNet;

@@ -12,6 +12,7 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           module: 'ES2015',
+          target: 'es2017',
           declaration: false,
         },
       },

@@ -111,3 +111,28 @@ function _initFaceDetectionControls() {
   inputSizeSelect.on('change', onInputSizeChanged);
   inputSizeSelect.material_select();
 }
+
+// Global wrapper functions
+function getFaceDetectorOptions() {
+  return _getFaceDetectorOptions();
+}
+
+function onIncreaseMinConfidence() {
+  return _onIncreaseMinConfidence();
+}
+
+function onDecreaseMinConfidence() {
+  return _onDecreaseMinConfidence();
+}
+
+function onIncreaseScoreThreshold() {
+  return _onIncreaseScoreThreshold();
+}
+
+function onDecreaseScoreThreshold() {
+  return _onDecreaseScoreThreshold();
+}
+
+function initFaceDetectionControls() {
+  return _initFaceDetectionControls();
+}

@@ -4,7 +4,7 @@ import type { IDimensions } from './Dimensions';
 import { Point } from './Point';
 import type { IRect } from './Rect';
 
-export class Box<BoxType = unknown> implements IBoundingBox, IRect {
+export class Box<BoxType = any> implements IBoundingBox, IRect {
   public static isRect(rect: unknown): boolean {
     const r = rect as Record<string, unknown>;
     return !!rect && [r.x, r.y, r.width, r.height].every(isValidNumber);

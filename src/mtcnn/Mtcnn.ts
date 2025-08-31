@@ -79,7 +79,7 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
       bgrToRgbTensor(tf.expandDims(tf.browser.fromPixels(inputCanvas)).toFloat() as tf.Tensor4D)
     );
 
-    const onReturn = (results: MtcnnResult[]) => {
+    const onReturn = (results: MtcnnResult[]): { results: MtcnnResult[]; stats: MtcnnStats } => {
       // dispose tensors on return
       imgTensor.dispose();
       stats.total = Date.now() - tsTotal;
@@ -106,7 +106,7 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
     stats.total_stage1 = Date.now() - ts;
 
     if (!out1.boxes.length) {
-      return onReturn({ results: [], stats });
+      return onReturn([]);
     }
 
     stats.stage2_numInputBoxes = out1.boxes.length;
@@ -117,7 +117,7 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
     stats.total_stage2 = Date.now() - ts;
 
     if (!out2.boxes.length) {
-      return onReturn({ results: [], stats });
+      return onReturn([]);
     }
 
     stats.stage3_numInputBoxes = out2.boxes.length;
@@ -148,7 +148,7 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
       )
     );
 
-    return onReturn({ results, stats });
+    return onReturn(results);
   }
 
   public async forward(

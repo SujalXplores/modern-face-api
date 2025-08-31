@@ -3,7 +3,7 @@ import { awaitMediaLoaded } from './awaitMediaLoaded';
 import { isMediaElement } from './isMediaElement';
 import { NetInput } from './NetInput';
 import { resolveInput } from './resolveInput';
-import type { TNetInput } from './types';
+import type { TNetInput, TResolvedNetInput } from './types';
 
 /**
  * Validates the input to make sure, they are valid net inputs and awaits all media elements
@@ -25,7 +25,7 @@ export async function toNetInput(inputs: TNetInput): Promise<NetInput> {
 
   const getIdxHint = (idx: number) => (Array.isArray(inputs) ? ` at input index ${idx}:` : '');
 
-  const inputArray = inputArgArray.map(resolveInput);
+  const inputArray = inputArgArray.map(resolveInput) as TResolvedNetInput[];
 
   inputArray.forEach((input, i) => {
     if (!isMediaElement(input) && !isTensor3D(input) && !isTensor4D(input)) {

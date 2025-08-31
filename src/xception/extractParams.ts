@@ -100,7 +100,7 @@ export function extractParams(
     reduction_block_1: entry_flow_reduction_block_1,
   };
 
-  const middle_flow = {};
+  const middle_flow: any = {};
   range(numMainBlocks, 0, 1).forEach(idx => {
     middle_flow[`main_block_${idx}`] = extractMainBlockParams(128, `middle_flow/main_block_${idx}`);
   });
