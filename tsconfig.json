@@ -7,7 +7,7 @@
     "preserveConstEnums": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,

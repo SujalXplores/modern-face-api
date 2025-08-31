@@ -62540,7 +62540,7 @@ return a / b;`;
     function awaitMediaLoaded(media) {
         return new Promise((resolve, reject) => {
             if (media instanceof env.getEnv().Canvas || isMediaLoaded(media)) {
-                return resolve();
+                return resolve(undefined);
             }
             function onLoad(e) {
                 if (!e.currentTarget)
@@ -65159,7 +65159,15 @@ return a / b;`;
             const correctionFactorY = inputSize / height;
             const numCells = outputTensor.shape[1];
             const numBoxes = this.config.anchors.length;
-            const [boxesTensor, scoresTensor, classScoresTensor] = tidy(() => {
+            const [boxesTensor, scoresTensor, classScoresTensor] = this.extractTensors(outputTensor, numCells, numBoxes);
+            const results = await this.processBoxes(boxesTensor, scoresTensor, classScoresTensor, numCells, numBoxes, correctionFactorX, correctionFactorY, scoreThreshold);
+            boxesTensor.dispose();
+            scoresTensor.dispose();
+            classScoresTensor.dispose();
+            return results;
+        }
+        extractTensors(outputTensor, numCells, numBoxes) {
+            return tidy(() => {
                 const reshaped = reshape$2(outputTensor, [
                     numCells,
                     numCells,
@@ -65173,6 +65181,8 @@ return a / b;`;
                     : scalar(0);
                 return [boxes, scores, classScores];
             });
+        }
+        async processBoxes(boxesTensor, scoresTensor, classScoresTensor, numCells, numBoxes, correctionFactorX, correctionFactorY, scoreThreshold) {
             const results = [];
             const scoresData = (await scoresTensor.array());
             const boxesData = (await boxesTensor.array());
@@ -65181,29 +65191,28 @@ return a / b;`;
                     for (let anchor = 0; anchor < numBoxes; anchor++) {
                         const score = sigmoid(scoresData[row][col][anchor][0]);
                         if (!scoreThreshold || score > scoreThreshold) {
-                            const ctX = ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX;
-                            const ctY = ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY;
-                            const width = ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) /
-                                numCells) *
-                                correctionFactorX;
-                            const height = ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) /
-                                numCells) *
-                                correctionFactorY;
-                            const x = ctX - width / 2;
-                            const y = ctY - height / 2;
-                            const pos = { row, col, anchor };
-                            const { classScore, label } = this.withClassScores
-                                ? await this.extractPredictedClass(classScoresTensor, pos)
-                                : { classScore: 1, label: 0 };
-                            results.push(Object.assign({ box: new BoundingBox(x, y, x + width, y + height), score: score, classScore: score * classScore, label }, pos));
+                            const boxResult = this.processBox(boxesData, row, col, anchor, numCells, correctionFactorX, correctionFactorY, score, classScoresTensor);
+                            results.push(await boxResult);
                         }
                     }
                 }
             }
-            boxesTensor.dispose();
-            scoresTensor.dispose();
-            classScoresTensor.dispose();
             return results;
+        }
+        async processBox(boxesData, row, col, anchor, numCells, correctionFactorX, correctionFactorY, score, classScoresTensor) {
+            const ctX = ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX;
+            const ctY = ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY;
+            const width = ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) / numCells) *
+                correctionFactorX;
+            const height = ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) / numCells) *
+                correctionFactorY;
+            const x = ctX - width / 2;
+            const y = ctY - height / 2;
+            const pos = { row, col, anchor };
+            const { classScore, label } = this.withClassScores
+                ? await this.extractPredictedClass(classScoresTensor, pos)
+                : { classScore: 1, label: 0 };
+            return Object.assign({ box: new BoundingBox(x, y, x + width, y + height), score: score, classScore: score * classScore, label }, pos);
         }
         async extractPredictedClass(classesTensor, pos) {
             const { row, col, anchor } = pos;
@@ -66477,4 +66486,3 @@ return a / b;`;
     exports.validateConfig = validateConfig;
 
 }));
-//# sourceMappingURL=modern-face-api.js.map

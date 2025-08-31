@@ -1,10 +1,15 @@
 {
   "name": "modern-face-api",
-  "version": "0.22.2",
+  "version": "0.22.3",
   "description": "JavaScript API for face detection and face recognition in the browser with tensorflow.js",
   "module": "./build/es6/index.js",
   "main": "./build/commonjs/index.js",
   "typings": "./build/commonjs/index.d.ts",
+  "files": [
+    "build/commonjs/",
+    "dist/modern-face-api.min.js",
+    "weights/"
+  ],
   "scripts": {
     "rollup-min": "rollup -c rollup.config.mjs --environment minify:true",
     "rollup": "rollup -c rollup.config.mjs",

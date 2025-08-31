@@ -1,12 +1,42 @@
+# Dependencies
 node_modules
 .rpt2_cache
 
+# Development and documentation
 examples
 proto
-weights
 weights_uncompressed
 weights_unused
 src
 test
+tests
+temp
 tools
 docs
+*.md
+!README.md
+
+# Build artifacts to exclude (keep only essential for publishing)
+build/es6
+build/**/*.map
+
+# Configuration files
+*.config.*
+!package.json
+.husky
+.git*
+biome.json
+karma.conf.js
+rollup.config.mjs
+tsconfig*.json
+typedoc.config.js
+web-test-runner.config.js
+jasmine-node.js
+
+# IDE and OS files
+.vscode
+.DS_Store
+Thumbs.db
+
+# Large dist files - keep only minified version
+dist/modern-face-api.js
