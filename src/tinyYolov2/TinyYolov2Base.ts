@@ -188,7 +188,36 @@ export class TinyYolov2Base extends NeuralNetwork<TinyYolov2NetParams> {
     const numCells = outputTensor.shape[1];
     const numBoxes = this.config.anchors.length;
 
-    const [boxesTensor, scoresTensor, classScoresTensor] = tf.tidy(() => {
+    const [boxesTensor, scoresTensor, classScoresTensor] = this.extractTensors(
+      outputTensor,
+      numCells,
+      numBoxes
+    );
+
+    const results = await this.processBoxes(
+      boxesTensor,
+      scoresTensor,
+      classScoresTensor,
+      numCells,
+      numBoxes,
+      correctionFactorX,
+      correctionFactorY,
+      scoreThreshold
+    );
+
+    boxesTensor.dispose();
+    scoresTensor.dispose();
+    classScoresTensor.dispose();
+
+    return results;
+  }
+
+  private extractTensors(
+    outputTensor: tf.Tensor4D,
+    numCells: number,
+    numBoxes: number
+  ): [tf.Tensor4D, tf.Tensor4D, tf.Tensor4D | tf.Scalar] {
+    return tf.tidy(() => {
       const reshaped = tf.reshape(outputTensor, [
         numCells,
         numCells,
@@ -208,56 +237,84 @@ export class TinyYolov2Base extends NeuralNetwork<TinyYolov2NetParams> {
             3
           )
         : tf.scalar(0);
-      return [boxes, scores, classScores];
+      return [boxes, scores, classScores] as [tf.Tensor4D, tf.Tensor4D, tf.Tensor4D | tf.Scalar];
     });
+  }
 
+  private async processBoxes(
+    boxesTensor: tf.Tensor4D,
+    scoresTensor: tf.Tensor4D,
+    classScoresTensor: tf.Tensor4D | tf.Scalar,
+    numCells: number,
+    numBoxes: number,
+    correctionFactorX: number,
+    correctionFactorY: number,
+    scoreThreshold?: number
+  ) {
     const results = [];
-
     const scoresData = (await scoresTensor.array()) as number[][][][];
     const boxesData = (await boxesTensor.array()) as number[][][][];
+
     for (let row = 0; row < numCells; row++) {
       for (let col = 0; col < numCells; col++) {
         for (let anchor = 0; anchor < numBoxes; anchor++) {
           const score = sigmoid(scoresData[row][col][anchor][0]);
           if (!scoreThreshold || score > scoreThreshold) {
-            const ctX =
-              ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX;
-            const ctY =
-              ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY;
-            const width =
-              ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) /
-                numCells) *
-              correctionFactorX;
-            const height =
-              ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) /
-                numCells) *
-              correctionFactorY;
-
-            const x = ctX - width / 2;
-            const y = ctY - height / 2;
-
-            const pos = { row, col, anchor };
-            const { classScore, label } = this.withClassScores
-              ? await this.extractPredictedClass(classScoresTensor as tf.Tensor4D, pos)
-              : { classScore: 1, label: 0 };
-
-            results.push({
-              box: new BoundingBox(x, y, x + width, y + height),
-              score: score,
-              classScore: score * classScore,
-              label,
-              ...pos,
-            });
+            const boxResult = this.processBox(
+              boxesData,
+              row,
+              col,
+              anchor,
+              numCells,
+              correctionFactorX,
+              correctionFactorY,
+              score,
+              classScoresTensor
+            );
+            results.push(await boxResult);
           }
         }
       }
     }
 
-    boxesTensor.dispose();
-    scoresTensor.dispose();
-    classScoresTensor.dispose();
-
     return results;
+  }
+
+  private async processBox(
+    boxesData: number[][][][],
+    row: number,
+    col: number,
+    anchor: number,
+    numCells: number,
+    correctionFactorX: number,
+    correctionFactorY: number,
+    score: number,
+    classScoresTensor: tf.Tensor4D | tf.Scalar
+  ) {
+    const ctX = ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX;
+    const ctY = ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY;
+    const width =
+      ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) / numCells) *
+      correctionFactorX;
+    const height =
+      ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) / numCells) *
+      correctionFactorY;
+
+    const x = ctX - width / 2;
+    const y = ctY - height / 2;
+
+    const pos = { row, col, anchor };
+    const { classScore, label } = this.withClassScores
+      ? await this.extractPredictedClass(classScoresTensor as tf.Tensor4D, pos)
+      : { classScore: 1, label: 0 };
+
+    return {
+      box: new BoundingBox(x, y, x + width, y + height),
+      score: score,
+      classScore: score * classScore,
+      label,
+      ...pos,
+    };
   }
 
   private async extractPredictedClass(

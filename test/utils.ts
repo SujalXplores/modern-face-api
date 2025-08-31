@@ -191,7 +191,6 @@ export type DescribeWithNetsOptions = {
 // Wait for TensorFlow to be ready before accessing backend
 let isWebGL = false;
 tf.ready().then(() => {
-  const backend = tf.backend();
   isWebGL = tf.getBackend() === 'webgl';
 
   if (isWebGL) {
@@ -206,8 +205,6 @@ export function describeWithBackend(description: string, specDefinitions: () => 
     describe(description, specDefinitions);
     return;
   }
-
-  const defaultBackendName = tf.getBackend();
 
   describe(description, () => {
     beforeAll(() => {
