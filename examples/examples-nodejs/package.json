@@ -1,7 +1,7 @@
 {
-  "author": "justadudewhohacks",
+  "author": "SujalXplores",
   "license": "MIT",
   "dependencies": {
-    "face-api.js": "../../"
+    "modern-face-api": "../../"
   }
 }

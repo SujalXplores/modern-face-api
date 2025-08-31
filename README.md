@@ -1,29 +1,29 @@
-# face-api.js
+# modern-face-api
 
-[![Build Status](https://travis-ci.org/justadudewhohacks/face-api.js.svg?branch=master)](https://travis-ci.org/justadudewhohacks/face-api.js)
+[![Build Status](https://travis-ci.org/SujalXplores/modern-face-api.svg?branch=master)](https://travis-ci.org/SujalXplores/modern-face-api)
 [![Slack](https://slack.bri.im/badge.svg)](https://slack.bri.im)
 
 **JavaScript face recognition API for the browser and nodejs implemented on top of tensorflow.js core ([tensorflow/tfjs-core](https://github.com/tensorflow/tfjs))**
 
 ![faceapi](https://user-images.githubusercontent.com/31125521/57224752-ad3dc080-700a-11e9-85b9-1357b9f9bca4.gif)
 
-## **[Click me for Live Demos!](https://justadudewhohacks.github.io/face-api.js/)**
+## **[Click me for Live Demos!](https://SujalXplores.github.io/modern-face-api/)**
 
 ## Tutorials
 
-* **[face-api.js — JavaScript API for Face Recognition in the Browser with tensorflow.js](https://itnext.io/face-api-js-javascript-api-for-face-recognition-in-the-browser-with-tensorflow-js-bcc2a6c4cf07)**
-* **[Realtime JavaScript Face Tracking and Face Recognition using face-api.js’ MTCNN Face Detector](https://itnext.io/realtime-javascript-face-tracking-and-face-recognition-using-face-api-js-mtcnn-face-detector-d924dd8b5740)**
+* **[modern-face-api — JavaScript API for Face Recognition in the Browser with tensorflow.js](https://itnext.io/face-api-js-javascript-api-for-face-recognition-in-the-browser-with-tensorflow-js-bcc2a6c4cf07)**
+* **[Realtime JavaScript Face Tracking and Face Recognition using modern-face-api’ MTCNN Face Detector](https://itnext.io/realtime-javascript-face-tracking-and-face-recognition-using-face-api-js-mtcnn-face-detector-d924dd8b5740)**
 * **[Realtime Webcam Face Detection And Emotion Recognition - Video](https://youtu.be/CVClHLwv-4I)**
 * **[Easy Face Recognition Tutorial With JavaScript - Video](https://youtu.be/AZ4PdALMqx0)**
-* **[Using face-api.js with Vue.js and Electron](https://medium.com/@andreas.schallwig/do-not-laugh-a-simple-ai-powered-game-3e22ad0f8166)**
+* **[Using modern-face-api with Vue.js and Electron](https://medium.com/@andreas.schallwig/do-not-laugh-a-simple-ai-powered-game-3e22ad0f8166)**
 * **[Add Masks to People - Gant Laborde on Learn with Jason](https://www.learnwithjason.dev/fun-with-machine-learning-pt-2)**
 
 ## Table of Contents
 
 * **[Features](#features)**
 * **[Running the Examples](#running-the-examples)**
-* **[face-api.js for the Browser](#face-api.js-for-the-browser)**
-* **[face-api.js for Nodejs](#face-api.js-for-nodejs)**
+* **[modern-face-api for the Browser](#modern-face-api-for-the-browser)**
+* **[modern-face-api for Nodejs](#modern-face-api-for-nodejs)**
 * **[Usage](#getting-started)**
   * **[Loading the Models](#getting-started-loading-models)**
   * **[High Level API](#high-level-api)**
@@ -37,7 +37,7 @@
   * **[Face Recognition](#models-face-recognition)**
   * **[Face Expression Recognition](#models-face-expression-recognition)**
   * **[Age Estimation and Gender Recognition](#models-age-and-gender-recognition)**
-* **[API Documentation](https://justadudewhohacks.github.io/face-api.js/docs/globals.html)**
+* **[API Documentation](https://SujalXplores.github.io/modern-face-api/docs/globals.html)**
 
 # Features
 
@@ -64,13 +64,13 @@
 Clone the repository:
 
 ``` bash
-git clone https://github.com/justadudewhohacks/face-api.js.git
+git clone https://github.com/SujalXplores/modern-face-api.git
 ```
 
 ## Running the Browser Examples
 
 ``` bash
-cd face-api.js/examples/examples-browser
+cd modern-face-api/examples/examples-browser
 npm i
 npm start
 ```
@@ -80,7 +80,7 @@ Browse to http://localhost:3000/.
 ## Running the Nodejs Examples
 
 ``` bash
-cd face-api.js/examples/examples-nodejs
+cd modern-face-api/examples/examples-nodejs
 npm i
 ```
 
@@ -97,21 +97,21 @@ tsc faceDetection.ts
 node faceDetection.js
 ```
 
-<a name="face-api.js-for-the-browser"></a>
+<a name="modern-face-api-for-the-browser"></a>
 
-# face-api.js for the Browser
+# modern-face-api for the Browser
 
-Simply include the latest script from [dist/face-api.js](https://github.com/justadudewhohacks/face-api.js/tree/master/dist).
+Simply include the latest script from [dist/modern-face-api](https://github.com/SujalXplores/modern-face-api/tree/master/dist).
 
 Or install it via npm:
 
 ``` bash
-npm i face-api.js
+npm i modern-face-api
 ```
 
-<a name="face-api.js-for-nodejs"></a>
+<a name="modern-face-api-for-nodejs"></a>
 
-# face-api.js for Nodejs
+# modern-face-api for Nodejs
 
 We can use the equivalent API in a nodejs environment by polyfilling some browser specifics, such as HTMLImageElement, HTMLCanvasElement and ImageData. The easiest way to do so is by installing the node-canvas package.
 
@@ -120,7 +120,7 @@ Alternatively you can simply construct your own tensors from image data and pass
 Furthermore you want to install @tensorflow/tfjs-node (not required, but highly recommended), which speeds things up drastically by compiling and binding to the native Tensorflow C++ library:
 
 ``` bash
-npm i face-api.js canvas @tensorflow/tfjs-node
+npm i modern-face-api canvas @tensorflow/tfjs-node
 ```
 
 Now we simply monkey patch the environment to use the polyfills:
@@ -133,7 +133,7 @@ import '@tensorflow/tfjs-node';
 // implements nodejs wrappers for HTMLCanvasElement, HTMLImageElement, ImageData
 import * as canvas from 'canvas';
 
-import * as faceapi from 'face-api.js';
+import * as faceapi from 'modern-face-api';
 
 // patch nodejs environment, we need to provide an implementation of
 // HTMLCanvasElement and HTMLImageElement
@@ -451,7 +451,7 @@ const canvas = document.getElementById('overlay')
 faceapi.matchDimensions(canvas, displaySize)
 ```
 
-face-api.js predefines some highlevel drawing functions, which you can utilize:
+modern-face-api predefines some highlevel drawing functions, which you can utilize:
 
 ``` javascript
 /* Display detected face bounding boxes */

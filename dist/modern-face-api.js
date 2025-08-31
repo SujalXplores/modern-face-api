@@ -6588,4 +6588,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=face-api.js.map
+//# sourceMappingURL=modern-face-api.js.map

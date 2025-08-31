@@ -2,7 +2,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "author": "justadudewhohacks",
+  "author": "SujalXplores",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",

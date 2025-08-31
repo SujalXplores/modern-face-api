@@ -119,9 +119,9 @@ function renderNavBar(navbarId, exampleUri) {
   const githubLink = document.createElement('a')
   githubLink.classList.add('waves-effect', 'waves-light', 'side-by-side')
   githubLink.id = 'github-link'
-  githubLink.href = 'https://github.com/justadudewhohacks/face-api.js'
+  githubLink.href = 'https://github.com/SujalXplores/modern-face-api'
   const h5 = document.createElement('h5')
-  h5.innerHTML = 'face-api.js'
+  h5.innerHTML = 'modern-face-api'
   githubLink.appendChild(h5)
   const githubLinkIcon = document.createElement('img')
   githubLinkIcon.src = 'github_link_icon.png'

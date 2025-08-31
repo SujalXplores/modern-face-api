@@ -1,8 +1,10 @@
-import * as faceapi from 'face-api.js';
+import * as faceapi from 'modern-face-api';
 
-import { canvas, faceDetectionNet, faceDetectionOptions, saveFile } from './commons';
+import { canvas, faceDetectionNet, faceDetectionOptions, saveFile, loadTensorFlowBindings } from './commons';
 
 async function run() {
+  // Load TensorFlow bindings (optional)
+  await loadTensorFlowBindings();
 
   await faceDetectionNet.loadFromDisk('../../weights')
 
