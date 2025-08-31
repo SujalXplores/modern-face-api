@@ -28,7 +28,7 @@ importers:
         specifier: 3.2.0
         version: 3.2.0
       cross-env:
-        specifier: ^10.0.0
+        specifier: 10.0.0
         version: 10.0.0
       jasmine:
         specifier: 3.99.0
@@ -49,7 +49,7 @@ importers:
         specifier: 5.5.4
         version: 5.5.4(karma@4.4.1)(typescript@3.9.10)
       rimraf:
-        specifier: ^6.0.1
+        specifier: 6.0.1
         version: 6.0.1
       rollup:
         specifier: 2.79.2
