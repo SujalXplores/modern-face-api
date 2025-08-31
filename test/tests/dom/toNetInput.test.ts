@@ -87,7 +87,7 @@ describe('toNetInput', () => {
       const tensors = [imgEl, imgEl, imgEl].map(el =>
         tf.browser.fromPixels(createCanvasFromMedia(el))
       );
-      const tensor4ds = tensors.map(t => t.expandDims<tf.Rank.R4>());
+      const tensor4ds = tensors.map(t => tf.expandDims(t, 0) as tf.Tensor4D);
 
       await expectAllTensorsReleased(async () => {
         await toNetInput(imgEl);

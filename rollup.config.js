@@ -1,7 +1,7 @@
-import commonjs from 'rollup-plugin-commonjs';
-import node from 'rollup-plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import node from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
-import { uglify } from 'rollup-plugin-uglify';
 
 const { minify } = process.env;
 
@@ -21,7 +21,7 @@ export default {
     commonjs({
       include: 'node_modules/**',
     }),
-  ].concat(minify ? uglify() : []),
+  ].concat(minify ? terser() : []),
   output: {
     extend: true,
     file: `dist/modern-face-api${minify ? '.min' : ''}.js`,

@@ -50,7 +50,7 @@ describeWithBackend('globalApi', () => {
   });
 
   function expectFaceDetectionWithLandmarks(
-    result: WithFaceLandmarks<WithFaceDetection<{}>> | undefined
+    result: WithFaceLandmarks<WithFaceDetection<any>> | undefined
   ) {
     expect(!!result).toBeTruthy();
     if (result) {
@@ -64,7 +64,7 @@ describeWithBackend('globalApi', () => {
   }
 
   function expectFullFaceDescription(
-    result: WithFaceDescriptor<WithFaceLandmarks<WithFaceDetection<{}>>> | undefined
+    result: WithFaceDescriptor<WithFaceLandmarks<WithFaceDetection<any>>> | undefined
   ) {
     expect(!!result).toBeTruthy();
     if (result) {

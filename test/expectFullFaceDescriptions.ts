@@ -15,7 +15,7 @@ export type FullFaceDescriptionDeltas = BoxAndLandmarksDeltas & {
 };
 
 export function expectFullFaceDescriptions(
-  results: WithFaceDescriptor<WithFaceLandmarks<WithFaceDetection<Record<string, never>>>>[],
+  results: WithFaceDescriptor<WithFaceLandmarks<WithFaceDetection<any>>>[],
   allExpectedFullFaceDescriptions: ExpectedFullFaceDescription[],
   expectedScores: number[],
   deltas: FullFaceDescriptionDeltas
@@ -33,7 +33,7 @@ export function expectFullFaceDescriptions(
     const { detection, landmarks, descriptor } = sortedResults[i];
     expect(Math.abs(detection.score - expected.score)).toBeLessThan(deltas.maxScoreDelta);
     expectRectClose(detection.box, expected.detection, deltas.maxBoxDelta);
-    landmarks.positions.forEach((pt, j) => {
+    landmarks.positions.forEach((pt: any, j: number) => {
       expectPointClose(pt, expected.landmarks[j], deltas.maxLandmarksDelta);
     });
     expect(euclideanDistance(descriptor, expected.descriptor)).toBeLessThan(

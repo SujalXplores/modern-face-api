@@ -26,7 +26,7 @@ export class SsdMobilenetv1 extends NeuralNetwork<NetParams> {
     }
 
     return tf.tidy(() => {
-      const batchTensor = input.toBatchTensor(512, false).toFloat();
+      const batchTensor = tf.cast(input.toBatchTensor(512, false), 'float32');
 
       const x = tf.sub(
         tf.mul(batchTensor, tf.scalar(0.007843137718737125)),

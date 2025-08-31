@@ -1,17 +1,26 @@
 import * as tf from '@tensorflow/tfjs-core';
+import '@tensorflow/tfjs-backend-cpu';
+import '@tensorflow/tfjs-backend-webgl';
 
 import { fetchImage, fetchJson, fetchNetWeights, type NeuralNetwork } from '../src';
 import type { TestEnv } from './Environment';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
-if (
-  typeof window !== 'undefined' &&
-  window.__karma__ &&
-  (window.__karma__.config.jasmine.args as string[]).some(arg => arg === 'backend_cpu')
-) {
-  tf.setBackend('cpu');
+// Ensure backend is ready before any operations
+async function initBackend() {
+  await tf.ready();
+  if (
+    typeof window !== 'undefined' &&
+    (window as any).__karma__ &&
+    ((window as any).__karma__.config.jasmine.args as string[]).some(arg => arg === 'backend_cpu')
+  ) {
+    await tf.setBackend('cpu');
+  }
 }
+
+// Initialize backend immediately
+initBackend();
 
 async function loadImageBrowser(uri: string): Promise<HTMLImageElement> {
   return fetchImage(`base${uri.startsWith('/') ? '' : '/'}${uri}`);
@@ -41,5 +50,8 @@ const browserTestEnv: TestEnv = {
 };
 
 export function getTestEnv(): TestEnv {
-  return global.nodeTestEnv || browserTestEnv;
+  return (
+    (typeof window !== 'undefined' ? (window as any).nodeTestEnv : (global as any).nodeTestEnv) ||
+    browserTestEnv
+  );
 }

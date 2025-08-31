@@ -37,7 +37,7 @@ export async function extractFaceTensors(
 
     const faceTensors = boxes.map(({ x, y, width, height }) =>
       tf.slice3d(
-        imageTensor.as3D(imgHeight, imgWidth, numChannels),
+        tf.reshape(imageTensor, [imgHeight, imgWidth, numChannels]) as tf.Tensor3D,
         [y, x, 0],
         [height, width, numChannels]
       )

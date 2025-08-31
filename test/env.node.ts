@@ -28,4 +28,4 @@ const nodeTestEnv: TestEnv = {
   initNet: initNetNode,
 };
 
-global.nodeTestEnv = nodeTestEnv;
+(global as any).nodeTestEnv = nodeTestEnv;

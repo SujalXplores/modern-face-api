@@ -220,7 +220,7 @@ describeWithBackend('faceLandmark68Net', () => {
 
         it('single batch size 1 tf.Tensor4Ds', async () => {
           const tensor = tf.tidy(() =>
-            tf.browser.fromPixels(createCanvasFromMedia(imgEl1)).expandDims()
+            tf.expandDims(tf.browser.fromPixels(createCanvasFromMedia(imgEl1)), 0)
           ) as tf.Tensor4D;
 
           await expectAllTensorsReleased(async () => {
@@ -233,7 +233,7 @@ describeWithBackend('faceLandmark68Net', () => {
 
         it('multiple batch size 1 tf.Tensor4Ds', async () => {
           const tensors = [imgEl1, imgEl1, imgEl1].map(el =>
-            tf.tidy(() => tf.browser.fromPixels(createCanvasFromMedia(el)).expandDims())
+            tf.tidy(() => tf.expandDims(tf.browser.fromPixels(createCanvasFromMedia(el)), 0))
           ) as tf.Tensor4D[];
 
           await expectAllTensorsReleased(async () => {
@@ -282,7 +282,7 @@ describeWithBackend('faceLandmark68Net', () => {
 
         it('single batch size 1 tf.Tensor4Ds', async () => {
           const tensor = tf.tidy(() =>
-            tf.browser.fromPixels(createCanvasFromMedia(imgEl1)).expandDims()
+            tf.expandDims(tf.browser.fromPixels(createCanvasFromMedia(imgEl1)), 0)
           ) as tf.Tensor4D;
 
           await expectAllTensorsReleased(async () => {
@@ -294,7 +294,7 @@ describeWithBackend('faceLandmark68Net', () => {
 
         it('multiple batch size 1 tf.Tensor4Ds', async () => {
           const tensors = [imgEl1, imgEl1, imgEl1].map(el =>
-            tf.tidy(() => tf.browser.fromPixels(createCanvasFromMedia(el)).expandDims())
+            tf.tidy(() => tf.expandDims(tf.browser.fromPixels(createCanvasFromMedia(el)), 0))
           ) as tf.Tensor4D[];
 
           await expectAllTensorsReleased(async () => {

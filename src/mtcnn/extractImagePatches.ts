@@ -45,9 +45,10 @@ export async function extractImagePatches(
 
   return imagePatchesDatas.map(data => {
     const t = tf.tidy(() => {
-      const imagePatchTensor = tf
-        .transpose(tf.tensor4d(data, [1, width, height, 3]), [0, 2, 1, 3])
-        .toFloat() as tf.Tensor4D;
+      const imagePatchTensor = tf.cast(
+        tf.transpose(tf.tensor4d(data, [1, width, height, 3]), [0, 2, 1, 3]),
+        'float32'
+      ) as tf.Tensor4D;
 
       return normalize(imagePatchTensor);
     });

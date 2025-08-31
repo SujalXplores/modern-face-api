@@ -1,4 +1,6 @@
 import * as tf from '@tensorflow/tfjs-core';
+import '@tensorflow/tfjs-backend-cpu';
+import '@tensorflow/tfjs-backend-webgl';
 
 import * as draw from './draw';
 import * as utils from './utils';

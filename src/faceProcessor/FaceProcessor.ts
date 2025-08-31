@@ -42,7 +42,7 @@ export abstract class FaceProcessor<
       const bottleneckFeatures =
         input instanceof NetInput ? this.faceFeatureExtractor.forwardInput(input) : input;
       return fullyConnectedLayer(
-        bottleneckFeatures.as2D(bottleneckFeatures.shape[0], -1),
+        tf.reshape(bottleneckFeatures, [bottleneckFeatures.shape[0], -1]),
         params.fc
       );
     });

@@ -76,7 +76,9 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
     const tsTotal = Date.now();
 
     const imgTensor = tf.tidy(() =>
-      bgrToRgbTensor(tf.expandDims(tf.browser.fromPixels(inputCanvas)).toFloat() as tf.Tensor4D)
+      bgrToRgbTensor(
+        tf.cast(tf.expandDims(tf.browser.fromPixels(inputCanvas)), 'float32') as tf.Tensor4D
+      )
     );
 
     const onReturn = (results: MtcnnResult[]): { results: MtcnnResult[]; stats: MtcnnStats } => {

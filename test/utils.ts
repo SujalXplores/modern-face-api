@@ -188,34 +188,34 @@ export type DescribeWithNetsOptions = {
   withTinyYolov2?: WithTinyYolov2Options;
 };
 
-const gpgpu = tf.backend().gpgpu;
+// Wait for TensorFlow to be ready before accessing backend
+let isWebGL = false;
+tf.ready().then(() => {
+  const backend = tf.backend();
+  isWebGL = tf.getBackend() === 'webgl';
 
-if (gpgpu) {
-  console.log('running tests on WebGL backend');
-} else {
-  console.log('running tests on CPU backend');
-}
+  if (isWebGL) {
+    console.log('running tests on WebGL backend');
+  } else {
+    console.log('running tests on CPU backend');
+  }
+});
 
 export function describeWithBackend(description: string, specDefinitions: () => void) {
-  if (!(gpgpu instanceof tf.webgl.GPGPUContext)) {
+  if (!isWebGL) {
     describe(description, specDefinitions);
     return;
   }
 
   const defaultBackendName = tf.getBackend();
-  const newBackendName = 'testBackend';
-  const backend = new tf.webgl.MathBackendWebGL(gpgpu);
 
   describe(description, () => {
     beforeAll(() => {
-      tf.registerBackend(newBackendName, () => backend);
-      tf.setBackend(newBackendName);
+      // Already using WebGL backend, just run tests
     });
 
     afterAll(() => {
-      tf.setBackend(defaultBackendName);
-      tf.removeBackend(newBackendName);
-      backend.dispose();
+      // No backend cleanup needed in modern TensorFlow.js
     });
 
     specDefinitions();

@@ -26,7 +26,7 @@ export class TinyFaceFeatureExtractor
     return tf.tidy(() => {
       const batchTensor = input.toBatchTensor(112, true);
       const meanRgb = [122.782, 117.001, 104.298];
-      const normalized = normalize(batchTensor, meanRgb).div(tf.scalar(255)) as tf.Tensor4D;
+      const normalized = tf.div(normalize(batchTensor, meanRgb), tf.scalar(255)) as tf.Tensor4D;
 
       let out = denseBlock3(normalized, params.dense0, true);
       out = denseBlock3(out, params.dense1);

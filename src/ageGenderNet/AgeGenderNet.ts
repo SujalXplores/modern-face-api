@@ -32,11 +32,12 @@ export class AgeGenderNet extends NeuralNetwork<NetParams> {
       const bottleneckFeatures =
         input instanceof NetInput ? this.faceFeatureExtractor.forwardInput(input) : input;
 
-      const pooled = tf
-        .avgPool(bottleneckFeatures, [7, 7], [2, 2], 'valid')
-        .as2D(bottleneckFeatures.shape[0], -1);
-      const age = fullyConnectedLayer(pooled, params.fc.age).as1D();
-      const gender = fullyConnectedLayer(pooled, params.fc.gender);
+      const pooled = tf.avgPool(bottleneckFeatures, [7, 7], [2, 2], 'valid');
+      const reshaped = tf.reshape(pooled, [bottleneckFeatures.shape[0], -1]) as tf.Tensor2D;
+      const age = tf.reshape(fullyConnectedLayer(reshaped, params.fc.age), [
+        bottleneckFeatures.shape[0],
+      ]) as tf.Tensor1D;
+      const gender = fullyConnectedLayer(reshaped, params.fc.gender);
       return { age, gender };
     });
   }

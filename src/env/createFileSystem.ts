@@ -12,7 +12,7 @@ export function createFileSystem(fs?: NodeFS): FileSystem {
 
   if (!fs) {
     try {
-      fs = require('node:fs');
+      fs = require('fs');
     } catch (err) {
       requireFsError = err.toString();
     }

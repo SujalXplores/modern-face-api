@@ -128,14 +128,14 @@ export class NetInput {
         const input = this.getInput(batchIdx);
 
         if (input instanceof tf.Tensor) {
-          let imgTensor = isTensor4D(input) ? input : input.expandDims<tf.Rank.R4>();
+          let imgTensor = isTensor4D(input) ? input : (tf.expandDims(input, 0) as tf.Tensor4D);
           imgTensor = padToSquare(imgTensor, isCenterInputs);
 
           if (imgTensor.shape[1] !== inputSize || imgTensor.shape[2] !== inputSize) {
             imgTensor = tf.image.resizeBilinear(imgTensor, [inputSize, inputSize]);
           }
 
-          return imgTensor.as3D(inputSize, inputSize, 3);
+          return tf.reshape(imgTensor, [inputSize, inputSize, 3]) as tf.Tensor3D;
         }
 
         if (input instanceof env.getEnv().Canvas) {
@@ -147,9 +147,12 @@ export class NetInput {
         );
       });
 
-      const batchTensor = tf
-        .stack(inputTensors.map(t => t.toFloat()))
-        .as4D(this.batchSize, inputSize, inputSize, 3);
+      const batchTensor = tf.reshape(tf.stack(inputTensors.map(t => tf.cast(t, 'float32'))), [
+        this.batchSize,
+        inputSize,
+        inputSize,
+        3,
+      ]) as tf.Tensor4D;
 
       return batchTensor;
     });

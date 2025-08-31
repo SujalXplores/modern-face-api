@@ -18,7 +18,7 @@ export type BoxAndLandmarksDeltas = {
 export function expectFaceDetectionsWithLandmarks<
   TFaceLandmarks extends FaceLandmarks = FaceLandmarks68,
 >(
-  results: WithFaceLandmarks<WithFaceDetection<Record<string, never>>, TFaceLandmarks>[],
+  results: WithFaceLandmarks<WithFaceDetection<any>, TFaceLandmarks>[],
   allExpectedFullFaceDescriptions: ExpectedFaceDetectionWithLandmarks[],
   expectedScores: number[],
   deltas: BoxAndLandmarksDeltas

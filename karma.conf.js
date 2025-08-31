@@ -1,20 +1,3 @@
-const dataFiles = [
-  'test/images/*.jpg',
-  'test/images/*.png',
-  'test/data/*.json',
-  'test/data/*.weights',
-  'test/media/*.mp4',
-  'weights/**/*',
-  'weights_uncompressed/**/*',
-  'weights_unused/**/*',
-].map(pattern => ({
-  pattern,
-  watched: false,
-  included: false,
-  served: true,
-  nocache: false,
-}));
-
 let exclude = (
   process.env.UUT
     ? ['dom', 'faceLandmarkNet', 'faceRecognitionNet', 'ssdMobilenetv1', 'tinyFaceDetector']
@@ -27,6 +10,7 @@ let exclude = (
 exclude = exclude.concat(['**/*.node.test.ts']);
 exclude = exclude.concat(['test/env.node.ts']);
 exclude = exclude.concat(['test/tests-legacy/**/*.ts']);
+exclude = exclude.concat(['src/env/createFileSystem.ts']); // Exclude Node.js specific file
 
 module.exports = config => {
   const args = [];
@@ -35,16 +19,48 @@ module.exports = config => {
   }
 
   config.set({
-    frameworks: ['jasmine', 'karma-typescript'],
-    files: ['src/**/*.ts', 'test/**/*.ts'].concat(dataFiles),
+    frameworks: ['jasmine'],
+    plugins: ['karma-jasmine', 'karma-esbuild', 'karma-chrome-launcher'],
+    files: [
+      'src/**/*.ts',
+      'test/**/*.ts',
+      {
+        pattern: 'test/images/**/*',
+        watched: false,
+        included: false,
+        served: true,
+      },
+      {
+        pattern: 'test/data/**/*',
+        watched: false,
+        included: false,
+        served: true,
+      },
+      {
+        pattern: 'test/media/**/*',
+        watched: false,
+        included: false,
+        served: true,
+      },
+      {
+        pattern: 'weights/**/*',
+        watched: false,
+        included: false,
+        served: true,
+      },
+    ],
     exclude,
     preprocessors: {
-      '**/*.ts': ['karma-typescript'],
+      '**/*.ts': ['esbuild'],
     },
-    karmaTypescriptConfig: {
-      tsconfig: 'tsconfig.test.json',
+    esbuild: {
+      target: 'es2017',
+      format: 'iife',
+      sourcemap: true,
+      platform: 'browser',
+      external: [],
     },
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     browserNoActivityTimeout: 120000,
     browserDisconnectTolerance: 3,
     browserDisconnectTimeout: 120000,

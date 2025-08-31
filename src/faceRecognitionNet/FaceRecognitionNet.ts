@@ -22,10 +22,10 @@ export class FaceRecognitionNet extends NeuralNetwork<NetParams> {
     }
 
     return tf.tidy(() => {
-      const batchTensor = input.toBatchTensor(150, true).toFloat();
+      const batchTensor = tf.cast(input.toBatchTensor(150, true), 'float32');
 
       const meanRgb = [122.782, 117.001, 104.298];
-      const normalized = normalize(batchTensor, meanRgb).div(tf.scalar(256)) as tf.Tensor4D;
+      const normalized = tf.div(normalize(batchTensor, meanRgb), tf.scalar(256)) as tf.Tensor4D;
 
       let out = convDown(normalized, params.conv32_down);
       out = tf.maxPool(out, 3, 2, 'valid');
@@ -48,10 +48,10 @@ export class FaceRecognitionNet extends NeuralNetwork<NetParams> {
       out = residual(out, params.conv256_2);
       out = residualDown(out, params.conv256_down_out);
 
-      const globalAvg = out.mean([1, 2]) as tf.Tensor2D;
+      const globalAvg = tf.mean(out, [1, 2]) as tf.Tensor2D;
       const fullyConnected = tf.matMul(globalAvg, params.fc);
 
-      return fullyConnected;
+      return fullyConnected as tf.Tensor2D;
     });
   }
 

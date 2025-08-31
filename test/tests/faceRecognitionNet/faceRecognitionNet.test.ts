@@ -132,7 +132,9 @@ describeWithBackend('faceRecognitionNet', () => {
         });
 
         it('single batch size 1 tf.Tensor4Ds', async () => {
-          const tensor = tf.tidy(() => tf.browser.fromPixels(imgEl1).expandDims()) as tf.Tensor4D;
+          const tensor = tf.tidy(() =>
+            tf.expandDims(tf.browser.fromPixels(imgEl1), 0)
+          ) as tf.Tensor4D;
 
           await expectAllTensorsReleased(async () => {
             const outTensor = await faceRecognitionNet.forwardInput(await toNetInput(tensor));
@@ -144,7 +146,7 @@ describeWithBackend('faceRecognitionNet', () => {
 
         it('multiple batch size 1 tf.Tensor4Ds', async () => {
           const tensors = [imgEl1, imgEl1, imgEl1].map(el =>
-            tf.tidy(() => tf.browser.fromPixels(el).expandDims())
+            tf.tidy(() => tf.expandDims(tf.browser.fromPixels(el), 0))
           ) as tf.Tensor4D[];
 
           await expectAllTensorsReleased(async () => {
@@ -190,7 +192,9 @@ describeWithBackend('faceRecognitionNet', () => {
         });
 
         it('single batch size 1 tf.Tensor4Ds', async () => {
-          const tensor = tf.tidy(() => tf.browser.fromPixels(imgEl1).expandDims()) as tf.Tensor4D;
+          const tensor = tf.tidy(() =>
+            tf.expandDims(tf.browser.fromPixels(imgEl1), 0)
+          ) as tf.Tensor4D;
 
           await expectAllTensorsReleased(async () => {
             await faceRecognitionNet.computeFaceDescriptor(tensor);
@@ -201,7 +205,7 @@ describeWithBackend('faceRecognitionNet', () => {
 
         it('multiple batch size 1 tf.Tensor4Ds', async () => {
           const tensors = [imgEl1, imgEl1, imgEl1].map(el =>
-            tf.tidy(() => tf.browser.fromPixels(el).expandDims())
+            tf.tidy(() => tf.expandDims(tf.browser.fromPixels(el), 0))
           ) as tf.Tensor4D[];
 
           await expectAllTensorsReleased(async () => {
