@@ -3,8 +3,6 @@
     //"allowUnreachableCode": true,
     //"noUnusedLocals": false,
     //"noUnusedParameters": false,
-
-
     "removeComments": false,
     "preserveConstEnums": true,
     "emitDecoratorMetadata": true,
@@ -15,7 +13,6 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true,
     "importHelpers": true,
     "skipLibCheck": true,
@@ -24,20 +21,12 @@
     "target": "es5",
     "moduleResolution": "node",
     "lib": ["es2015", "dom"],
-    "typeRoots": [
-      "typings",
-      "node_modules/@types"
-    ]
+    "typeRoots": ["typings", "node_modules/@types"]
   },
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "include": [
-    "src"
-  ]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src"]
 }
