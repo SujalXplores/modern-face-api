@@ -487,7 +487,7 @@ const minProbability = 0.05
 faceapi.draw.drawFaceExpressions(canvas, resizedResults, minProbability)
 ```
 
-You can also draw boxes with custom text ([DrawBox](https://github.com/justadudewhohacks/tfjs-image-recognition-base/blob/master/src/draw/DrawBox.ts)):
+You can also draw boxes with custom text ([DrawBox](https://github.com/SujalXplores/tfjs-image-recognition-base/blob/master/src/draw/DrawBox.ts)):
 
 ``` javascript
 const box = { x: 50, y: 50, width: 100, height: 100 }
@@ -511,7 +511,7 @@ export interface IDrawBoxOptions {
 }
 ```
 
-Finally you can draw custom text fields ([DrawTextField](https://github.com/justadudewhohacks/tfjs-image-recognition-base/blob/master/src/draw/DrawTextField.ts)):
+Finally you can draw custom text fields ([DrawTextField](https://github.com/SujalXplores/tfjs-image-recognition-base/blob/master/src/draw/DrawTextField.ts)):
 
 ``` javascript
 const text = [
@@ -814,7 +814,7 @@ This package implements a very lightweight and fast, yet accurate 68 point face 
 
 For face recognition, a ResNet-34 like architecture is implemented to compute a face descriptor (a feature vector with 128 values) from any given face image, which is used to describe the characteristics of a persons face. The model is **not** limited to the set of faces used for training, meaning you can use it for face recognition of any person, for example yourself. You can determine the similarity of two arbitrary faces by comparing their face descriptors, for example by computing the euclidean distance or using any other classifier of your choice.
 
-The neural net is equivalent to the **FaceRecognizerNet** used in [face-recognition.js](https://github.com/justadudewhohacks/face-recognition.js) and the net used in the [dlib](https://github.com/davisking/dlib/blob/master/examples/dnn_face_recognition_ex.cpp) face recognition example. The weights have been trained by [davisking](https://github.com/davisking) and the model achieves a prediction accuracy of 99.38% on the LFW (Labeled Faces in the Wild) benchmark for face recognition.
+The neural net is equivalent to the **FaceRecognizerNet** used in [face-recognition.js](https://github.com/SujalXplores/face-recognition.js) and the net used in the [dlib](https://github.com/davisking/dlib/blob/master/examples/dnn_face_recognition_ex.cpp) face recognition example. The weights have been trained by [davisking](https://github.com/davisking) and the model achieves a prediction accuracy of 99.38% on the LFW (Labeled Faces in the Wild) benchmark for face recognition.
 
 The size of the quantized model is roughly 6.2 MB (**face_recognition_model**).
 
