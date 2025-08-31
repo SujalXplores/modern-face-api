@@ -62746,7 +62746,12 @@ return a / b;`;
                     }
                     throw new Error(`toBatchTensor - at batchIdx ${batchIdx}, expected input to be instanceof tf.Tensor or instanceof HTMLCanvasElement, instead have ${input}`);
                 });
-                const batchTensor = reshape$2(stack(inputTensors.map(t => cast$2(t, 'float32'))), [this.batchSize, inputSize, inputSize, 3]);
+                const batchTensor = reshape$2(stack(inputTensors.map(t => cast$2(t, 'float32'))), [
+                    this.batchSize,
+                    inputSize,
+                    inputSize,
+                    3,
+                ]);
                 return batchTensor;
             });
         }
@@ -62838,9 +62843,8 @@ return a / b;`;
         }
         return tidy(() => {
             const [imgHeight, imgWidth, numChannels] = imageTensor.shape.slice(isTensor4D(imageTensor) ? 1 : 0);
-            const boxes = detections.map(det => det instanceof FaceDetection
-                ? det.forSize(imgWidth, imgHeight).box
-                : det)
+            const boxes = detections
+                .map(det => (det instanceof FaceDetection ? det.forSize(imgWidth, imgHeight).box : det))
                 .map(box => box.clipAtImageBorders(imgWidth, imgHeight));
             const faceTensors = boxes.map(({ x, y, width, height }) => slice3d(reshape$2(imageTensor, [imgHeight, imgWidth, numChannels]), [y, x, 0], [height, width, numChannels]));
             return faceTensors;
@@ -63692,7 +63696,9 @@ return a / b;`;
                 const bottleneckFeatures = input instanceof NetInput ? this.faceFeatureExtractor.forwardInput(input) : input;
                 const pooled = avgPool$2(bottleneckFeatures, [7, 7], [2, 2], 'valid');
                 const reshaped = reshape$2(pooled, [bottleneckFeatures.shape[0], -1]);
-                const age = reshape$2(fullyConnectedLayer(reshaped, params.fc.age), [bottleneckFeatures.shape[0]]);
+                const age = reshape$2(fullyConnectedLayer(reshaped, params.fc.age), [
+                    bottleneckFeatures.shape[0],
+                ]);
                 const gender = fullyConnectedLayer(reshaped, params.fc.gender);
                 return { age, gender };
             });
@@ -65154,7 +65160,12 @@ return a / b;`;
             const numCells = outputTensor.shape[1];
             const numBoxes = this.config.anchors.length;
             const [boxesTensor, scoresTensor, classScoresTensor] = tidy(() => {
-                const reshaped = reshape$2(outputTensor, [numCells, numCells, numBoxes, this.boxEncodingSize]);
+                const reshaped = reshape$2(outputTensor, [
+                    numCells,
+                    numCells,
+                    numBoxes,
+                    this.boxEncodingSize,
+                ]);
                 const boxes = slice$2(reshaped, [0, 0, 0, 0], [numCells, numCells, numBoxes, 4]);
                 const scores = slice$2(reshaped, [0, 0, 0, 4], [numCells, numCells, numBoxes, 1]);
                 const classScores = this.withClassScores
