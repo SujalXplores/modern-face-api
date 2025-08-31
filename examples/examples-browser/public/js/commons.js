@@ -1,4 +1,4 @@
-async function requestExternalImage(imageUrl) {
+async function _requestExternalImage(imageUrl) {
   const res = await fetch('fetch_external_image', {
     method: 'post',
     headers: {
@@ -7,22 +7,19 @@ async function requestExternalImage(imageUrl) {
     body: JSON.stringify({ imageUrl }),
   });
   if (!(res.status < 400)) {
-    console.error(res.status + ' : ' + (await res.text()));
-    throw new Error('failed to fetch image from url: ' + imageUrl);
+    throw new Error(`failed to fetch image from url: ${imageUrl}`);
   }
 
   let blob;
   try {
     blob = await res.blob();
     return await faceapi.bufferToImage(blob);
-  } catch (e) {
-    console.error('received blob:', blob);
-    console.error('error:', e);
-    throw new Error('failed to load image from url: ' + imageUrl);
+  } catch (_e) {
+    throw new Error(`failed to load image from url: ${imageUrl}`);
   }
 }
 
-function renderNavBar(navbarId, exampleUri) {
+function _renderNavBar(navbarId, exampleUri) {
   const examples = [
     {
       uri: 'face_detection',
@@ -98,7 +95,7 @@ function renderNavBar(navbarId, exampleUri) {
   const pageContainer = $('.page-container').get(0);
 
   const header = document.createElement('h3');
-  header.innerHTML = examples.find((ex) => ex.uri === exampleUri).name;
+  header.innerHTML = examples.find(ex => ex.uri === exampleUri).name;
   pageContainer.insertBefore(header, pageContainer.children[0]);
 
   const menuContent = document.createElement('ul');
@@ -129,7 +126,7 @@ function renderNavBar(navbarId, exampleUri) {
   li.appendChild(githubLink);
   menuContent.appendChild(li);
 
-  examples.forEach((ex) => {
+  examples.forEach(ex => {
     const li = document.createElement('li');
     if (ex.uri === exampleUri) {
       li.style.background = '#b0b0b0';
@@ -150,21 +147,16 @@ function renderNavBar(navbarId, exampleUri) {
   });
 }
 
-function renderSelectList(
-  selectListId,
-  onChange,
-  initialValue,
-  renderChildren
-) {
+function _renderSelectList(selectListId, onChange, initialValue, renderChildren) {
   const select = document.createElement('select');
   $(selectListId).get(0).appendChild(select);
   renderChildren(select);
   $(select).val(initialValue);
-  $(select).on('change', (e) => onChange(e.target.value));
+  $(select).on('change', e => onChange(e.target.value));
   $(select).material_select();
 }
 
-function renderOption(parent, text, value) {
+function _renderOption(parent, text, value) {
   const option = document.createElement('option');
   option.innerHTML = text;
   option.value = value;

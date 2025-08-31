@@ -8,41 +8,32 @@ import * as tf from '@tensorflow/tfjs-core';
  * both sides of the minor dimension oof the image.
  * @returns The padded tensor with width === height.
  */
-export function padToSquare(
-  imgTensor: tf.Tensor4D,
-  isCenterImage: boolean = false
-): tf.Tensor4D {
+export function padToSquare(imgTensor: tf.Tensor4D, isCenterImage: boolean = false): tf.Tensor4D {
   return tf.tidy(() => {
-
-    const [height, width] = imgTensor.shape.slice(1)
+    const [height, width] = imgTensor.shape.slice(1);
     if (height === width) {
-      return imgTensor
+      return imgTensor;
     }
 
-    const dimDiff = Math.abs(height - width)
-    const paddingAmount = Math.round(dimDiff * (isCenterImage ? 0.5 : 1))
-    const paddingAxis = height > width ? 2 : 1
+    const dimDiff = Math.abs(height - width);
+    const paddingAmount = Math.round(dimDiff * (isCenterImage ? 0.5 : 1));
+    const paddingAxis = height > width ? 2 : 1;
 
     const createPaddingTensor = (paddingAmount: number): tf.Tensor => {
-      const paddingTensorShape = imgTensor.shape.slice()
-      paddingTensorShape[paddingAxis] = paddingAmount
-      return tf.fill(paddingTensorShape, 0)
-    }
+      const paddingTensorShape = imgTensor.shape.slice();
+      paddingTensorShape[paddingAxis] = paddingAmount;
+      return tf.fill(paddingTensorShape, 0);
+    };
 
-    const paddingTensorAppend = createPaddingTensor(paddingAmount)
-    const remainingPaddingAmount = dimDiff - (paddingTensorAppend.shape[paddingAxis] as number)
+    const paddingTensorAppend = createPaddingTensor(paddingAmount);
+    const remainingPaddingAmount = dimDiff - (paddingTensorAppend.shape[paddingAxis] as number);
 
-    const paddingTensorPrepend = isCenterImage && remainingPaddingAmount
-      ? createPaddingTensor(remainingPaddingAmount)
-      : null
+    const paddingTensorPrepend =
+      isCenterImage && remainingPaddingAmount ? createPaddingTensor(remainingPaddingAmount) : null;
 
-    const tensorsToStack = [
-      paddingTensorPrepend,
-      imgTensor,
-      paddingTensorAppend
-    ]
+    const tensorsToStack = [paddingTensorPrepend, imgTensor, paddingTensorAppend]
       .filter(t => !!t)
-      .map((t: tf.Tensor) => t.toFloat()) as tf.Tensor4D[]
-    return tf.concat(tensorsToStack, paddingAxis)
-  })
+      .map((t: tf.Tensor) => t.toFloat()) as tf.Tensor4D[];
+    return tf.concat(tensorsToStack, paddingAxis);
+  });
 }

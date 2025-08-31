@@ -5,11 +5,11 @@ import { fetchJson } from './fetchJson';
 
 export async function loadWeightMap(
   uri: string | undefined,
-  defaultModelName: string,
+  defaultModelName: string
 ): Promise<tf.NamedTensorMap> {
-  const { manifestUri, modelBaseUri } = getModelUris(uri, defaultModelName)
+  const { manifestUri, modelBaseUri } = getModelUris(uri, defaultModelName);
 
-  const manifest = await fetchJson<tf.io.WeightsManifestConfig>(manifestUri)
+  const manifest = await fetchJson<tf.io.WeightsManifestConfig>(manifestUri);
 
-  return tf.io.loadWeights(manifest, modelBaseUri)
+  return tf.io.loadWeights(manifest, modelBaseUri);
 }

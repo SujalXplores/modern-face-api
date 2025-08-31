@@ -1,30 +1,37 @@
-import { FileSystem } from './types';
+import type { FileSystem } from './types';
 
-export function createFileSystem(fs?: any): FileSystem {
+interface NodeFS {
+  readFile: (
+    path: string,
+    callback: (err: NodeJS.ErrnoException | null, data: Buffer) => void
+  ) => void;
+}
 
-  let requireFsError = ''
+export function createFileSystem(fs?: NodeFS): FileSystem {
+  let requireFsError = '';
 
   if (!fs) {
     try {
-      fs = require('fs')
+      fs = require('node:fs');
     } catch (err) {
-      requireFsError = err.toString()
+      requireFsError = err.toString();
     }
   }
 
   const readFile = fs
-    ? function(filePath: string) {
-      return new Promise<Buffer>((res, rej) => {
-        fs.readFile(filePath, function(err: any, buffer: Buffer) {
-          return err ? rej(err) : res(buffer)
+    ? (filePath: string) =>
+        new Promise<Buffer>((res, rej) => {
+          fs.readFile(filePath, (err: NodeJS.ErrnoException | null, buffer: Buffer) =>
+            err ? rej(err) : res(buffer)
+          );
         })
-      })
-    }
-    : function() {
-      throw new Error(`readFile - failed to require fs in nodejs environment with error: ${requireFsError}`)
-    }
+    : () => {
+        throw new Error(
+          `readFile - failed to require fs in nodejs environment with error: ${requireFsError}`
+        );
+      };
 
   return {
-    readFile
-  }
+    readFile,
+  };
 }

@@ -23,7 +23,8 @@
       "recommended": true,
       "complexity": {
         "recommended": true,
-        "noExcessiveCognitiveComplexity": "warn"
+        "noExcessiveCognitiveComplexity": "warn",
+        "noBannedTypes": "warn"
       },
       "correctness": {
         "recommended": true,
@@ -36,7 +37,9 @@
       },
       "suspicious": {
         "recommended": true,
-        "noDebugger": "error"
+        "noDebugger": "error",
+        "noExplicitAny": "warn",
+        "noAsyncPromiseExecutor": "error"
       },
       "performance": {
         "recommended": true
@@ -81,6 +84,15 @@
         "rules": {
           "style": {
             "useTemplate": "off"
+          },
+          "suspicious": {
+            "noExplicitAny": "off",
+            "useIterableCallbackReturn": "off",
+            "noImplicitAnyLet": "off"
+          },
+          "complexity": {
+            "noBannedTypes": "off",
+            "noExcessiveCognitiveComplexity": "off"
           }
         }
       }

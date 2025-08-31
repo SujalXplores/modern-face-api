@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs-core';
 
-import { Box, IDimensions } from '../classes';
+import type { Box, IDimensions } from '../classes';
 import { createCanvas, createCanvasFromMedia, getContext2dOrThrow } from '../dom';
 import { env } from '../env';
 import { normalize } from './normalize';
@@ -10,49 +10,47 @@ export async function extractImagePatches(
   boxes: Box[],
   { width, height }: IDimensions
 ): Promise<tf.Tensor4D[]> {
+  const imgCtx = getContext2dOrThrow(img);
 
+  const bitmaps = await Promise.all(
+    boxes.map(async box => {
+      // TODO: correct padding
+      const { y, ey, x, ex } = box.padAtBorders(img.height, img.width);
 
-  const imgCtx = getContext2dOrThrow(img)
+      const fromX = x - 1;
+      const fromY = y - 1;
+      const imgData = imgCtx.getImageData(fromX, fromY, ex - fromX, ey - fromY);
 
-  const bitmaps = await Promise.all(boxes.map(async box => {
-    // TODO: correct padding
-    const { y, ey, x, ex } = box.padAtBorders(img.height, img.width)
+      return env.isNodejs() ? createCanvasFromMedia(imgData) : createImageBitmap(imgData);
+    })
+  );
 
-    const fromX = x - 1
-    const fromY = y - 1
-    const imgData = imgCtx.getImageData(fromX, fromY, (ex - fromX), (ey - fromY))
-
-    return env.isNodejs() ? createCanvasFromMedia(imgData) : createImageBitmap(imgData)
-  }))
-
-  const imagePatchesDatas: number[][] = []
+  const imagePatchesDatas: number[][] = [];
 
   bitmaps.forEach(bmp => {
-    const patch = createCanvas({ width, height })
-    const patchCtx = getContext2dOrThrow(patch)
-    patchCtx.drawImage(bmp, 0, 0, width, height)
-    const { data } = patchCtx.getImageData(0, 0, width, height)
+    const patch = createCanvas({ width, height });
+    const patchCtx = getContext2dOrThrow(patch);
+    patchCtx.drawImage(bmp, 0, 0, width, height);
+    const { data } = patchCtx.getImageData(0, 0, width, height);
 
-    const currData = []
+    const currData = [];
     // RGBA -> BGR
-    for(let i = 0; i < data.length; i+=4) {
-      currData.push(data[i + 2])
-      currData.push(data[i + 1])
-      currData.push(data[i])
+    for (let i = 0; i < data.length; i += 4) {
+      currData.push(data[i + 2]);
+      currData.push(data[i + 1]);
+      currData.push(data[i]);
     }
-    imagePatchesDatas.push(currData)
-  })
-
+    imagePatchesDatas.push(currData);
+  });
 
   return imagePatchesDatas.map(data => {
     const t = tf.tidy(() => {
-      const imagePatchTensor = tf.transpose(
-        tf.tensor4d(data, [1, width, height, 3]),
-        [0, 2, 1, 3]
-      ).toFloat() as tf.Tensor4D
+      const imagePatchTensor = tf
+        .transpose(tf.tensor4d(data, [1, width, height, 3]), [0, 2, 1, 3])
+        .toFloat() as tf.Tensor4D;
 
-      return normalize(imagePatchTensor)
-    })
-    return t
-  })
+      return normalize(imagePatchTensor);
+    });
+    return t;
+  });
 }

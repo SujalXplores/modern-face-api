@@ -1,41 +1,52 @@
 import * as tf from '@tensorflow/tfjs-core';
 
-import { FaceDetection } from '../classes/FaceDetection';
-import { extractFaces, extractFaceTensors, TNetInput } from '../dom';
-import { WithFaceDetection } from '../factories/WithFaceDetection';
-import { isWithFaceLandmarks, WithFaceLandmarks } from '../factories/WithFaceLandmarks';
+import type { FaceDetection } from '../classes/FaceDetection';
+import type { FaceLandmarks } from '../classes/FaceLandmarks';
+import { extractFaces, extractFaceTensors, type TNetInput } from '../dom';
+import type { WithFaceDetection } from '../factories/WithFaceDetection';
+import { isWithFaceLandmarks, type WithFaceLandmarks } from '../factories/WithFaceLandmarks';
 
-export async function extractAllFacesAndComputeResults<TSource extends WithFaceDetection<{}>, TResult>(
+export async function extractAllFacesAndComputeResults<
+  TSource extends WithFaceDetection<object>,
+  TResult,
+>(
   parentResults: TSource[],
   input: TNetInput,
   computeResults: (faces: Array<HTMLCanvasElement | tf.Tensor3D>) => Promise<TResult>,
   extractedFaces?: Array<HTMLCanvasElement | tf.Tensor3D> | null,
-  getRectForAlignment: (parentResult: WithFaceLandmarks<TSource, any>) => FaceDetection = ({ alignedRect }) => alignedRect
+  getRectForAlignment: (
+    parentResult: WithFaceLandmarks<TSource, FaceLandmarks>
+  ) => FaceDetection = ({ alignedRect }) => alignedRect
 ) {
   const faceBoxes = parentResults.map(parentResult =>
-    isWithFaceLandmarks(parentResult)
-      ? getRectForAlignment(parentResult)
-      : parentResult.detection
-  )
-  const faces: Array<HTMLCanvasElement | tf.Tensor3D> = extractedFaces || (
-    input instanceof tf.Tensor
+    isWithFaceLandmarks(parentResult) ? getRectForAlignment(parentResult) : parentResult.detection
+  );
+  const faces: Array<HTMLCanvasElement | tf.Tensor3D> =
+    extractedFaces ||
+    (input instanceof tf.Tensor
       ? await extractFaceTensors(input, faceBoxes)
-      : await extractFaces(input, faceBoxes)
-  )
+      : await extractFaces(input, faceBoxes));
 
-  const results = await computeResults(faces)
+  const results = await computeResults(faces);
 
-  faces.forEach(f => f instanceof tf.Tensor && f.dispose())
+  faces.forEach(f => {
+    if (f instanceof tf.Tensor) {
+      f.dispose();
+    }
+  });
 
-  return results
+  return results;
 }
 
-export async function extractSingleFaceAndComputeResult<TSource extends WithFaceDetection<{}>, TResult>(
+export async function extractSingleFaceAndComputeResult<
+  TSource extends WithFaceDetection<object>,
+  TResult,
+>(
   parentResult: TSource,
   input: TNetInput,
   computeResult: (face: HTMLCanvasElement | tf.Tensor3D) => Promise<TResult>,
   extractedFaces?: Array<HTMLCanvasElement | tf.Tensor3D> | null,
-  getRectForAlignment?: (parentResult: WithFaceLandmarks<TSource, any>) => FaceDetection
+  getRectForAlignment?: (parentResult: WithFaceLandmarks<TSource, FaceLandmarks>) => FaceDetection
 ) {
   return extractAllFacesAndComputeResults<TSource, TResult>(
     [parentResult],
@@ -43,5 +54,5 @@ export async function extractSingleFaceAndComputeResult<TSource extends WithFace
     async faces => computeResult(faces[0]),
     extractedFaces,
     getRectForAlignment
-  )
+  );
 }

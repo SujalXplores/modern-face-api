@@ -1,23 +1,23 @@
 import { AgeGenderNet } from '../ageGenderNet/AgeGenderNet';
-import { AgeAndGenderPrediction } from '../ageGenderNet/types';
-import { FaceDetection } from '../classes/FaceDetection';
-import { FaceLandmarks5 } from '../classes/FaceLandmarks5';
-import { FaceLandmarks68 } from '../classes/FaceLandmarks68';
-import { TNetInput } from '../dom';
+import type { AgeAndGenderPrediction } from '../ageGenderNet/types';
+import type { FaceDetection } from '../classes/FaceDetection';
+import type { FaceLandmarks5 } from '../classes/FaceLandmarks5';
+import type { FaceLandmarks68 } from '../classes/FaceLandmarks68';
+import type { TNetInput } from '../dom';
 import { FaceExpressionNet } from '../faceExpressionNet/FaceExpressionNet';
-import { FaceExpressions } from '../faceExpressionNet/FaceExpressions';
+import type { FaceExpressions } from '../faceExpressionNet/FaceExpressions';
 import { FaceLandmark68Net } from '../faceLandmarkNet/FaceLandmark68Net';
 import { FaceLandmark68TinyNet } from '../faceLandmarkNet/FaceLandmark68TinyNet';
 import { FaceRecognitionNet } from '../faceRecognitionNet/FaceRecognitionNet';
-import { WithFaceDetection } from '../factories/WithFaceDetection';
-import { WithFaceLandmarks } from '../factories/WithFaceLandmarks';
+import type { WithFaceDetection } from '../factories/WithFaceDetection';
+import type { WithFaceLandmarks } from '../factories/WithFaceLandmarks';
 import { Mtcnn } from '../mtcnn/Mtcnn';
-import { MtcnnOptions } from '../mtcnn/MtcnnOptions';
+import type { MtcnnOptions } from '../mtcnn/MtcnnOptions';
 import { SsdMobilenetv1 } from '../ssdMobilenetv1/SsdMobilenetv1';
-import { SsdMobilenetv1Options } from '../ssdMobilenetv1/SsdMobilenetv1Options';
+import type { SsdMobilenetv1Options } from '../ssdMobilenetv1/SsdMobilenetv1Options';
 import { TinyFaceDetector } from '../tinyFaceDetector/TinyFaceDetector';
-import { TinyFaceDetectorOptions } from '../tinyFaceDetector/TinyFaceDetectorOptions';
-import { ITinyYolov2Options, TinyYolov2 } from '../tinyYolov2';
+import type { TinyFaceDetectorOptions } from '../tinyFaceDetector/TinyFaceDetectorOptions';
+import { type ITinyYolov2Options, TinyYolov2 } from '../tinyYolov2';
 
 export const nets = {
   ssdMobilenetv1: new SsdMobilenetv1(),
@@ -28,8 +28,8 @@ export const nets = {
   faceLandmark68TinyNet: new FaceLandmark68TinyNet(),
   faceRecognitionNet: new FaceRecognitionNet(),
   faceExpressionNet: new FaceExpressionNet(),
-  ageGenderNet: new AgeGenderNet()
-}
+  ageGenderNet: new AgeGenderNet(),
+};
 
 /**
  * Attempts to detect all faces in an image using SSD Mobilenetv1 Network.
@@ -38,8 +38,10 @@ export const nets = {
  * @param options (optional, default: see SsdMobilenetv1Options constructor for default parameters).
  * @returns Bounding box of each face with score.
  */
-export const ssdMobilenetv1 = (input: TNetInput, options: SsdMobilenetv1Options): Promise<FaceDetection[]> =>
-  nets.ssdMobilenetv1.locateFaces(input, options)
+export const ssdMobilenetv1 = (
+  input: TNetInput,
+  options: SsdMobilenetv1Options
+): Promise<FaceDetection[]> => nets.ssdMobilenetv1.locateFaces(input, options);
 
 /**
  * Attempts to detect all faces in an image using the Tiny Face Detector.
@@ -48,8 +50,10 @@ export const ssdMobilenetv1 = (input: TNetInput, options: SsdMobilenetv1Options)
  * @param options (optional, default: see TinyFaceDetectorOptions constructor for default parameters).
  * @returns Bounding box of each face with score.
  */
-export const tinyFaceDetector = (input: TNetInput, options: TinyFaceDetectorOptions): Promise<FaceDetection[]> =>
-  nets.tinyFaceDetector.locateFaces(input, options)
+export const tinyFaceDetector = (
+  input: TNetInput,
+  options: TinyFaceDetectorOptions
+): Promise<FaceDetection[]> => nets.tinyFaceDetector.locateFaces(input, options);
 
 /**
  * Attempts to detect all faces in an image using the Tiny Yolov2 Network.
@@ -58,8 +62,10 @@ export const tinyFaceDetector = (input: TNetInput, options: TinyFaceDetectorOpti
  * @param options (optional, default: see TinyYolov2Options constructor for default parameters).
  * @returns Bounding box of each face with score.
  */
-export const tinyYolov2 = (input: TNetInput, options: ITinyYolov2Options): Promise<FaceDetection[]> =>
-  nets.tinyYolov2.locateFaces(input, options)
+export const tinyYolov2 = (
+  input: TNetInput,
+  options: ITinyYolov2Options
+): Promise<FaceDetection[]> => nets.tinyYolov2.locateFaces(input, options);
 
 /**
  * Attempts to detect all faces in an image and the 5 point face landmarks
@@ -69,8 +75,11 @@ export const tinyYolov2 = (input: TNetInput, options: ITinyYolov2Options): Promi
  * @param options (optional, default: see MtcnnOptions constructor for default parameters).
  * @returns Bounding box of each face with score and 5 point face landmarks.
  */
-export const mtcnn = (input: TNetInput, options: MtcnnOptions): Promise<WithFaceLandmarks<WithFaceDetection<{}>, FaceLandmarks5>[]> =>
-  nets.mtcnn.forward(input, options)
+export const mtcnn = (
+  input: TNetInput,
+  options: MtcnnOptions
+): Promise<WithFaceLandmarks<WithFaceDetection<object>, FaceLandmarks5>[]> =>
+  nets.mtcnn.forward(input, options);
 
 /**
  * Detects the 68 point face landmark positions of the face shown in an image.
@@ -79,8 +88,9 @@ export const mtcnn = (input: TNetInput, options: MtcnnOptions): Promise<WithFace
  * also be an array of input images, which will be batch processed.
  * @returns 68 point face landmarks or array thereof in case of batch input.
  */
-export const detectFaceLandmarks = (input: TNetInput): Promise<FaceLandmarks68 | FaceLandmarks68[]> =>
-  nets.faceLandmark68Net.detectLandmarks(input)
+export const detectFaceLandmarks = (
+  input: TNetInput
+): Promise<FaceLandmarks68 | FaceLandmarks68[]> => nets.faceLandmark68Net.detectLandmarks(input);
 
 /**
  * Detects the 68 point face landmark positions of the face shown in an image
@@ -91,8 +101,10 @@ export const detectFaceLandmarks = (input: TNetInput): Promise<FaceLandmarks68 |
  * also be an array of input images, which will be batch processed.
  * @returns 68 point face landmarks or array thereof in case of batch input.
  */
-export const detectFaceLandmarksTiny = (input: TNetInput): Promise<FaceLandmarks68 | FaceLandmarks68[]>  =>
-  nets.faceLandmark68TinyNet.detectLandmarks(input)
+export const detectFaceLandmarksTiny = (
+  input: TNetInput
+): Promise<FaceLandmarks68 | FaceLandmarks68[]> =>
+  nets.faceLandmark68TinyNet.detectLandmarks(input);
 
 /**
  * Computes a 128 entry vector (face descriptor / face embeddings) from the face shown in an image,
@@ -104,9 +116,8 @@ export const detectFaceLandmarksTiny = (input: TNetInput): Promise<FaceLandmarks
  * also be an array of input images, which will be batch processed.
  * @returns Face descriptor with 128 entries or array thereof in case of batch input.
  */
-export const computeFaceDescriptor = (input: TNetInput): Promise<Float32Array | Float32Array[]>  =>
-  nets.faceRecognitionNet.computeFaceDescriptor(input)
-
+export const computeFaceDescriptor = (input: TNetInput): Promise<Float32Array | Float32Array[]> =>
+  nets.faceRecognitionNet.computeFaceDescriptor(input);
 
 /**
  * Recognizes the facial expressions from a face image.
@@ -115,8 +126,9 @@ export const computeFaceDescriptor = (input: TNetInput): Promise<Float32Array | 
  * also be an array of input images, which will be batch processed.
  * @returns Facial expressions with corresponding probabilities or array thereof in case of batch input.
  */
-export const recognizeFaceExpressions = (input: TNetInput): Promise<FaceExpressions | FaceExpressions[]> =>
-  nets.faceExpressionNet.predictExpressions(input)
+export const recognizeFaceExpressions = (
+  input: TNetInput
+): Promise<FaceExpressions | FaceExpressions[]> => nets.faceExpressionNet.predictExpressions(input);
 
 /**
  * Predicts age and gender from a face image.
@@ -125,20 +137,22 @@ export const recognizeFaceExpressions = (input: TNetInput): Promise<FaceExpressi
  * also be an array of input images, which will be batch processed.
  * @returns Predictions with age, gender and gender probability or array thereof in case of batch input.
  */
-export const predictAgeAndGender = (input: TNetInput): Promise<AgeAndGenderPrediction | AgeAndGenderPrediction[]> =>
-  nets.ageGenderNet.predictAgeAndGender(input)
+export const predictAgeAndGender = (
+  input: TNetInput
+): Promise<AgeAndGenderPrediction | AgeAndGenderPrediction[]> =>
+  nets.ageGenderNet.predictAgeAndGender(input);
 
-export const loadSsdMobilenetv1Model = (url: string) => nets.ssdMobilenetv1.load(url)
-export const loadTinyFaceDetectorModel = (url: string) => nets.tinyFaceDetector.load(url)
-export const loadMtcnnModel = (url: string) => nets.mtcnn.load(url)
-export const loadTinyYolov2Model = (url: string) => nets.tinyYolov2.load(url)
-export const loadFaceLandmarkModel = (url: string) => nets.faceLandmark68Net.load(url)
-export const loadFaceLandmarkTinyModel = (url: string) => nets.faceLandmark68TinyNet.load(url)
-export const loadFaceRecognitionModel = (url: string) => nets.faceRecognitionNet.load(url)
-export const loadFaceExpressionModel = (url: string) => nets.faceExpressionNet.load(url)
-export const loadAgeGenderModel = (url: string) => nets.ageGenderNet.load(url)
+export const loadSsdMobilenetv1Model = (url: string) => nets.ssdMobilenetv1.load(url);
+export const loadTinyFaceDetectorModel = (url: string) => nets.tinyFaceDetector.load(url);
+export const loadMtcnnModel = (url: string) => nets.mtcnn.load(url);
+export const loadTinyYolov2Model = (url: string) => nets.tinyYolov2.load(url);
+export const loadFaceLandmarkModel = (url: string) => nets.faceLandmark68Net.load(url);
+export const loadFaceLandmarkTinyModel = (url: string) => nets.faceLandmark68TinyNet.load(url);
+export const loadFaceRecognitionModel = (url: string) => nets.faceRecognitionNet.load(url);
+export const loadFaceExpressionModel = (url: string) => nets.faceExpressionNet.load(url);
+export const loadAgeGenderModel = (url: string) => nets.ageGenderNet.load(url);
 
 // backward compatibility
-export const loadFaceDetectionModel = loadSsdMobilenetv1Model
-export const locateFaces = ssdMobilenetv1
-export const detectLandmarks = detectFaceLandmarks
+export const loadFaceDetectionModel = loadSsdMobilenetv1Model;
+export const locateFaces = ssdMobilenetv1;
+export const detectLandmarks = detectFaceLandmarks;

@@ -6,64 +6,54 @@ const dataFiles = [
   'test/media/*.mp4',
   'weights/**/*',
   'weights_uncompressed/**/*',
-  'weights_unused/**/*'
+  'weights_unused/**/*',
 ].map(pattern => ({
   pattern,
   watched: false,
   included: false,
   served: true,
-  nocache: false
-}))
+  nocache: false,
+}));
 
 let exclude = (
   process.env.UUT
-    ? [
-        'dom',
-        'faceLandmarkNet',
-        'faceRecognitionNet',
-        'ssdMobilenetv1',
-        'tinyFaceDetector'
-      ]
+    ? ['dom', 'faceLandmarkNet', 'faceRecognitionNet', 'ssdMobilenetv1', 'tinyFaceDetector']
     : []
-  )
-    .filter(ex => ex !== process.env.UUT)
-    .map(ex => `test/tests/${ex}/*.ts`)
+)
+  .filter(ex => ex !== process.env.UUT)
+  .map(ex => `test/tests/${ex}/*.ts`);
 
 // exclude nodejs tests
-exclude = exclude.concat(['**/*.node.test.ts'])
-exclude = exclude.concat(['test/env.node.ts'])
-exclude = exclude.concat(['test/tests-legacy/**/*.ts'])
+exclude = exclude.concat(['**/*.node.test.ts']);
+exclude = exclude.concat(['test/env.node.ts']);
+exclude = exclude.concat(['test/tests-legacy/**/*.ts']);
 
-
-module.exports = function(config) {
-  const args = []
+module.exports = config => {
+  const args = [];
   if (process.env.BACKEND_CPU) {
-    args.push('backend_cpu')
+    args.push('backend_cpu');
   }
 
   config.set({
     frameworks: ['jasmine', 'karma-typescript'],
-    files: [
-      'src/**/*.ts',
-      'test/**/*.ts'
-    ].concat(dataFiles),
+    files: ['src/**/*.ts', 'test/**/*.ts'].concat(dataFiles),
     exclude,
     preprocessors: {
-      '**/*.ts': ['karma-typescript']
+      '**/*.ts': ['karma-typescript'],
     },
     karmaTypescriptConfig: {
-      tsconfig: 'tsconfig.test.json'
+      tsconfig: 'tsconfig.test.json',
     },
     browsers: ['Chrome'],
     browserNoActivityTimeout: 120000,
     browserDisconnectTolerance: 3,
-    browserDisconnectTimeout : 120000,
+    browserDisconnectTimeout: 120000,
     captureTimeout: 60000,
     client: {
       jasmine: {
         timeoutInterval: 60000,
-        args
-      }
-    }
-  })
-}
+        args,
+      },
+    },
+  });
+};

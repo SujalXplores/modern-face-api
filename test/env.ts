@@ -1,40 +1,45 @@
 import * as tf from '@tensorflow/tfjs-core';
 
-import { fetchImage, fetchJson, fetchNetWeights, NeuralNetwork } from '../src';
-import { TestEnv } from './Environment';
+import { fetchImage, fetchJson, fetchNetWeights, type NeuralNetwork } from '../src';
+import type { TestEnv } from './Environment';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
-if (typeof window !== 'undefined' && window['__karma__'] && (window['__karma__'].config.jasmine.args as string[]).some(arg => arg === 'backend_cpu')) {
-  tf.setBackend('cpu')
+if (
+  typeof window !== 'undefined' &&
+  window.__karma__ &&
+  (window.__karma__.config.jasmine.args as string[]).some(arg => arg === 'backend_cpu')
+) {
+  tf.setBackend('cpu');
 }
 
 async function loadImageBrowser(uri: string): Promise<HTMLImageElement> {
-  return fetchImage(`base${uri.startsWith('/') ? '' : '/'}${uri}`)
+  return fetchImage(`base${uri.startsWith('/') ? '' : '/'}${uri}`);
 }
 
 async function loadJsonBrowser<T>(uri: string): Promise<T> {
-  return fetchJson<T>(`base${uri.startsWith('/') ? '' : '/'}${uri}`)
+  return fetchJson<T>(`base${uri.startsWith('/') ? '' : '/'}${uri}`);
 }
 
-async function initNetBrowser<TNet extends NeuralNetwork<any>>(
+async function initNetBrowser<TNet extends NeuralNetwork<unknown>>(
   net: TNet,
-  uncompressedFilename: string | boolean,
+  uncompressedFilename?: string | boolean,
   isUnusedModel: boolean = false
-) {
+): Promise<void> {
   const url = uncompressedFilename
     ? await fetchNetWeights(`base/weights_uncompressed/${uncompressedFilename}`)
-    : (isUnusedModel ? 'base/weights_unused' : 'base/weights')
-  await net.load(url)
+    : isUnusedModel
+      ? 'base/weights_unused'
+      : 'base/weights';
+  await net.load(url);
 }
 
 const browserTestEnv: TestEnv = {
   loadImage: loadImageBrowser,
   loadJson: loadJsonBrowser,
-  initNet: initNetBrowser
-}
+  initNet: initNetBrowser,
+};
 
 export function getTestEnv(): TestEnv {
-  return global['nodeTestEnv'] || browserTestEnv
+  return global.nodeTestEnv || browserTestEnv;
 }
-

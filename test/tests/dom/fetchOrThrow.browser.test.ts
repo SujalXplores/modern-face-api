@@ -1,19 +1,17 @@
 import { fetchOrThrow } from '../../../src';
 
 describe('fetchOrThrow', () => {
-
   it('404, throws', async () => {
-    const url = '/does/not/exist'
+    const url = '/does/not/exist';
 
-    let err = ''
+    let err = '';
     try {
-      await fetchOrThrow(url)
+      await fetchOrThrow(url);
     } catch (e) {
-      err = e.toString()
+      err = e.toString();
     }
 
-    expect(err).toContain('failed to fetch: (404)')
-    expect(err).toContain(url)
-  })
-
-})
+    expect(err).toContain('failed to fetch: (404)');
+    expect(err).toContain(url);
+  });
+});
