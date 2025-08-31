@@ -1,0 +1,8 @@
+# Check if commit message is not empty and has minimum length
+message=$(cat "$1")
+if [ ${#message} -lt 10 ]; then
+  echo "❌ Commit message must be at least 10 characters long"
+  exit 1
+fi
+
+echo "✅ Commit message looks good!"

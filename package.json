@@ -21,7 +21,23 @@
     "test-tinyfacedetector": "npx cross-env UUT=tinyFaceDetector karma start",
     "test-globalapi": "npx cross-env UUT=globalApi karma start",
     "test-cpu": "npx cross-env BACKEND_CPU=true karma start",
-    "docs": "typedoc --options ./typedoc.config.js ./src"
+    "docs": "typedoc --options ./typedoc.config.js ./src",
+    "prepare": "husky",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "check:ci": "biome ci .",
+    "check:all": "biome check --write . && npm run test",
+    "validate": "npm run check:ci && npm run test"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "biome check --write --no-errors-on-unmatched"
+    ],
+    "*.{json,jsonc}": [
+      "biome format --write --no-errors-on-unmatched"
+    ]
   },
   "keywords": [
     "face",
@@ -37,17 +53,20 @@
     "tslib": "1.14.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.2",
     "@tensorflow/tfjs-node": "1.7.4",
     "@types/jasmine": "3.5.14",
     "@types/node": "13.13.52",
     "canvas": "3.2.0",
     "cross-env": "10.0.0",
+    "husky": "9.1.7",
     "jasmine": "3.99.0",
     "jasmine-core": "3.99.1",
     "karma": "4.4.1",
     "karma-chrome-launcher": "3.2.0",
     "karma-jasmine": "3.3.1",
     "karma-typescript": "5.5.4",
+    "lint-staged": "16.1.5",
     "rimraf": "6.0.1",
     "rollup": "2.79.2",
     "rollup-plugin-commonjs": "10.1.0",

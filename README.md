@@ -853,3 +853,75 @@ Age Range       | 0 - 3  | 4 - 8 | 9 - 18 | 19 - 28 | 29 - 40 | 41 - 60 | 60 - 8
 ----------------|-------:|------:|-------:|--------:|--------:|--------:|--------:|--------:|
 MAE             | 1.52   | 3.06  | 4.82   | 4.99    | 5.43    | 4.94    | 6.17    | 9.91    |
 Gender Accuracy | 0.69   | 0.80  | 0.88   | 0.96    | 0.97    | 0.97    | 0.96    | 0.9     |
+
+## Development
+
+This project uses [Biome](https://biomejs.dev/) for code formatting, linting, and import organization, along with [Husky](https://typicode.github.io/husky/) for Git hooks.
+
+### Code Quality Tools
+
+- **Biome**: Modern, fast linter and formatter for JavaScript/TypeScript
+- **Husky**: Git hooks for ensuring code quality before commits
+- **lint-staged**: Run linters on staged files only
+
+### Available Scripts
+
+```bash
+# Run linting and formatting checks
+npm run lint
+
+# Fix linting and formatting issues
+npm run lint:fix
+
+# Format code only
+npm run format
+
+# Full check with auto-fix (recommended)
+npm run check
+
+# CI mode (no auto-fix, for continuous integration)
+npm run check:ci
+
+# Complete check including tests
+npm run check:all
+```
+
+### Git Hooks
+
+The project automatically runs the following hooks:
+
+- **pre-commit**: Runs Biome formatting and linting on staged files
+- **pre-push**: Runs full project validation with `biome ci`
+- **commit-msg**: Validates commit message format
+
+### Development Workflow
+
+1. **Clone and setup**:
+   ```bash
+   git clone <repository-url>
+   cd modern-face-api
+   npm install  # or pnpm install
+   ```
+
+2. **Make changes**: Edit files as needed
+
+3. **Before committing**: 
+   ```bash
+   npm run check  # Auto-fix issues
+   ```
+
+4. **Commit**: Git hooks will automatically run and prevent commits with issues
+
+### Configuration
+
+- **Biome config**: `biome.json` - Contains linting rules and formatting options
+- **Git hooks**: `.husky/` directory - Contains pre-commit, pre-push, and commit-msg hooks
+- **lint-staged**: Configured in `package.json` to run Biome on staged files only
+
+### IDE Integration
+
+For the best development experience, install the Biome extension for your editor:
+- **VS Code**: [Biome Extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
+- **Other editors**: See [Biome editor integrations](https://biomejs.dev/guides/editors/first-party-extensions/)
+
+This ensures real-time formatting and linting feedback while you code.
