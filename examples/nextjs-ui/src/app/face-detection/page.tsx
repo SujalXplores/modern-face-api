@@ -221,17 +221,17 @@ export default function FaceDetectionPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-6 py-8 max-w-4xl">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5" />
+      <div className="p-8 max-w-4xl mx-auto">
+        <Card className="card-shadow hover-lift">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-3">
+              <Target className="h-5 w-5 text-primary" />
               Loading Face Detection Models...
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <Progress value={loadingProgress} className="w-full" />
-            <p className="text-sm text-muted-foreground mt-2">
+          <CardContent className="space-y-4">
+            <Progress value={loadingProgress} className="w-full h-2" />
+            <p className="text-sm text-muted-foreground">
               {loadingProgress < 30
                 ? 'Initializing...'
                 : loadingProgress < 100
@@ -245,39 +245,44 @@ export default function FaceDetectionPage() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8 max-w-6xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Face Detection</h1>
-        <p className="text-muted-foreground">
+    <div className="p-8 max-w-7xl mx-auto space-y-8">
+      {/* Page Header */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold text-foreground">Face Detection</h1>
+        <p className="text-muted-foreground text-lg">
           Detect faces in images using state-of-the-art machine learning models
         </p>
       </div>
 
       {error && (
-        <Alert className="mb-6" variant="destructive">
+        <Alert className="border-destructive/20 bg-destructive/5" variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Controls */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Controls Sidebar */}
         <div className="lg:col-span-1 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Upload className="h-4 w-4" />
+          <Card className="card-shadow hover-lift">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Upload className="h-5 w-5 text-primary" />
                 Upload Image
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <Tabs defaultValue="upload" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="upload">Upload</TabsTrigger>
-                  <TabsTrigger value="url">URL</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 h-11">
+                  <TabsTrigger value="upload" className="text-sm">
+                    Upload
+                  </TabsTrigger>
+                  <TabsTrigger value="url" className="text-sm">
+                    URL
+                  </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="upload" className="space-y-4">
+                <TabsContent value="upload" className="space-y-4 mt-6">
                   <div>
                     <input
                       ref={fileInputRef}
@@ -288,7 +293,7 @@ export default function FaceDetectionPage() {
                     />
                     <Button
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full"
+                      className="w-full h-11"
                       variant="outline"
                     >
                       <Upload className="mr-2 h-4 w-4" />
@@ -306,18 +311,21 @@ export default function FaceDetectionPage() {
                   />
                 </TabsContent>
 
-                <TabsContent value="url" className="space-y-4">
-                  <div>
-                    <Label htmlFor="imageUrl">Image URL</Label>
+                <TabsContent value="url" className="space-y-4 mt-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="imageUrl" className="text-sm font-medium">
+                      Image URL
+                    </Label>
                     <Input
                       id="imageUrl"
                       type="url"
                       placeholder="https://example.com/image.jpg"
                       value={imageUrl}
                       onChange={e => setImageUrl(e.target.value)}
+                      className="h-11"
                     />
                   </div>
-                  <Button onClick={handleUrlSubmit} className="w-full">
+                  <Button onClick={handleUrlSubmit} className="w-full h-11">
                     Load Image
                   </Button>
                 </TabsContent>
@@ -325,18 +333,20 @@ export default function FaceDetectionPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Settings className="h-4 w-4" />
+          <Card className="card-shadow hover-lift">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Settings className="h-5 w-5 text-primary" />
                 Detection Settings
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="model">Detection Model</Label>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="model" className="text-sm font-medium">
+                  Detection Model
+                </Label>
                 <Select value={selectedModel} onValueChange={handleModelChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -347,8 +357,10 @@ export default function FaceDetectionPage() {
               </div>
 
               {selectedModel === 'ssd_mobilenetv1' ? (
-                <div>
-                  <Label>Minimum Confidence: {confidence[0].toFixed(2)}</Label>
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">
+                    Minimum Confidence: {confidence[0].toFixed(2)}
+                  </Label>
                   <Slider
                     value={confidence}
                     onValueChange={setConfidence}
@@ -359,11 +371,13 @@ export default function FaceDetectionPage() {
                   />
                 </div>
               ) : (
-                <>
-                  <div>
-                    <Label htmlFor="inputSize">Input Size</Label>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="inputSize" className="text-sm font-medium">
+                      Input Size
+                    </Label>
                     <Select value={inputSize} onValueChange={setInputSize}>
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -377,8 +391,10 @@ export default function FaceDetectionPage() {
                     </Select>
                   </div>
 
-                  <div>
-                    <Label>Score Threshold: {scoreThreshold[0].toFixed(2)}</Label>
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">
+                      Score Threshold: {scoreThreshold[0].toFixed(2)}
+                    </Label>
                     <Slider
                       value={scoreThreshold}
                       onValueChange={setScoreThreshold}
@@ -388,13 +404,13 @@ export default function FaceDetectionPage() {
                       className="mt-2"
                     />
                   </div>
-                </>
+                </div>
               )}
 
               {imageRef.current && imageRef.current.src && (
                 <Button
                   onClick={() => detectFaces(imageRef.current!)}
-                  className="w-full"
+                  className="w-full h-11"
                   disabled={isProcessing}
                 >
                   {isProcessing ? 'Processing...' : 'Detect Again'}
@@ -405,42 +421,48 @@ export default function FaceDetectionPage() {
 
           {/* Results */}
           {detections.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+            <Card className="card-shadow hover-lift">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
                   Detection Results
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
                     <span className="text-sm font-medium">Faces Detected:</span>
-                    <Badge variant="secondary">{detections.length}</Badge>
+                    <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                      {detections.length}
+                    </Badge>
                   </div>
 
                   {processingTime && (
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
                       <span className="text-sm font-medium">Processing Time:</span>
                       <Badge variant="outline">{processingTime}ms</Badge>
                     </div>
                   )}
 
-                  {detections.map((detection, index) => (
-                    <div key={index} className="p-3 border rounded-lg">
-                      <div className="text-sm font-medium mb-2">Face {index + 1}</div>
-                      <div className="text-xs text-muted-foreground space-y-1">
-                        <div>Confidence: {Math.round(detection.score * 100)}%</div>
-                        <div>
-                          Position: ({Math.round(detection.box.x)}, {Math.round(detection.box.y)})
+                  <div className="space-y-3">
+                    {detections.map((detection, index) => (
+                      <div key={index} className="p-4 border border-border rounded-lg bg-card">
+                        <div className="text-sm font-medium mb-3 text-foreground">
+                          Face {index + 1}
                         </div>
-                        <div>
-                          Size: {Math.round(detection.box.width)} ×{' '}
-                          {Math.round(detection.box.height)}
+                        <div className="grid grid-cols-2 gap-3 text-xs text-muted-foreground">
+                          <div>Confidence: {Math.round(detection.score * 100)}%</div>
+                          <div>
+                            Position: ({Math.round(detection.box.x)}, {Math.round(detection.box.y)})
+                          </div>
+                          <div className="col-span-2">
+                            Size: {Math.round(detection.box.width)} ×{' '}
+                            {Math.round(detection.box.height)}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -449,15 +471,15 @@ export default function FaceDetectionPage() {
 
         {/* Image Display */}
         <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Image Preview</CardTitle>
-              <CardDescription>
+          <Card className="card-shadow hover-lift">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg">Image Preview</CardTitle>
+              <CardDescription className="text-base">
                 Upload an image or select a sample to start detecting faces
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="relative bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[400px] flex items-center justify-center overflow-hidden">
+              <div className="relative bg-accent/30 rounded-xl border-2 border-dashed border-border min-h-[500px] flex items-center justify-center overflow-hidden">
                 <div className="relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -486,16 +508,16 @@ export default function FaceDetectionPage() {
                 {!imageRef.current?.src && (
                   <div className="text-center text-muted-foreground">
                     <Upload className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No image selected</p>
+                    <p className="text-lg font-medium">No image selected</p>
                     <p className="text-sm">Upload an image or choose a sample to get started</p>
                   </div>
                 )}
 
                 {isProcessing && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                      <p className="text-sm">Processing...</p>
+                  <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center rounded-lg">
+                    <div className="bg-card border border-border p-6 rounded-lg shadow-lg">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-3"></div>
+                      <p className="text-sm font-medium">Processing...</p>
                     </div>
                   </div>
                 )}

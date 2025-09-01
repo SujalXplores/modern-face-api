@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Geist } from 'next/font/google';
 import './globals.css';
-import { AppSidebar } from '@/components/app-sidebar';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { Header } from '@/components/layout/header';
+import { AppSidebar } from '@/components/layout/sidebar';
+import { ThemeProvider } from '@/components/theme-provider';
 
-const inter = Inter({ subsets: ['latin'] });
+const sansFont = Geist({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Modern Face API - Demo',
@@ -17,12 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className} suppressHydrationWarning>
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="flex-1 overflow-auto">{children}</main>
-        </SidebarProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={sansFont.className}>
+        <ThemeProvider>
+          <div className="flex h-screen overflow-hidden">
+            <AppSidebar />
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <Header />
+              <main className="flex-1 overflow-auto bg-background">{children}</main>
+            </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -6,38 +6,38 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-6 py-8 max-w-6xl">
+    <div className="p-8 max-w-7xl mx-auto space-y-12">
       {/* Hero Section */}
-      <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-3 mb-4">
+      <div className="text-center space-y-8">
+        <div className="flex items-center justify-center gap-3 mb-6">
           <Brain className="h-12 w-12 text-primary" />
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Modern Face API
           </h1>
         </div>
-        <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
           Advanced face detection, recognition, and analysis powered by TensorFlow.js. Experience
-          cutting-edge AI directly in your browser.
+          cutting-edge AI directly in your browser with complete privacy.
         </p>
         <div className="flex items-center justify-center gap-4 mb-8">
-          <Badge variant="secondary" className="text-sm">
-            🚀 v0.22.2
+          <Badge variant="secondary" className="text-sm px-3 py-1">
+            🚀 v0.22.4
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             🧠 TensorFlow.js
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             ⚡ Real-time
           </Badge>
         </div>
         <div className="flex gap-4 justify-center">
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="h-12 px-6">
             <Link href="/face-detection">
               <Camera className="mr-2 h-4 w-4" />
               Try Face Detection
             </Link>
           </Button>
-          <Button variant="outline" size="lg" asChild>
+          <Button variant="outline" size="lg" className="h-12 px-6" asChild>
             <Link href="https://github.com/SujalXplores/modern-face-api" target="_blank">
               <Github className="mr-2 h-4 w-4" />
               View on GitHub
@@ -47,14 +47,16 @@ export default function Home() {
       </div>
 
       {/* Features Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        <Card className="border-2 hover:border-primary/20 transition-colors">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Camera className="h-5 w-5 text-primary" />
-              <CardTitle>Image Analysis</CardTitle>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Camera className="h-5 w-5 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Image Analysis</CardTitle>
             </div>
-            <CardDescription>
+            <CardDescription className="text-base leading-relaxed">
               Detect faces, landmarks, expressions, age, and gender in static images
             </CardDescription>
           </CardHeader>
@@ -68,13 +70,15 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 hover:border-primary/20 transition-colors">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Video className="h-5 w-5 text-primary" />
-              <CardTitle>Real-time Processing</CardTitle>
+        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Video className="h-5 w-5 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Real-time Processing</CardTitle>
             </div>
-            <CardDescription>
+            <CardDescription className="text-base leading-relaxed">
               Live webcam analysis with smooth performance and minimal latency
             </CardDescription>
           </CardHeader>
@@ -88,13 +92,15 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 hover:border-primary/20 transition-colors">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Brain className="h-5 w-5 text-primary" />
-              <CardTitle>Face Recognition</CardTitle>
+        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Brain className="h-5 w-5 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Face Recognition</CardTitle>
             </div>
-            <CardDescription>
+            <CardDescription className="text-base leading-relaxed">
               Advanced facial recognition and similarity matching capabilities
             </CardDescription>
           </CardHeader>
@@ -108,13 +114,15 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 hover:border-primary/20 transition-colors">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-primary" />
-              <CardTitle>High Performance</CardTitle>
+        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Zap className="h-5 w-5 text-primary" />
+              </div>
+              <CardTitle className="text-lg">High Performance</CardTitle>
             </div>
-            <CardDescription>
+            <CardDescription className="text-base leading-relaxed">
               Optimized for speed with WebGL acceleration and efficient algorithms
             </CardDescription>
           </CardHeader>
@@ -128,13 +136,15 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 hover:border-primary/20 transition-colors">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              <CardTitle>Privacy First</CardTitle>
+        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Shield className="h-5 w-5 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Privacy First</CardTitle>
             </div>
-            <CardDescription>
+            <CardDescription className="text-base leading-relaxed">
               All processing happens locally in your browser - no data leaves your device
             </CardDescription>
           </CardHeader>
@@ -148,13 +158,15 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 hover:border-primary/20 transition-colors">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Code className="h-5 w-5 text-primary" />
-              <CardTitle>Developer Friendly</CardTitle>
+        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Code className="h-5 w-5 text-primary" />
+              </div>
+              <CardTitle className="text-lg">Developer Friendly</CardTitle>
             </div>
-            <CardDescription>
+            <CardDescription className="text-base leading-relaxed">
               Easy-to-use API with TypeScript support and comprehensive documentation
             </CardDescription>
           </CardHeader>
@@ -170,17 +182,20 @@ export default function Home() {
       </div>
 
       {/* Quick Start Section */}
-      <Card className="mb-12">
-        <CardHeader>
+      <Card className="card-shadow hover-lift">
+        <CardHeader className="pb-6">
           <CardTitle className="text-2xl">Quick Start Examples</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-lg">
             Explore different capabilities with our interactive examples
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Image Processing</h3>
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <Camera className="h-5 w-5 text-primary" />
+                Image Processing
+              </h3>
               <div className="space-y-2">
                 {[
                   {
@@ -207,13 +222,13 @@ export default function Home() {
                   <Button
                     key={item.title}
                     variant="ghost"
-                    className="w-full justify-start h-auto p-3"
+                    className="w-full justify-start h-auto p-4 hover:bg-accent transition-colors"
                     asChild
                   >
                     <Link href={item.href}>
                       <div className="text-left">
                         <div className="font-medium">{item.title}</div>
-                        <div className="text-xs text-muted-foreground">{item.desc}</div>
+                        <div className="text-sm text-muted-foreground">{item.desc}</div>
                       </div>
                       <ArrowRight className="ml-auto h-4 w-4" />
                     </Link>
@@ -223,7 +238,10 @@ export default function Home() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Real-time Processing</h3>
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <Video className="h-5 w-5 text-primary" />
+                Real-time Processing
+              </h3>
               <div className="space-y-2">
                 {[
                   {
@@ -250,13 +268,13 @@ export default function Home() {
                   <Button
                     key={item.title}
                     variant="ghost"
-                    className="w-full justify-start h-auto p-3"
+                    className="w-full justify-start h-auto p-4 hover:bg-accent transition-colors"
                     asChild
                   >
                     <Link href={item.href}>
                       <div className="text-left">
                         <div className="font-medium">{item.title}</div>
-                        <div className="text-xs text-muted-foreground">{item.desc}</div>
+                        <div className="text-sm text-muted-foreground">{item.desc}</div>
                       </div>
                       <ArrowRight className="ml-auto h-4 w-4" />
                     </Link>
@@ -269,28 +287,28 @@ export default function Home() {
       </Card>
 
       {/* Technical Details */}
-      <div className="text-center">
-        <h2 className="text-2xl font-bold mb-4">Built with Modern Technologies</h2>
-        <p className="text-muted-foreground mb-6">
+      <div className="text-center space-y-6">
+        <h2 className="text-2xl font-bold">Built with Modern Technologies</h2>
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
           Leveraging the latest in web technologies and machine learning frameworks
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Badge variant="outline" className="text-sm">
+        <div className="flex flex-wrap justify-center gap-3">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             React 19
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             Next.js 15
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             TypeScript
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             TensorFlow.js
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             shadcn/ui
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="outline" className="text-sm px-3 py-1">
             Tailwind CSS
           </Badge>
         </div>

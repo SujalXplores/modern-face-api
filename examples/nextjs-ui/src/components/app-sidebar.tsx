@@ -96,10 +96,6 @@ export function AppSidebar() {
             <Brain className="h-6 w-6 text-primary" />
             <span className="font-semibold text-lg">Modern Face API</span>
           </div>
-          <p className="text-sm text-muted-foreground">Advanced face detection and recognition</p>
-          <Badge variant="secondary" className="w-fit">
-            v0.22.2
-          </Badge>
         </div>
       </SidebarHeader>
 
