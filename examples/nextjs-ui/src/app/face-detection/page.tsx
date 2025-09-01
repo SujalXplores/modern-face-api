@@ -2,6 +2,7 @@
 
 import { AlertCircle, CheckCircle, Settings, Target, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { SampleImageSelector, sampleImageSets } from '@/components/sample-image-selector';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -45,19 +46,17 @@ export default function FaceDetectionPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [detections, setDetections] = useState<DetectionResult[]>([]);
   const [processingTime, setProcessingTime] = useState<number | null>(null);
+  const [selectedSampleImage, setSelectedSampleImage] = useState<string>('');
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Sample images
-  const sampleImages = [
-    { name: 'Sample 1', url: '/images/bbt1.jpg' },
-    { name: 'Sample 2', url: '/images/bbt2.jpg' },
-    { name: 'Sample 3', url: '/images/bbt3.jpg' },
-    { name: 'Sample 4', url: '/images/bbt4.jpg' },
-    { name: 'Sample 5', url: '/images/bbt5.jpg' },
-  ];
+  // Handle sample image selection
+  const handleSampleImageChange = (imageUrl: string) => {
+    setSelectedSampleImage(imageUrl);
+    handleImageLoad(imageUrl);
+  };
 
   useEffect(() => {
     loadModels();
@@ -297,21 +296,14 @@ export default function FaceDetectionPage() {
                     </Button>
                   </div>
 
-                  <div>
-                    <Label className="text-sm font-medium">Sample Images</Label>
-                    <div className="grid grid-cols-2 gap-2 mt-2">
-                      {sampleImages.map(sample => (
-                        <Button
-                          key={sample.name}
-                          variant="ghost"
-                          className="h-auto p-2 flex flex-col gap-1"
-                          onClick={() => handleImageLoad(sample.url)}
-                        >
-                          <div className="text-xs">{sample.name}</div>
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
+                  <SampleImageSelector
+                    images={sampleImageSets.basic}
+                    value={selectedSampleImage}
+                    onValueChange={handleSampleImageChange}
+                    label="Sample Images"
+                    placeholder="Choose a sample image..."
+                    className="mt-4"
+                  />
                 </TabsContent>
 
                 <TabsContent value="url" className="space-y-4">
