@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Live Demo
+
+🌐 **[View Live Demo](https://modern-face-api.vercel.app)** - Experience the full Modern Face API demo online!
+
 ## Getting Started
 
 First, run the development server:
