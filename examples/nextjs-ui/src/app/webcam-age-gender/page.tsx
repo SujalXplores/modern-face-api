@@ -63,7 +63,6 @@ export default function WebcamAgeGenderPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const animationRef = useRef<number | null>(null);
   const statsRef = useRef({
     frameCount: 0,
     totalProcessingTime: 0,
@@ -152,10 +151,6 @@ export default function WebcamAgeGenderPage() {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
     setIsStreaming(false);
     setIsDetecting(false);
     setCurrentFaces([]);
@@ -163,14 +158,17 @@ export default function WebcamAgeGenderPage() {
 
   const detectFaces = useCallback(async () => {
     if (!faceapi || !videoRef.current || !canvasRef.current || !isDetecting) {
+      if (isDetecting) {
+        setTimeout(() => detectFaces(), 100);
+      }
       return;
     }
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (video.readyState !== 4) {
-      animationRef.current = requestAnimationFrame(detectFaces);
+    if (video.paused || video.ended || video.readyState !== 4) {
+      setTimeout(() => detectFaces(), 100);
       return;
     }
 
@@ -266,7 +264,9 @@ export default function WebcamAgeGenderPage() {
       console.error('Detection error:', err);
     }
 
-    animationRef.current = requestAnimationFrame(detectFaces);
+    if (isDetecting) {
+      setTimeout(() => detectFaces(), 100);
+    }
   }, [isDetecting, getFaceDetectorOptions, hideBoundingBoxes]);
 
   const startDetection = () => {
@@ -279,15 +279,11 @@ export default function WebcamAgeGenderPage() {
       lastFpsUpdate: Date.now(),
       lastFrameTime: Date.now(),
     };
-    detectFaces();
+    setTimeout(() => detectFaces(), 100);
   };
 
   const stopDetection = () => {
     setIsDetecting(false);
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
     setCurrentFaces([]);
 
     // Clear canvas
@@ -324,7 +320,7 @@ export default function WebcamAgeGenderPage() {
       setIsLoading(false);
 
       if (wasDetecting) {
-        setTimeout(startDetection, 100);
+        setTimeout(() => startDetection(), 100);
       }
     } catch {
       setError('Failed to load new model');

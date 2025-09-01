@@ -83,7 +83,6 @@ export default function WebcamExpressionsPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const animationRef = useRef<number | null>(null);
   const statsRef = useRef({
     frameCount: 0,
     totalProcessingTime: 0,
@@ -172,10 +171,6 @@ export default function WebcamExpressionsPage() {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
     setIsStreaming(false);
     setIsDetecting(false);
     setCurrentExpressions([]);
@@ -183,14 +178,17 @@ export default function WebcamExpressionsPage() {
 
   const detectExpressions = useCallback(async () => {
     if (!faceapi || !videoRef.current || !canvasRef.current || !isDetecting) {
+      if (isDetecting) {
+        setTimeout(() => detectExpressions(), 100);
+      }
       return;
     }
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (video.readyState !== 4) {
-      animationRef.current = requestAnimationFrame(detectExpressions);
+    if (video.paused || video.ended || video.readyState !== 4) {
+      setTimeout(() => detectExpressions(), 100);
       return;
     }
 
@@ -295,7 +293,9 @@ export default function WebcamExpressionsPage() {
       console.error('Detection error:', err);
     }
 
-    animationRef.current = requestAnimationFrame(detectExpressions);
+    if (isDetecting) {
+      setTimeout(() => detectExpressions(), 100);
+    }
   }, [isDetecting, getFaceDetectorOptions, hideBoundingBoxes]);
 
   const startDetection = () => {
@@ -308,15 +308,11 @@ export default function WebcamExpressionsPage() {
       lastFpsUpdate: Date.now(),
       lastFrameTime: Date.now(),
     };
-    detectExpressions();
+    setTimeout(() => detectExpressions(), 100);
   };
 
   const stopDetection = () => {
     setIsDetecting(false);
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
     setCurrentExpressions([]);
 
     // Clear canvas
@@ -353,7 +349,7 @@ export default function WebcamExpressionsPage() {
       setIsLoading(false);
 
       if (wasDetecting) {
-        setTimeout(startDetection, 100);
+        setTimeout(() => startDetection(), 100);
       }
     } catch {
       setError('Failed to load new model');

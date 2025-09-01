@@ -62,7 +62,6 @@ export default function WebcamLandmarksPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const animationRef = useRef<number | null>(null);
   const statsRef = useRef({
     frameCount: 0,
     totalProcessingTime: 0,
@@ -146,10 +145,6 @@ export default function WebcamLandmarksPage() {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
     setIsStreaming(false);
     setIsDetecting(false);
     setCurrentLandmarks([]);
@@ -157,14 +152,17 @@ export default function WebcamLandmarksPage() {
 
   const detectLandmarks = useCallback(async () => {
     if (!faceapi || !videoRef.current || !canvasRef.current || !isDetecting) {
+      if (isDetecting) {
+        setTimeout(() => detectLandmarks(), 100);
+      }
       return;
     }
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (video.readyState !== 4) {
-      animationRef.current = requestAnimationFrame(detectLandmarks);
+    if (video.paused || video.ended || video.readyState !== 4) {
+      setTimeout(() => detectLandmarks(), 100);
       return;
     }
 
@@ -257,7 +255,9 @@ export default function WebcamLandmarksPage() {
       console.error('Detection error:', err);
     }
 
-    animationRef.current = requestAnimationFrame(detectLandmarks);
+    if (isDetecting) {
+      setTimeout(() => detectLandmarks(), 100);
+    }
   }, [isDetecting, getFaceDetectorOptions, hideBoundingBoxes, showLandmarkNumbers]);
 
   const startDetection = () => {
@@ -270,15 +270,11 @@ export default function WebcamLandmarksPage() {
       lastFpsUpdate: Date.now(),
       lastFrameTime: Date.now(),
     };
-    detectLandmarks();
+    setTimeout(() => detectLandmarks(), 100);
   };
 
   const stopDetection = () => {
     setIsDetecting(false);
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
     setCurrentLandmarks([]);
 
     // Clear canvas
@@ -313,7 +309,7 @@ export default function WebcamLandmarksPage() {
       setIsLoading(false);
 
       if (wasDetecting) {
-        setTimeout(startDetection, 100);
+        setTimeout(() => startDetection(), 100);
       }
     } catch {
       setError('Failed to load new model');

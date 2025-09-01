@@ -40,7 +40,6 @@ export default function WebcamDetectionPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const animationRef = useRef<number | null>(null);
   const timesRef = useRef<number[]>([]);
 
   useEffect(() => {
@@ -98,7 +97,7 @@ export default function WebcamDetectionPage() {
   const detectFaces = useCallback(async () => {
     if (!faceapi || !videoRef.current || !canvasRef.current || isPaused) {
       if (!isPaused) {
-        animationRef.current = requestAnimationFrame(detectFaces);
+        setTimeout(() => detectFaces(), 100);
       }
       return;
     }
@@ -106,8 +105,8 @@ export default function WebcamDetectionPage() {
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (video.paused || video.ended) {
-      animationRef.current = requestAnimationFrame(detectFaces);
+    if (video.paused || video.ended || video.readyState !== 4) {
+      setTimeout(() => detectFaces(), 100);
       return;
     }
 
@@ -138,17 +137,14 @@ export default function WebcamDetectionPage() {
     }
 
     if (!isPaused) {
-      animationRef.current = requestAnimationFrame(detectFaces);
+      setTimeout(() => detectFaces(), 100);
     }
   }, [isPaused, getFaceDetectorOptions]);
 
   const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-        },
+        video: { width: { ideal: 640 }, height: { ideal: 480 } },
       });
 
       if (videoRef.current) {
@@ -156,17 +152,6 @@ export default function WebcamDetectionPage() {
         streamRef.current = stream;
         setIsStreaming(true);
         setError(null);
-
-        videoRef.current.onloadedmetadata = () => {
-          if (videoRef.current && canvasRef.current) {
-            // Match canvas size to video
-            canvasRef.current.width = videoRef.current.videoWidth;
-            canvasRef.current.height = videoRef.current.videoHeight;
-
-            // Start detection loop
-            detectFaces();
-          }
-        };
       }
     } catch (err) {
       console.error('Failed to access webcam:', err);
@@ -184,11 +169,6 @@ export default function WebcamDetectionPage() {
       videoRef.current.srcObject = null;
     }
 
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-
     setIsStreaming(false);
     setDetectionCount(0);
     setFps(0);
@@ -198,7 +178,7 @@ export default function WebcamDetectionPage() {
   const togglePause = () => {
     setIsPaused(!isPaused);
     if (isPaused && isStreaming) {
-      detectFaces();
+      setTimeout(() => detectFaces(), 100);
     }
   };
 
@@ -440,6 +420,15 @@ export default function WebcamDetectionPage() {
                   playsInline
                   className="max-w-full max-h-[600px] rounded-lg"
                   style={{ display: isStreaming ? 'block' : 'none' }}
+                  onLoadedMetadata={() => {
+                    if (videoRef.current && canvasRef.current) {
+                      // Match canvas size to video
+                      canvasRef.current.width = videoRef.current.videoWidth;
+                      canvasRef.current.height = videoRef.current.videoHeight;
+                      // Start detection loop
+                      setTimeout(() => detectFaces(), 100);
+                    }
+                  }}
                 />
                 <canvas
                   ref={canvasRef}

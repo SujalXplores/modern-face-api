@@ -1,24 +1,10 @@
 'use client';
 
-import {
-  AlertCircle,
-  Pause,
-  Play,
-  Settings,
-  SkipBack,
-  SkipForward,
-  Square,
-  Target,
-  Timer,
-  Upload,
-  Video,
-} from 'lucide-react';
+import { AlertCircle, Play, Settings, Target, Video } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -30,97 +16,86 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// We'll import the face API after component mounts to avoid SSR issues
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let faceapi: any = null;
 
-interface TrackingStats {
-  totalFrames: number;
-  processedFrames: number;
-  avgProcessingTime: number;
-  totalFaces: number;
-  currentTimestamp: number;
-  videoDuration: number;
-}
-
-interface FaceTrack {
-  id: number;
-  frames: Array<{
-    timestamp: number;
-    box: { x: number; y: number; width: number; height: number };
-    confidence: number;
-  }>;
-  firstSeen: number;
-  lastSeen: number;
-}
-
 export default function VideoTrackingPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [processingProgress, setProcessingProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState('ssd_mobilenetv1');
+  const [selectedModel, setSelectedModel] = useState('tiny_face_detector');
   const [confidence, setConfidence] = useState([0.5]);
   const [inputSize, setInputSize] = useState('416');
   const [scoreThreshold, setScoreThreshold] = useState([0.5]);
+  const [withFaceLandmarks, setWithFaceLandmarks] = useState(true);
   const [hideBoundingBoxes, setHideBoundingBoxes] = useState(false);
-  const [showTrackingPath, setShowTrackingPath] = useState(true);
-  const [videoUrl, setVideoUrl] = useState('');
-  const [trackingStats, setTrackingStats] = useState<TrackingStats>({
-    totalFrames: 0,
-    processedFrames: 0,
-    avgProcessingTime: 0,
-    totalFaces: 0,
-    currentTimestamp: 0,
-    videoDuration: 0,
-  });
-  const [faceTracks, setFaceTracks] = useState<FaceTrack[]>([]);
-  const [currentDetections, setCurrentDetections] = useState<
-    Array<{
-      box: { x: number; y: number; width: number; height: number };
-      confidence: number;
-    }>
-  >([]);
+
+  // Performance metrics
+  const [fps, setFps] = useState(0);
+  const [processingTime, setProcessingTime] = useState(0);
+  const [detectionCount, setDetectionCount] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const animationRef = useRef<number | null>(null);
-  const trackingDataRef = useRef<FaceTrack[]>([]);
-  const nextTrackIdRef = useRef(1);
+  const timesRef = useRef<number[]>([]);
 
-  // Sample videos
-  const sampleVideos = [
-    { name: 'Sample Video 1', url: '/media/sample1.mp4' },
-    { name: 'Sample Video 2', url: '/media/sample2.mp4' },
-    { name: 'Demo Video', url: '/media/demo.mp4' },
-  ];
+  // Use refs for stable state access to avoid useEffect dependencies
+  const settingsRef = useRef({
+    withFaceLandmarks,
+    hideBoundingBoxes,
+    selectedModel,
+    confidence: confidence[0],
+    inputSize,
+    scoreThreshold: scoreThreshold[0],
+  });
 
+  // Update settings ref when state changes
   useEffect(() => {
-    const loadModels = async () => {
+    settingsRef.current = {
+      withFaceLandmarks,
+      hideBoundingBoxes,
+      selectedModel,
+      confidence: confidence[0],
+      inputSize,
+      scoreThreshold: scoreThreshold[0],
+    };
+  }, [withFaceLandmarks, hideBoundingBoxes, selectedModel, confidence, inputSize, scoreThreshold]);
+
+  // Single useEffect for model loading
+  useEffect(() => {
+    const loadAllModels = async () => {
       try {
         setLoadingProgress(10);
-        // Dynamic import to avoid SSR issues
         const faceAPI = await import('modern-face-api');
         faceapi = faceAPI;
 
         setLoadingProgress(40);
 
-        // Load face detection model
-        if (selectedModel === 'ssd_mobilenetv1') {
-          await faceapi.nets.ssdMobilenetv1.loadFromUri('/');
-        } else {
-          await faceapi.nets.tinyFaceDetector.loadFromUri('/');
+        // Load face detection model with better error handling
+        const net = getCurrentFaceDetectionNet();
+        if (net && !net.params) {
+          try {
+            await net.load('/');
+            console.log(`${selectedModel} model loaded successfully`);
+          } catch (err) {
+            console.error(`Failed to load ${selectedModel} model:`, err);
+            throw err;
+          }
         }
 
         setLoadingProgress(70);
 
-        // Load face landmark model for better tracking
-        await faceapi.nets.faceLandmark68Net.loadFromUri('/');
+        // Always load landmark model for potential use
+        if (!faceapi.nets.faceLandmark68Net.params) {
+          try {
+            await faceapi.nets.faceLandmark68Net.loadFromUri('/');
+            console.log('Landmark model loaded successfully');
+          } catch (err) {
+            console.error('Failed to load landmark model:', err);
+            // Don't throw here, landmarks are optional
+          }
+        }
 
         setLoadingProgress(100);
         setIsLoading(false);
@@ -131,329 +106,149 @@ export default function VideoTrackingPage() {
       }
     };
 
-    loadModels();
+    loadAllModels();
   }, [selectedModel]);
 
   const getFaceDetectorOptions = useCallback(() => {
-    if (selectedModel === 'ssd_mobilenetv1') {
+    const settings = settingsRef.current;
+    if (settings.selectedModel === 'ssd_mobilenetv1') {
       return new faceapi.SsdMobilenetv1Options({
-        minConfidence: confidence[0],
+        minConfidence: settings.confidence,
       });
     } else {
+      // Tiny Face Detector options
       return new faceapi.TinyFaceDetectorOptions({
-        inputSize: parseInt(inputSize),
-        scoreThreshold: scoreThreshold[0],
+        inputSize: parseInt(settings.inputSize),
+        scoreThreshold: settings.scoreThreshold,
       });
     }
-  }, [selectedModel, confidence, inputSize, scoreThreshold]);
+  }, []);
 
-  // Simple face tracking based on proximity
-  const trackFaces = (
-    newDetections: Array<{
-      box: { x: number; y: number; width: number; height: number };
-      confidence: number;
-    }>,
-    timestamp: number
-  ) => {
-    const tracks = trackingDataRef.current;
-    const maxDistance = 100; // pixels
-
-    const unassignedDetections = [...newDetections];
-    const assignedTracks = new Set<number>();
-
-    // Try to match new detections to existing tracks
-    for (const detection of newDetections) {
-      let bestTrack: FaceTrack | null = null;
-      let bestDistance = Infinity;
-
-      for (const track of tracks) {
-        if (assignedTracks.has(track.id)) continue;
-
-        const lastFrame = track.frames[track.frames.length - 1];
-        if (!lastFrame) continue;
-
-        // Calculate distance between centers
-        const centerX1 = detection.box.x + detection.box.width / 2;
-        const centerY1 = detection.box.y + detection.box.height / 2;
-        const centerX2 = lastFrame.box.x + lastFrame.box.width / 2;
-        const centerY2 = lastFrame.box.y + lastFrame.box.height / 2;
-
-        const distance = Math.sqrt(
-          Math.pow(centerX1 - centerX2, 2) + Math.pow(centerY1 - centerY2, 2)
-        );
-
-        if (distance < maxDistance && distance < bestDistance) {
-          bestDistance = distance;
-          bestTrack = track;
-        }
-      }
-
-      if (bestTrack) {
-        // Update existing track
-        bestTrack.frames.push({
-          timestamp,
-          box: detection.box,
-          confidence: detection.confidence,
-        });
-        bestTrack.lastSeen = timestamp;
-        assignedTracks.add(bestTrack.id);
-
-        // Remove from unassigned
-        const index = unassignedDetections.findIndex(d => d === detection);
-        if (index > -1) {
-          unassignedDetections.splice(index, 1);
-        }
-      }
+  const getCurrentFaceDetectionNet = () => {
+    const settings = settingsRef.current;
+    if (settings.selectedModel === 'ssd_mobilenetv1') {
+      return faceapi.nets.ssdMobilenetv1;
     }
-
-    // Create new tracks for unassigned detections
-    for (const detection of unassignedDetections) {
-      const newTrack: FaceTrack = {
-        id: nextTrackIdRef.current++,
-        frames: [
-          {
-            timestamp,
-            box: detection.box,
-            confidence: detection.confidence,
-          },
-        ],
-        firstSeen: timestamp,
-        lastSeen: timestamp,
-      };
-      tracks.push(newTrack);
+    if (settings.selectedModel === 'tiny_face_detector') {
+      return faceapi.nets.tinyFaceDetector;
     }
-
-    trackingDataRef.current = tracks;
   };
 
-  const processVideoFrame = useCallback(async () => {
-    if (!faceapi || !videoRef.current || !canvasRef.current || !isProcessing) {
+  const isFaceDetectionModelLoaded = () => {
+    const net = getCurrentFaceDetectionNet();
+    const isLoaded = !!net?.params;
+
+    // Additional check for Tiny Face Detector
+    if (settingsRef.current.selectedModel === 'tiny_face_detector' && isLoaded) {
+      // Verify the model has the required properties
+      return !!net.params && typeof net.forwardInput === 'function';
+    }
+
+    return isLoaded;
+  };
+
+  const updateTimeStats = useCallback((timeInMs: number) => {
+    timesRef.current = [timeInMs].concat(timesRef.current).slice(0, 30);
+    const avgTimeInMs =
+      timesRef.current.reduce((total: number, t: number) => total + t) / timesRef.current.length;
+
+    // Batch state updates to reduce re-renders
+    const newProcessingTime = Math.round(avgTimeInMs);
+    const newFps = faceapi.utils
+      ? faceapi.utils.round(1000 / avgTimeInMs)
+      : Math.round(1000 / avgTimeInMs);
+
+    setProcessingTime(newProcessingTime);
+    setFps(newFps);
+  }, []);
+
+  const onPlay = useCallback(async () => {
+    if (!faceapi || !videoRef.current || !canvasRef.current) {
+      setTimeout(() => onPlay(), 100);
       return;
     }
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (video.readyState !== 4) {
-      animationRef.current = requestAnimationFrame(processVideoFrame);
+    if (!video.currentTime || video.paused || video.ended || !isFaceDetectionModelLoaded()) {
+      setTimeout(() => onPlay(), 100);
       return;
     }
 
-    const startTime = Date.now();
-    const currentTime = video.currentTime;
-
     try {
+      const startTime = Date.now();
       const options = getFaceDetectorOptions();
-      const results = await faceapi.detectAllFaces(video, options).withFaceLandmarks();
+
+      // Validate options for Tiny Face Detector
+      const { selectedModel, inputSize, scoreThreshold } = settingsRef.current;
+      if (selectedModel === 'tiny_face_detector') {
+        // Ensure valid input size (must be 128, 160, 224, 320, 416, 512, 608)
+        const validInputSizes = [128, 160, 224, 320, 416, 512, 608];
+        const parsedInputSize = parseInt(inputSize);
+        if (!validInputSizes.includes(parsedInputSize)) {
+          console.warn('Invalid input size for Tiny Face Detector:', parsedInputSize, 'using 416');
+          settingsRef.current.inputSize = '416';
+        }
+
+        // Ensure valid score threshold (0-1)
+        if (scoreThreshold < 0 || scoreThreshold > 1) {
+          console.warn(
+            'Invalid score threshold for Tiny Face Detector:',
+            scoreThreshold,
+            'using 0.5'
+          );
+          settingsRef.current.scoreThreshold = 0.5;
+        }
+      }
+
+      // Use refs for stable state access
+      const { withFaceLandmarks, hideBoundingBoxes } = settingsRef.current;
+      const drawBoxes = !hideBoundingBoxes;
+      const drawLandmarks = withFaceLandmarks;
+
+      let task = faceapi.detectAllFaces(video, options);
+
+      // Only add landmarks if model is loaded and toggle is on
+      if (withFaceLandmarks && faceapi.nets.faceLandmark68Net.params) {
+        task = task.withFaceLandmarks();
+      }
+
+      const results = await task;
 
       const endTime = Date.now();
-      const processingTime = endTime - startTime;
+      updateTimeStats(endTime - startTime);
 
-      const detections = results.map(
-        (result: {
-          detection: {
-            box: { x: number; y: number; width: number; height: number };
-            score: number;
-          };
-        }) => ({
-          box: result.detection.box,
-          confidence: result.detection.score,
-        })
-      );
+      setDetectionCount(results.length);
 
-      // Track faces
-      trackFaces(detections, currentTime);
-      setCurrentDetections(detections);
-
-      // Update stats
-      const processedFrames = trackingDataRef.current.reduce(
-        (total, track) => total + track.frames.length,
-        0
-      );
-      const totalFaces = trackingDataRef.current.length;
-
-      setTrackingStats(prev => ({
-        ...prev,
-        processedFrames,
-        totalFaces,
-        currentTimestamp: currentTime,
-        avgProcessingTime: Math.round(
-          (prev.avgProcessingTime * prev.processedFrames + processingTime) /
-            (prev.processedFrames + 1)
-        ),
-      }));
-
-      // Draw results on canvas
-      const displaySize = {
-        width: video.videoWidth,
-        height: video.videoHeight,
-      };
-      faceapi.matchDimensions(canvas, displaySize);
-
+      // Clear canvas
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (!hideBoundingBoxes && results.length > 0) {
-          const resizedResults = faceapi.resizeResults(results, displaySize);
-
-          // Draw current detections
-          faceapi.draw.drawDetections(canvas, resizedResults);
-
-          // Draw track IDs
-          detections.forEach(
-            (detection: {
-              box: { x: number; y: number; width: number; height: number };
-              confidence: number;
-            }) => {
-              const track = trackingDataRef.current.find(t =>
-                t.frames.some(
-                  f =>
-                    Math.abs(f.timestamp - currentTime) < 0.1 &&
-                    Math.abs(f.box.x - detection.box.x) < 10
-                )
-              );
-
-              if (track) {
-                ctx.fillStyle = '#00ff00';
-                ctx.font = '16px Arial';
-                ctx.fillText(`ID: ${track.id}`, detection.box.x, detection.box.y - 10);
-              }
-            }
-          );
-
-          // Draw tracking paths
-          if (showTrackingPath) {
-            trackingDataRef.current.forEach((track, trackIndex) => {
-              if (track.frames.length < 2) return;
-
-              ctx.strokeStyle = `hsl(${(trackIndex * 137.508) % 360}, 70%, 50%)`;
-              ctx.lineWidth = 2;
-              ctx.beginPath();
-
-              let isFirstPoint = true;
-              for (const frame of track.frames) {
-                if (Math.abs(frame.timestamp - currentTime) > 5) continue; // Only show recent path
-
-                const centerX = frame.box.x + frame.box.width / 2;
-                const centerY = frame.box.y + frame.box.height / 2;
-
-                if (isFirstPoint) {
-                  ctx.moveTo(centerX, centerY);
-                  isFirstPoint = false;
-                } else {
-                  ctx.lineTo(centerX, centerY);
-                }
-              }
-              ctx.stroke();
-            });
-          }
-        }
       }
 
-      // Update progress if processing the entire video
-      if (video.duration > 0) {
-        const progress = (currentTime / video.duration) * 100;
-        setProcessingProgress(progress);
+      if (results.length > 0) {
+        // Match canvas dimensions to video
+        const dims = faceapi.matchDimensions(canvas, video, true);
+        const resizedResults = faceapi.resizeResults(results, dims);
+
+        if (drawBoxes) {
+          faceapi.draw.drawDetections(canvas, resizedResults);
+        }
+
+        // Only draw landmarks if they exist in the results
+        if (drawLandmarks && resizedResults[0]?.landmarks) {
+          faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
+        }
       }
     } catch (err) {
-      console.error('Processing error:', err);
+      console.error('Face detection failed:', err);
     }
 
-    if (isProcessing && (video.currentTime < video.duration || isPlaying)) {
-      animationRef.current = requestAnimationFrame(processVideoFrame);
-    }
-  }, [isProcessing, isPlaying, getFaceDetectorOptions, hideBoundingBoxes, showTrackingPath]);
-
-  const startTracking = () => {
-    if (!videoRef.current) return;
-
-    setIsProcessing(true);
-    trackingDataRef.current = [];
-    nextTrackIdRef.current = 1;
-    setFaceTracks([]);
-    setCurrentDetections([]);
-
-    const video = videoRef.current;
-    setTrackingStats({
-      totalFrames: Math.ceil(video.duration * 30), // Assuming 30fps
-      processedFrames: 0,
-      avgProcessingTime: 0,
-      totalFaces: 0,
-      currentTimestamp: video.currentTime,
-      videoDuration: video.duration,
-    });
-
-    processVideoFrame();
-  };
-
-  const stopTracking = () => {
-    setIsProcessing(false);
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-    setFaceTracks([...trackingDataRef.current]);
-  };
-
-  const handleVideoLoad = (src: string) => {
-    if (videoRef.current) {
-      videoRef.current.src = src;
-      videoRef.current.onloadedmetadata = () => {
-        if (videoRef.current && canvasRef.current) {
-          const video = videoRef.current;
-          canvasRef.current.width = video.videoWidth;
-          canvasRef.current.height = video.videoHeight;
-          setTrackingStats(prev => ({
-            ...prev,
-            videoDuration: video.duration,
-            totalFrames: Math.ceil(video.duration * 30),
-          }));
-        }
-      };
-    }
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      handleVideoLoad(url);
-    }
-  };
-
-  const handleUrlSubmit = () => {
-    if (videoUrl.trim()) {
-      handleVideoLoad(videoUrl);
-    }
-  };
-
-  const togglePlayPause = () => {
-    if (!videoRef.current) return;
-
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const seekVideo = (seconds: number) => {
-    if (!videoRef.current) return;
-    videoRef.current.currentTime = Math.max(
-      0,
-      Math.min(videoRef.current.currentTime + seconds, videoRef.current.duration)
-    );
-  };
+    setTimeout(() => onPlay(), 150); // Slightly longer interval for better performance
+  }, []); // Remove dependencies to make it more stable
 
   const handleModelChange = async (newModel: string) => {
-    const wasProcessing = isProcessing;
-    if (wasProcessing) {
-      stopTracking();
-    }
-
     setSelectedModel(newModel);
     setIsLoading(true);
     setLoadingProgress(0);
@@ -466,7 +261,7 @@ export default function VideoTrackingPage() {
         await faceapi.nets.tinyFaceDetector.loadFromUri('/');
       }
       setLoadingProgress(70);
-      await faceapi.nets.faceLandmark68Net.loadFromUri('/');
+      await faceapi.loadFaceLandmarkModel('/');
       setLoadingProgress(100);
       setIsLoading(false);
     } catch {
@@ -474,39 +269,6 @@ export default function VideoTrackingPage() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleTimeUpdate = () => {
-      setTrackingStats(prev => ({
-        ...prev,
-        currentTimestamp: video.currentTime,
-      }));
-    };
-
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-
-    return () => {
-      video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
-    };
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, []);
 
   if (isLoading) {
     return (
@@ -543,89 +305,19 @@ export default function VideoTrackingPage() {
           Video Face Tracking
         </h1>
         <p className="text-muted-foreground">
-          Track faces across video frames with unique IDs and movement paths
+          Real-time face detection and landmarks on the Big Bang Theory demo video
         </p>
       </div>
 
-      {error && (
+      {error ? (
         <Alert className="mb-6" variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-      )}
+      ) : null}
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Controls */}
+      <div className="grid lg:grid-cols-4 gap-6">
         <div className="lg:col-span-1 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Upload className="h-4 w-4" />
-                Video Selection
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Tabs defaultValue="upload" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="upload">Upload</TabsTrigger>
-                  <TabsTrigger value="url">URL</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="upload" className="space-y-4">
-                  <div>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="video/*"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
-                    <Button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="w-full"
-                      variant="outline"
-                    >
-                      <Upload className="mr-2 h-4 w-4" />
-                      Choose Video
-                    </Button>
-                  </div>
-
-                  <div>
-                    <Label className="text-sm font-medium">Sample Videos</Label>
-                    <div className="grid gap-2 mt-2">
-                      {sampleVideos.map(sample => (
-                        <Button
-                          key={sample.name}
-                          variant="ghost"
-                          className="h-auto p-2 flex flex-col gap-1"
-                          onClick={() => handleVideoLoad(sample.url)}
-                        >
-                          <div className="text-xs">{sample.name}</div>
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="url" className="space-y-4">
-                  <div>
-                    <Label htmlFor="videoUrl">Video URL</Label>
-                    <Input
-                      id="videoUrl"
-                      type="url"
-                      placeholder="https://example.com/video.mp4"
-                      value={videoUrl}
-                      onChange={e => setVideoUrl(e.target.value)}
-                    />
-                  </div>
-                  <Button onClick={handleUrlSubmit} className="w-full">
-                    Load Video
-                  </Button>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -634,58 +326,9 @@ export default function VideoTrackingPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Button onClick={() => seekVideo(-10)} variant="outline" size="sm">
-                  <SkipBack className="h-4 w-4" />
-                </Button>
-                <Button onClick={togglePlayPause} variant="outline" size="sm">
-                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                </Button>
-                <Button onClick={() => seekVideo(10)} variant="outline" size="sm">
-                  <SkipForward className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="space-y-2">
-                {!isProcessing ? (
-                  <Button onClick={startTracking} className="w-full">
-                    <Target className="mr-2 h-4 w-4" />
-                    Start Tracking
-                  </Button>
-                ) : (
-                  <Button onClick={stopTracking} variant="outline" className="w-full">
-                    <Square className="mr-2 h-4 w-4" />
-                    Stop Tracking
-                  </Button>
-                )}
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="hideBoundingBoxes"
-                  checked={hideBoundingBoxes}
-                  onCheckedChange={setHideBoundingBoxes}
-                />
-                <Label htmlFor="hideBoundingBoxes">Hide Bounding Boxes</Label>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="showTrackingPath"
-                  checked={showTrackingPath}
-                  onCheckedChange={setShowTrackingPath}
-                />
-                <Label htmlFor="showTrackingPath">Show Tracking Paths</Label>
-              </div>
-
-              {isProcessing && (
-                <div className="space-y-2">
-                  <Progress value={processingProgress} className="w-full" />
-                  <p className="text-sm text-muted-foreground">
-                    Processing video... {Math.round(processingProgress)}%
-                  </p>
-                </div>
-              )}
+              <p className="text-sm text-muted-foreground">
+                Video will start automatically. Use browser controls to play/pause.
+              </p>
             </CardContent>
           </Card>
 
@@ -754,107 +397,84 @@ export default function VideoTrackingPage() {
                   </div>
                 </>
               )}
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="withFaceLandmarks"
+                  checked={withFaceLandmarks}
+                  onCheckedChange={setWithFaceLandmarks}
+                />
+                <Label htmlFor="withFaceLandmarks">Detect Face Landmarks</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="hideBoundingBoxes"
+                  checked={hideBoundingBoxes}
+                  onCheckedChange={setHideBoundingBoxes}
+                />
+                <Label htmlFor="hideBoundingBoxes">Hide Bounding Boxes</Label>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Tracking Stats */}
-          {trackingStats.processedFrames > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Timer className="h-4 w-4 text-green-500" />
-                  Tracking Statistics
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Total Face Tracks:</span>
-                    <Badge variant="secondary">{trackingStats.totalFaces}</Badge>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Current Faces:</span>
-                    <Badge variant="outline">{currentDetections.length}</Badge>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Avg Processing:</span>
-                    <Badge variant="outline">{trackingStats.avgProcessingTime}ms</Badge>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Current Time:</span>
-                    <Badge variant="outline">
-                      {Math.round(trackingStats.currentTimestamp)}s /{' '}
-                      {Math.round(trackingStats.videoDuration)}s
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Face Tracks Summary */}
-          {faceTracks.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-4 w-4 text-primary" />
-                  Face Tracks Summary
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {faceTracks.map(track => (
-                    <div key={track.id} className="p-2 border rounded text-xs">
-                      <div className="font-medium">Track ID: {track.id}</div>
-                      <div className="text-muted-foreground">Frames: {track.frames.length}</div>
-                      <div className="text-muted-foreground">
-                        Duration: {Math.round(track.lastSeen - track.firstSeen)}s
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Video Display */}
-        <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Video Preview</CardTitle>
-              <CardDescription>Load a video to start face tracking analysis</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-4 w-4" />
+                Performance
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="relative bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[400px] flex items-center justify-center overflow-hidden">
-                <div className="relative">
-                  <video
-                    ref={videoRef}
-                    controls
-                    className="max-w-full max-h-[600px] rounded-lg"
-                    style={{
-                      display: videoRef.current?.src ? 'block' : 'none',
-                    }}
-                  />
-                  <canvas
-                    ref={canvasRef}
-                    className="absolute top-0 left-0 pointer-events-none rounded-lg"
-                    style={{
-                      display: videoRef.current?.src ? 'block' : 'none',
-                    }}
-                  />
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">FPS:</span>
+                  <Badge variant="secondary">{fps}</Badge>
                 </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Processing Time:</span>
+                  <Badge variant="outline">{processingTime}ms</Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Faces Detected:</span>
+                  <Badge variant={detectionCount > 0 ? 'default' : 'secondary'}>
+                    {detectionCount}
+                  </Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-                {!videoRef.current?.src && (
-                  <div className="text-center text-muted-foreground">
-                    <Video className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No video selected</p>
-                    <p className="text-sm">Upload a video file or choose a sample to get started</p>
-                  </div>
-                )}
+        <div className="lg:col-span-3">
+          <Card>
+            <CardHeader>
+              <CardTitle>Sample Demo Video</CardTitle>
+              <CardDescription>
+                Real-time face detection with optional landmarks detection
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="relative bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[400px] flex items-center justify-center">
+                <video
+                  ref={videoRef}
+                  src="/bbt.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="max-w-full max-h-[600px] rounded-lg"
+                  onLoadedMetadata={() => {
+                    if (videoRef.current && canvasRef.current) {
+                      // Match canvas size to video
+                      canvasRef.current.width = videoRef.current.videoWidth;
+                      canvasRef.current.height = videoRef.current.videoHeight;
+                      // Start detection loop
+                      setTimeout(() => onPlay(), 100);
+                    }
+                  }}
+                />
+                <canvas ref={canvasRef} className="absolute top-0 left-0 pointer-events-none" />
               </div>
             </CardContent>
           </Card>

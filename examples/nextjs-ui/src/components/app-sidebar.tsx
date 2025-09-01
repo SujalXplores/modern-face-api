@@ -3,7 +3,6 @@
 import { Brain, Calendar, Eye, Layers, Smile, Target, Users, Video, Webcam } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -17,7 +16,6 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-// Menu items for image-based examples
 const imageExamples = [
   {
     title: 'Face Detection',
@@ -56,7 +54,6 @@ const imageExamples = [
   },
 ];
 
-// Menu items for video/webcam examples
 const videoExamples = [
   {
     title: 'Webcam Detection',
