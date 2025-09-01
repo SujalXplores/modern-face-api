@@ -159,7 +159,8 @@ export function AppSidebar({ className }: SidebarProps) {
                 'flex flex-col gap-1 max-w-xs z-50',
                 'bg-popover text-popover-foreground',
                 'border border-border shadow-lg',
-                'px-3 py-2 rounded-md'
+                'px-3 py-2 rounded-md',
+                '[&>svg]:fill-popover [&>svg]:stroke-border'
               )}
               sideOffset={8}
             >

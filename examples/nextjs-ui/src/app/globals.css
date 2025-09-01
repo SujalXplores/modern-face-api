@@ -127,7 +127,6 @@
   }
 }
 
-/* Custom utility classes for the redesign */
 @layer utilities {
   .backdrop-blur-header {
     backdrop-filter: blur(12px);
@@ -148,7 +147,6 @@
     background: rgba(10, 10, 10, 0.8);
   }
 
-  /* Smooth shadows for cards */
   .card-shadow {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   }
@@ -157,7 +155,6 @@
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   }
 
-  /* Custom scrollbar for sidebar */
   .sidebar-scroll::-webkit-scrollbar {
     width: 4px;
   }
@@ -174,26 +171,5 @@
   .sidebar-scroll::-webkit-scrollbar-thumb:hover {
     background: var(--sidebar-foreground);
     opacity: 0.3;
-  }
-
-  /* Pointer cursor for interactive elements */
-  button,
-  [role='button'],
-  [data-radix-select-trigger],
-  [data-radix-tabs-trigger],
-  [data-radix-accordion-trigger],
-  input[type='file'],
-  label[for],
-  .cursor-pointer {
-    cursor: pointer !important;
-  }
-
-  /* Proper spacing for form elements */
-  .form-item-spacing {
-    margin-top: 0.75rem; /* 3 units */
-  }
-
-  .select-with-label {
-    margin-top: 0.5rem; /* 2 units - space between label and select */
   }
 }
