@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertCircle, Calendar, Eye, Pause, Play, Settings, Users, Webcam } from 'lucide-react';
+import { AlertCircle, Play, Settings, User, Webcam } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -22,29 +22,15 @@ import { Switch } from '@/components/ui/switch';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let faceapi: any = null;
 
-interface DetectionStats {
-  totalFrames: number;
-  avgProcessingTime: number;
-  currentFps: number;
-  estimatedFps: number;
-}
-
-interface FaceResult {
+interface AgeGenderResult {
   age: number;
   gender: string;
   genderProbability: number;
-  box: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
 }
 
 export default function WebcamAgeGenderPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [isDetecting, setIsDetecting] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState('ssd_mobilenetv1');
@@ -52,23 +38,17 @@ export default function WebcamAgeGenderPage() {
   const [inputSize, setInputSize] = useState('416');
   const [scoreThreshold, setScoreThreshold] = useState([0.5]);
   const [hideBoundingBoxes, setHideBoundingBoxes] = useState(false);
-  const [detectionStats, setDetectionStats] = useState<DetectionStats>({
-    totalFrames: 0,
-    avgProcessingTime: 0,
-    currentFps: 0,
-    estimatedFps: 0,
-  });
-  const [currentFaces, setCurrentFaces] = useState<FaceResult[]>([]);
+
+  // Performance metrics
+  const [fps, setFps] = useState(0);
+  const [processingTime, setProcessingTime] = useState(0);
+  const [currentResult, setCurrentResult] = useState<AgeGenderResult | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const statsRef = useRef({
-    frameCount: 0,
-    totalProcessingTime: 0,
-    lastFpsUpdate: Date.now(),
-    lastFrameTime: Date.now(),
-  });
+  const timesRef = useRef<number[]>([]);
+  const isDetectingRef = useRef(false);
 
   useEffect(() => {
     const loadModels = async () => {
@@ -107,6 +87,9 @@ export default function WebcamAgeGenderPage() {
     };
 
     loadModels();
+    return () => {
+      stopWebcam();
+    };
   }, [selectedModel]);
 
   const getFaceDetectorOptions = useCallback(() => {
@@ -122,6 +105,104 @@ export default function WebcamAgeGenderPage() {
     }
   }, [selectedModel, confidence, inputSize, scoreThreshold]);
 
+  const updateTimeStats = (timeInMs: number) => {
+    timesRef.current = [timeInMs].concat(timesRef.current).slice(0, 30);
+    const avgTimeInMs = timesRef.current.reduce((total, t) => total + t) / timesRef.current.length;
+    setProcessingTime(Math.round(avgTimeInMs));
+    setFps(Math.round(1000 / avgTimeInMs));
+  };
+
+  const detectAgeGender = useCallback(async () => {
+    if (!faceapi || !videoRef.current || !canvasRef.current || !isDetectingRef.current) {
+      if (isDetectingRef.current) {
+        setTimeout(() => detectAgeGender(), 100);
+      }
+      return;
+    }
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (video.paused || video.ended || video.readyState !== 4) {
+      setTimeout(() => detectAgeGender(), 100);
+      return;
+    }
+
+    const startTime = Date.now();
+
+    try {
+      const options = getFaceDetectorOptions();
+      const result = await faceapi
+        .detectSingleFace(video, options)
+        .withFaceLandmarks()
+        .withAgeAndGender();
+
+      const endTime = Date.now();
+      const processingTime = endTime - startTime;
+
+      updateTimeStats(processingTime);
+
+      // Clear canvas
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      if (result) {
+        // Update age and gender results
+        const age = Math.round(result.age);
+        const gender = result.gender;
+        const genderProbability = result.genderProbability;
+
+        setCurrentResult({
+          age,
+          gender,
+          genderProbability,
+        });
+
+        // Draw results on canvas
+        const dims = faceapi.matchDimensions(canvas, video, true);
+
+        // Only draw if dimensions are valid (not zero)
+        if (dims.width > 0 && dims.height > 0) {
+          const resizedResult = faceapi.resizeResults(result, dims);
+
+          if (!hideBoundingBoxes) {
+            faceapi.draw.drawDetections(canvas, resizedResult);
+          }
+
+          // Draw age and gender text
+          const genderText = `${gender} (${Math.round(genderProbability * 100)}%)`;
+          new faceapi.draw.DrawTextField(
+            [`Age: ${age}`, genderText],
+            resizedResult.detection.box.bottomLeft
+          ).draw(canvas);
+        }
+      } else {
+        setCurrentResult(null);
+      }
+    } catch (err) {
+      console.error('Detection error:', err);
+    }
+
+    if (isDetectingRef.current) {
+      setTimeout(() => detectAgeGender(), 100);
+    }
+  }, [getFaceDetectorOptions, hideBoundingBoxes]);
+
+  // Restart detection when hideBoundingBoxes changes to immediately apply the setting
+  useEffect(() => {
+    if (isStreaming && isDetectingRef.current) {
+      // Force a canvas clear and restart detection
+      if (canvasRef.current) {
+        const ctx = canvasRef.current.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        }
+      }
+    }
+  }, [hideBoundingBoxes, isStreaming]);
+
   const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -136,6 +217,8 @@ export default function WebcamAgeGenderPage() {
         streamRef.current = stream;
         setIsStreaming(true);
         setError(null);
+        // Start detection automatically when video loads
+        isDetectingRef.current = true;
       }
     } catch (err) {
       console.error('Failed to start webcam:', err);
@@ -144,6 +227,8 @@ export default function WebcamAgeGenderPage() {
   };
 
   const stopWebcam = () => {
+    isDetectingRef.current = false;
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
@@ -152,153 +237,15 @@ export default function WebcamAgeGenderPage() {
       videoRef.current.srcObject = null;
     }
     setIsStreaming(false);
-    setIsDetecting(false);
-    setCurrentFaces([]);
-  };
-
-  const detectFaces = useCallback(async () => {
-    if (!faceapi || !videoRef.current || !canvasRef.current || !isDetecting) {
-      if (isDetecting) {
-        setTimeout(() => detectFaces(), 100);
-      }
-      return;
-    }
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (video.paused || video.ended || video.readyState !== 4) {
-      setTimeout(() => detectFaces(), 100);
-      return;
-    }
-
-    const startTime = Date.now();
-
-    try {
-      const options = getFaceDetectorOptions();
-      const results = await faceapi
-        .detectAllFaces(video, options)
-        .withFaceLandmarks()
-        .withAgeAndGender();
-
-      const endTime = Date.now();
-      const processingTime = endTime - startTime;
-
-      // Update stats
-      statsRef.current.frameCount++;
-      statsRef.current.totalProcessingTime += processingTime;
-      const now = Date.now();
-
-      // Update FPS every second
-      if (now - statsRef.current.lastFpsUpdate > 1000) {
-        const currentFps = 1000 / (now - statsRef.current.lastFrameTime);
-        const avgProcessingTime =
-          statsRef.current.totalProcessingTime / statsRef.current.frameCount;
-        const estimatedFps = processingTime > 0 ? 1000 / processingTime : 0;
-
-        setDetectionStats({
-          totalFrames: statsRef.current.frameCount,
-          avgProcessingTime: Math.round(avgProcessingTime),
-          currentFps: Math.round(currentFps * 10) / 10,
-          estimatedFps: Math.round(estimatedFps * 10) / 10,
-        });
-
-        statsRef.current.lastFpsUpdate = now;
-      }
-      statsRef.current.lastFrameTime = now;
-
-      // Update face results
-      const faceResults: FaceResult[] = results.map(
-        (result: {
-          detection: {
-            box: { x: number; y: number; width: number; height: number };
-          };
-          age: number;
-          gender: string;
-          genderProbability: number;
-        }) => ({
-          age: result.age,
-          gender: result.gender,
-          genderProbability: result.genderProbability,
-          box: result.detection.box,
-        })
-      );
-
-      setCurrentFaces(faceResults);
-
-      // Draw results on canvas
-      const displaySize = {
-        width: video.videoWidth,
-        height: video.videoHeight,
-      };
-      faceapi.matchDimensions(canvas, displaySize);
-
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (!hideBoundingBoxes && results.length > 0) {
-          const resizedResults = faceapi.resizeResults(results, displaySize);
-
-          // Draw bounding boxes
-          faceapi.draw.drawDetections(canvas, resizedResults);
-
-          // Draw age and gender text
-          resizedResults.forEach(
-            (result: {
-              age: number;
-              gender: string;
-              genderProbability: number;
-              detection: { box: { bottomLeft: { x: number; y: number } } };
-            }) => {
-              const { age, gender, genderProbability } = result;
-              new faceapi.draw.DrawTextField(
-                [`${Math.round(age)} years`, `${gender} (${Math.round(genderProbability * 100)}%)`],
-                result.detection.box.bottomLeft
-              ).draw(canvas);
-            }
-          );
-        }
-      }
-    } catch (err) {
-      console.error('Detection error:', err);
-    }
-
-    if (isDetecting) {
-      setTimeout(() => detectFaces(), 100);
-    }
-  }, [isDetecting, getFaceDetectorOptions, hideBoundingBoxes]);
-
-  const startDetection = () => {
-    if (!isStreaming) return;
-
-    setIsDetecting(true);
-    statsRef.current = {
-      frameCount: 0,
-      totalProcessingTime: 0,
-      lastFpsUpdate: Date.now(),
-      lastFrameTime: Date.now(),
-    };
-    setTimeout(() => detectFaces(), 100);
-  };
-
-  const stopDetection = () => {
-    setIsDetecting(false);
-    setCurrentFaces([]);
-
-    // Clear canvas
-    if (canvasRef.current) {
-      const ctx = canvasRef.current.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      }
-    }
+    setCurrentResult(null);
+    setFps(0);
+    setProcessingTime(0);
   };
 
   const handleModelChange = async (newModel: string) => {
-    const wasDetecting = isDetecting;
-    if (wasDetecting) {
-      stopDetection();
+    const wasStreaming = isStreaming;
+    if (wasStreaming) {
+      stopWebcam();
     }
 
     setSelectedModel(newModel);
@@ -319,8 +266,8 @@ export default function WebcamAgeGenderPage() {
       setLoadingProgress(100);
       setIsLoading(false);
 
-      if (wasDetecting) {
-        setTimeout(() => startDetection(), 100);
+      if (wasStreaming) {
+        setTimeout(() => startWebcam(), 100);
       }
     } catch {
       setError('Failed to load new model');
@@ -328,19 +275,13 @@ export default function WebcamAgeGenderPage() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      stopWebcam();
-    };
-  }, []);
-
   if (isLoading) {
     return (
       <div className="container mx-auto px-6 py-8 max-w-4xl">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
+              <User className="h-5 w-5" />
               Loading Webcam Age & Gender Models...
             </CardTitle>
           </CardHeader>
@@ -354,7 +295,7 @@ export default function WebcamAgeGenderPage() {
                   : loadingProgress < 75
                     ? 'Loading landmark models...'
                     : loadingProgress < 100
-                      ? 'Loading age/gender models...'
+                      ? 'Loading age & gender models...'
                       : 'Ready!'}
             </p>
           </CardContent>
@@ -367,11 +308,11 @@ export default function WebcamAgeGenderPage() {
     <div className="container mx-auto px-6 py-8 max-w-6xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
-          <Calendar className="h-8 w-8 text-primary" />
+          <User className="h-8 w-8 text-primary" />
           Webcam Age & Gender Recognition
         </h1>
         <p className="text-muted-foreground">
-          Real-time age and gender prediction from your webcam
+          Real-time age and gender estimation from your webcam
         </p>
       </div>
 
@@ -401,25 +342,8 @@ export default function WebcamAgeGenderPage() {
                   </Button>
                 ) : (
                   <Button onClick={stopWebcam} variant="outline" className="w-full">
-                    <Pause className="mr-2 h-4 w-4" />
                     Stop Webcam
                   </Button>
-                )}
-
-                {isStreaming && (
-                  <>
-                    {!isDetecting ? (
-                      <Button onClick={startDetection} className="w-full">
-                        <Eye className="mr-2 h-4 w-4" />
-                        Start Detection
-                      </Button>
-                    ) : (
-                      <Button onClick={stopDetection} variant="outline" className="w-full">
-                        <Pause className="mr-2 h-4 w-4" />
-                        Stop Detection
-                      </Button>
-                    )}
-                  </>
                 )}
               </div>
 
@@ -503,11 +427,11 @@ export default function WebcamAgeGenderPage() {
           </Card>
 
           {/* Performance Stats */}
-          {isDetecting && (
+          {isStreaming && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-green-500" />
+                  <Settings className="h-4 w-4 text-green-500" />
                   Performance Stats
                 </CardTitle>
               </CardHeader>
@@ -515,67 +439,45 @@ export default function WebcamAgeGenderPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Processing Time:</span>
-                    <Badge variant="outline">{detectionStats.avgProcessingTime}ms</Badge>
+                    <Badge variant="outline">{processingTime}ms</Badge>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Estimated FPS:</span>
-                    <Badge variant="secondary">{detectionStats.estimatedFps}</Badge>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Current FPS:</span>
-                    <Badge variant="outline">{detectionStats.currentFps}</Badge>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Total Frames:</span>
-                    <Badge variant="outline">{detectionStats.totalFrames}</Badge>
+                    <span className="text-sm font-medium">FPS:</span>
+                    <Badge variant="secondary">{fps}</Badge>
                   </div>
                 </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Current Detection Results */}
-          {currentFaces.length > 0 && (
+          {/* Current Results */}
+          {currentResult && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-primary" />
-                  Current Detections
+                  <User className="h-4 w-4 text-primary" />
+                  Current Detection
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Faces Detected:</span>
-                    <Badge variant="secondary">{currentFaces.length}</Badge>
-                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Age:</span>
+                        <Badge variant="outline">{currentResult.age} years old</Badge>
+                      </div>
 
-                  {currentFaces.map((face, index) => (
-                    <div key={index} className="p-3 border rounded-lg">
-                      <div className="text-sm font-medium mb-2">Face {index + 1}</div>
-                      <div className="text-xs text-muted-foreground space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span>Age:</span>
-                          <Badge variant="secondary">{Math.round(face.age)} years</Badge>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span>Gender:</span>
-                          <Badge variant="secondary">
-                            {face.gender} ({Math.round(face.genderProbability * 100)}%)
-                          </Badge>
-                        </div>
-                        <div>
-                          Position: ({Math.round(face.box.x)}, {Math.round(face.box.y)})
-                        </div>
-                        <div>
-                          Size: {Math.round(face.box.width)} × {Math.round(face.box.height)}
-                        </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Gender:</span>
+                        <Badge variant="secondary">
+                          {currentResult.gender} (
+                          {Math.round(currentResult.genderProbability * 100)}%)
+                        </Badge>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -588,7 +490,7 @@ export default function WebcamAgeGenderPage() {
             <CardHeader>
               <CardTitle>Live Video Stream</CardTitle>
               <CardDescription>
-                Real-time age and gender recognition from your webcam
+                Real-time age and gender estimation from your webcam
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -602,22 +504,21 @@ export default function WebcamAgeGenderPage() {
                     className="max-w-full max-h-[600px] rounded-lg"
                     style={{
                       display: isStreaming ? 'block' : 'none',
-                      transform: 'scaleX(-1)', // Mirror the video
                     }}
                     onLoadedMetadata={() => {
                       if (videoRef.current && canvasRef.current) {
-                        const video = videoRef.current;
-                        canvasRef.current.width = video.videoWidth;
-                        canvasRef.current.height = video.videoHeight;
+                        // Match canvas size to video using faceapi utility
+                        faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
+                        // Start detection loop
+                        setTimeout(() => detectAgeGender(), 100);
                       }
                     }}
                   />
                   <canvas
                     ref={canvasRef}
-                    className="absolute top-0 left-0 pointer-events-none rounded-lg"
+                    className="absolute top-0 left-0 pointer-events-none rounded-lg w-full h-full"
                     style={{
                       display: isStreaming ? 'block' : 'none',
-                      transform: 'scaleX(-1)', // Mirror the canvas to match video
                     }}
                   />
                 </div>
@@ -627,17 +528,8 @@ export default function WebcamAgeGenderPage() {
                     <Webcam className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Webcam not active</p>
                     <p className="text-sm">
-                      Click &quot;Start Webcam&quot; to begin age and gender detection
+                      Click &quot;Start Webcam&quot; to begin age & gender recognition
                     </p>
-                  </div>
-                )}
-
-                {isStreaming && !isDetecting && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg text-center">
-                      <Eye className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="text-sm">Click &quot;Start Detection&quot; to begin analysis</p>
-                    </div>
                   </div>
                 )}
               </div>

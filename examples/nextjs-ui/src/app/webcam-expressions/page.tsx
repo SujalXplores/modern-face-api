@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertCircle, Eye, Heart, Pause, Play, Settings, Smile, Webcam } from 'lucide-react';
+import { AlertCircle, Play, Settings, Smile, Webcam } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -22,73 +22,25 @@ import { Switch } from '@/components/ui/switch';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let faceapi: any = null;
 
-interface DetectionStats {
-  totalFrames: number;
-  avgProcessingTime: number;
-  currentFps: number;
-  estimatedFps: number;
-}
-
-interface ExpressionResult {
-  expressions: Record<string, number>;
-  dominantExpression: string;
-  dominantProbability: number;
-  box: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-}
-
-const expressionEmojis: Record<string, string> = {
-  neutral: '😐',
-  happy: '😊',
-  sad: '😢',
-  angry: '😠',
-  fearful: '😨',
-  disgusted: '🤢',
-  surprised: '😲',
-};
-
-const expressionColors: Record<string, string> = {
-  neutral: 'bg-gray-100 text-gray-800',
-  happy: 'bg-yellow-100 text-yellow-800',
-  sad: 'bg-blue-100 text-blue-800',
-  angry: 'bg-red-100 text-red-800',
-  fearful: 'bg-purple-100 text-purple-800',
-  disgusted: 'bg-green-100 text-green-800',
-  surprised: 'bg-orange-100 text-orange-800',
-};
-
 export default function WebcamExpressionsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [isDetecting, setIsDetecting] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState('ssd_mobilenetv1');
+  const [selectedModel, setSelectedModel] = useState('tiny_face_detector');
   const [confidence, setConfidence] = useState([0.5]);
-  const [inputSize, setInputSize] = useState('416');
+  const [inputSize, setInputSize] = useState('224');
   const [scoreThreshold, setScoreThreshold] = useState([0.5]);
-  const [hideBoundingBoxes, setHideBoundingBoxes] = useState(false);
-  const [detectionStats, setDetectionStats] = useState<DetectionStats>({
-    totalFrames: 0,
-    avgProcessingTime: 0,
-    currentFps: 0,
-    estimatedFps: 0,
-  });
-  const [currentExpressions, setCurrentExpressions] = useState<ExpressionResult[]>([]);
+  const [withBoxes, setWithBoxes] = useState(true);
+
+  // Performance metrics
+  const [fps, setFps] = useState(0);
+  const [processingTime, setProcessingTime] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const statsRef = useRef({
-    frameCount: 0,
-    totalProcessingTime: 0,
-    lastFpsUpdate: Date.now(),
-    lastFrameTime: Date.now(),
-  });
+  const forwardTimesRef = useRef<number[]>([]);
 
   useEffect(() => {
     const loadModels = async () => {
@@ -100,22 +52,13 @@ export default function WebcamExpressionsPage() {
 
         setLoadingProgress(25);
 
-        // Load face detection model
-        if (selectedModel === 'ssd_mobilenetv1') {
-          await faceapi.nets.ssdMobilenetv1.loadFromUri('/');
-        } else {
-          await faceapi.nets.tinyFaceDetector.loadFromUri('/');
-        }
-
-        setLoadingProgress(50);
-
-        // Load face landmark model for alignment
-        await faceapi.nets.faceLandmark68Net.loadFromUri('/');
+        // Load face detection model (start with tiny face detector)
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/');
 
         setLoadingProgress(75);
 
         // Load face expression model
-        await faceapi.nets.faceExpressionNet.loadFromUri('/');
+        await faceapi.loadFaceExpressionModel('/');
 
         setLoadingProgress(100);
         setIsLoading(false);
@@ -127,7 +70,10 @@ export default function WebcamExpressionsPage() {
     };
 
     loadModels();
-  }, [selectedModel]);
+    return () => {
+      stopWebcam();
+    };
+  }, []);
 
   const getFaceDetectorOptions = useCallback(() => {
     if (selectedModel === 'ssd_mobilenetv1') {
@@ -142,14 +88,65 @@ export default function WebcamExpressionsPage() {
     }
   }, [selectedModel, confidence, inputSize, scoreThreshold]);
 
+  const isFaceDetectionModelLoaded = useCallback(() => {
+    if (!faceapi) return false;
+    if (selectedModel === 'ssd_mobilenetv1') {
+      return !!faceapi.nets.ssdMobilenetv1.params;
+    }
+    return !!faceapi.nets.tinyFaceDetector.params;
+  }, [selectedModel]);
+
+  const updateTimeStats = useCallback((timeInMs: number) => {
+    forwardTimesRef.current = [timeInMs].concat(forwardTimesRef.current).slice(0, 30);
+    const avgTimeInMs =
+      forwardTimesRef.current.reduce((total, t) => total + t) / forwardTimesRef.current.length;
+    setProcessingTime(Math.round(avgTimeInMs));
+    setFps(Math.round(1000 / avgTimeInMs));
+  }, []);
+
+  // This is the main detection loop - matches exactly the browser example
+  const onPlay = useCallback(async () => {
+    const videoEl = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!videoEl || !canvas || !faceapi) {
+      setTimeout(() => onPlay(), 100);
+      return;
+    }
+
+    if (videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded()) {
+      setTimeout(() => onPlay(), 100);
+      return;
+    }
+
+    const options = getFaceDetectorOptions();
+    const ts = Date.now();
+
+    try {
+      const result = await faceapi.detectSingleFace(videoEl, options).withFaceExpressions();
+
+      updateTimeStats(Date.now() - ts);
+
+      if (result) {
+        const dims = faceapi.matchDimensions(canvas, videoEl, true);
+        const resizedResult = faceapi.resizeResults(result, dims);
+        const minConfidence = 0.05;
+
+        if (withBoxes) {
+          faceapi.draw.drawDetections(canvas, resizedResult);
+        }
+        faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
+      }
+    } catch (err) {
+      console.error('Detection error:', err);
+    }
+
+    setTimeout(() => onPlay(), 100);
+  }, [getFaceDetectorOptions, isFaceDetectionModelLoaded, updateTimeStats, withBoxes]);
+
   const startWebcam = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-        },
-      });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -172,162 +169,14 @@ export default function WebcamExpressionsPage() {
       videoRef.current.srcObject = null;
     }
     setIsStreaming(false);
-    setIsDetecting(false);
-    setCurrentExpressions([]);
-  };
-
-  const detectExpressions = useCallback(async () => {
-    if (!faceapi || !videoRef.current || !canvasRef.current || !isDetecting) {
-      if (isDetecting) {
-        setTimeout(() => detectExpressions(), 100);
-      }
-      return;
-    }
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (video.paused || video.ended || video.readyState !== 4) {
-      setTimeout(() => detectExpressions(), 100);
-      return;
-    }
-
-    const startTime = Date.now();
-
-    try {
-      const options = getFaceDetectorOptions();
-      const results = await faceapi
-        .detectAllFaces(video, options)
-        .withFaceLandmarks()
-        .withFaceExpressions();
-
-      const endTime = Date.now();
-      const processingTime = endTime - startTime;
-
-      // Update stats
-      statsRef.current.frameCount++;
-      statsRef.current.totalProcessingTime += processingTime;
-      const now = Date.now();
-
-      // Update FPS every second
-      if (now - statsRef.current.lastFpsUpdate > 1000) {
-        const currentFps = 1000 / (now - statsRef.current.lastFrameTime);
-        const avgProcessingTime =
-          statsRef.current.totalProcessingTime / statsRef.current.frameCount;
-        const estimatedFps = processingTime > 0 ? 1000 / processingTime : 0;
-
-        setDetectionStats({
-          totalFrames: statsRef.current.frameCount,
-          avgProcessingTime: Math.round(avgProcessingTime),
-          currentFps: Math.round(currentFps * 10) / 10,
-          estimatedFps: Math.round(estimatedFps * 10) / 10,
-        });
-
-        statsRef.current.lastFpsUpdate = now;
-      }
-      statsRef.current.lastFrameTime = now;
-
-      // Update expression results
-      const expressionResults: ExpressionResult[] = results.map(
-        (result: {
-          detection: {
-            box: { x: number; y: number; width: number; height: number };
-          };
-          expressions: Record<string, number>;
-        }) => {
-          const expressions = result.expressions;
-          const maxExpression = Object.entries(expressions).reduce((max, [expr, prob]) =>
-            prob > max[1] ? [expr, prob] : max
-          );
-
-          return {
-            expressions,
-            dominantExpression: maxExpression[0],
-            dominantProbability: maxExpression[1],
-            box: result.detection.box,
-          };
-        }
-      );
-
-      setCurrentExpressions(expressionResults);
-
-      // Draw results on canvas
-      const displaySize = {
-        width: video.videoWidth,
-        height: video.videoHeight,
-      };
-      faceapi.matchDimensions(canvas, displaySize);
-
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (!hideBoundingBoxes && results.length > 0) {
-          const resizedResults = faceapi.resizeResults(results, displaySize);
-
-          // Draw bounding boxes
-          faceapi.draw.drawDetections(canvas, resizedResults);
-
-          // Draw expression text
-          resizedResults.forEach(
-            (result: {
-              expressions: Record<string, number>;
-              detection: { box: { bottomLeft: { x: number; y: number } } };
-            }) => {
-              const expressions = result.expressions;
-              const maxExpression = Object.entries(expressions).reduce((max, [expr, prob]) =>
-                prob > max[1] ? [expr, prob] : max
-              );
-
-              const emoji = expressionEmojis[maxExpression[0]] || '😐';
-
-              new faceapi.draw.DrawTextField(
-                [`${emoji} ${maxExpression[0]}`, `${Math.round(maxExpression[1] * 100)}%`],
-                result.detection.box.bottomLeft
-              ).draw(canvas);
-            }
-          );
-        }
-      }
-    } catch (err) {
-      console.error('Detection error:', err);
-    }
-
-    if (isDetecting) {
-      setTimeout(() => detectExpressions(), 100);
-    }
-  }, [isDetecting, getFaceDetectorOptions, hideBoundingBoxes]);
-
-  const startDetection = () => {
-    if (!isStreaming) return;
-
-    setIsDetecting(true);
-    statsRef.current = {
-      frameCount: 0,
-      totalProcessingTime: 0,
-      lastFpsUpdate: Date.now(),
-      lastFrameTime: Date.now(),
-    };
-    setTimeout(() => detectExpressions(), 100);
-  };
-
-  const stopDetection = () => {
-    setIsDetecting(false);
-    setCurrentExpressions([]);
-
-    // Clear canvas
-    if (canvasRef.current) {
-      const ctx = canvasRef.current.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      }
-    }
+    setFps(0);
+    setProcessingTime(0);
   };
 
   const handleModelChange = async (newModel: string) => {
-    const wasDetecting = isDetecting;
-    if (wasDetecting) {
-      stopDetection();
+    const wasStreaming = isStreaming;
+    if (wasStreaming) {
+      stopWebcam();
     }
 
     setSelectedModel(newModel);
@@ -341,15 +190,11 @@ export default function WebcamExpressionsPage() {
       } else {
         await faceapi.nets.tinyFaceDetector.loadFromUri('/');
       }
-      setLoadingProgress(50);
-      await faceapi.nets.faceLandmark68Net.loadFromUri('/');
-      setLoadingProgress(75);
-      await faceapi.nets.faceExpressionNet.loadFromUri('/');
       setLoadingProgress(100);
       setIsLoading(false);
 
-      if (wasDetecting) {
-        setTimeout(() => startDetection(), 100);
+      if (wasStreaming) {
+        setTimeout(() => startWebcam(), 100);
       }
     } catch {
       setError('Failed to load new model');
@@ -357,11 +202,14 @@ export default function WebcamExpressionsPage() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      stopWebcam();
-    };
-  }, []);
+  // Handle the onloadedmetadata event to start detection
+  const handleVideoLoadedMetadata = () => {
+    if (videoRef.current && canvasRef.current && faceapi) {
+      faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
+      // Start the detection loop
+      onPlay();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -378,13 +226,11 @@ export default function WebcamExpressionsPage() {
             <p className="text-sm text-muted-foreground mt-2">
               {loadingProgress < 25
                 ? 'Initializing...'
-                : loadingProgress < 50
+                : loadingProgress < 75
                   ? 'Loading detection models...'
-                  : loadingProgress < 75
-                    ? 'Loading landmark models...'
-                    : loadingProgress < 100
-                      ? 'Loading expression models...'
-                      : 'Ready!'}
+                  : loadingProgress < 100
+                    ? 'Loading expression models...'
+                    : 'Ready!'}
             </p>
           </CardContent>
         </Card>
@@ -430,33 +276,16 @@ export default function WebcamExpressionsPage() {
                   </Button>
                 ) : (
                   <Button onClick={stopWebcam} variant="outline" className="w-full">
-                    <Pause className="mr-2 h-4 w-4" />
                     Stop Webcam
                   </Button>
-                )}
-
-                {isStreaming && (
-                  <>
-                    {!isDetecting ? (
-                      <Button onClick={startDetection} className="w-full">
-                        <Eye className="mr-2 h-4 w-4" />
-                        Start Detection
-                      </Button>
-                    ) : (
-                      <Button onClick={stopDetection} variant="outline" className="w-full">
-                        <Pause className="mr-2 h-4 w-4" />
-                        Stop Detection
-                      </Button>
-                    )}
-                  </>
                 )}
               </div>
 
               <div className="flex items-center space-x-2">
                 <Switch
                   id="hideBoundingBoxes"
-                  checked={hideBoundingBoxes}
-                  onCheckedChange={setHideBoundingBoxes}
+                  checked={!withBoxes}
+                  onCheckedChange={checked => setWithBoxes(!checked)}
                 />
                 <Label htmlFor="hideBoundingBoxes">Hide Bounding Boxes</Label>
               </div>
@@ -532,11 +361,11 @@ export default function WebcamExpressionsPage() {
           </Card>
 
           {/* Performance Stats */}
-          {isDetecting && (
+          {isStreaming && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-4 w-4 text-green-500" />
+                  <Settings className="h-4 w-4 text-green-500" />
                   Performance Stats
                 </CardTitle>
               </CardHeader>
@@ -544,83 +373,13 @@ export default function WebcamExpressionsPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Processing Time:</span>
-                    <Badge variant="outline">{detectionStats.avgProcessingTime}ms</Badge>
+                    <Badge variant="outline">{processingTime}ms</Badge>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Estimated FPS:</span>
-                    <Badge variant="secondary">{detectionStats.estimatedFps}</Badge>
+                    <span className="text-sm font-medium">FPS:</span>
+                    <Badge variant="secondary">{fps}</Badge>
                   </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Current FPS:</span>
-                    <Badge variant="outline">{detectionStats.currentFps}</Badge>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Total Frames:</span>
-                    <Badge variant="outline">{detectionStats.totalFrames}</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Current Expression Results */}
-          {currentExpressions.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Smile className="h-4 w-4 text-primary" />
-                  Current Expressions
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Faces Detected:</span>
-                    <Badge variant="secondary">{currentExpressions.length}</Badge>
-                  </div>
-
-                  {currentExpressions.map((expression, index) => (
-                    <div key={index} className="p-3 border rounded-lg">
-                      <div className="text-sm font-medium mb-2 flex items-center gap-2">
-                        <span>Face {index + 1}</span>
-                        <span className="text-2xl">
-                          {expressionEmojis[expression.dominantExpression] || '😐'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs">Dominant Expression:</span>
-                          <Badge
-                            className={`${
-                              expressionColors[expression.dominantExpression] ||
-                              expressionColors.neutral
-                            }`}
-                          >
-                            {expression.dominantExpression} (
-                            {Math.round(expression.dominantProbability * 100)}%)
-                          </Badge>
-                        </div>
-
-                        <div className="text-xs text-muted-foreground">
-                          <div className="grid grid-cols-2 gap-1">
-                            {Object.entries(expression.expressions)
-                              .sort(([, a], [, b]) => b - a)
-                              .slice(0, 4)
-                              .map(([expr, prob]) => (
-                                <div key={expr} className="flex justify-between">
-                                  <span>{expr}:</span>
-                                  <span>{Math.round(prob * 100)}%</span>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -647,22 +406,14 @@ export default function WebcamExpressionsPage() {
                     className="max-w-full max-h-[600px] rounded-lg"
                     style={{
                       display: isStreaming ? 'block' : 'none',
-                      transform: 'scaleX(-1)', // Mirror the video
                     }}
-                    onLoadedMetadata={() => {
-                      if (videoRef.current && canvasRef.current) {
-                        const video = videoRef.current;
-                        canvasRef.current.width = video.videoWidth;
-                        canvasRef.current.height = video.videoHeight;
-                      }
-                    }}
+                    onLoadedMetadata={handleVideoLoadedMetadata}
                   />
                   <canvas
                     ref={canvasRef}
-                    className="absolute top-0 left-0 pointer-events-none rounded-lg"
+                    className="absolute top-0 left-0 pointer-events-none rounded-lg w-full h-full"
                     style={{
                       display: isStreaming ? 'block' : 'none',
-                      transform: 'scaleX(-1)', // Mirror the canvas to match video
                     }}
                   />
                 </div>
@@ -674,15 +425,6 @@ export default function WebcamExpressionsPage() {
                     <p className="text-sm">
                       Click &quot;Start Webcam&quot; to begin expression recognition
                     </p>
-                  </div>
-                )}
-
-                {isStreaming && !isDetecting && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg text-center">
-                      <Eye className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="text-sm">Click &quot;Start Detection&quot; to begin analysis</p>
-                    </div>
                   </div>
                 )}
               </div>
