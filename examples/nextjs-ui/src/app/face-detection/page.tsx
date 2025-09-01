@@ -222,7 +222,7 @@ export default function FaceDetectionPage() {
   if (isLoading) {
     return (
       <div className="p-8 max-w-4xl mx-auto">
-        <Card className="card-shadow hover-lift">
+        <Card className="card-shadow">
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center gap-3">
               <Target className="h-5 w-5 text-primary" />
@@ -264,7 +264,7 @@ export default function FaceDetectionPage() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Controls Sidebar */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="card-shadow hover-lift">
+          <Card className="card-shadow">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Upload className="h-5 w-5 text-primary" />
@@ -274,10 +274,10 @@ export default function FaceDetectionPage() {
             <CardContent className="space-y-6">
               <Tabs defaultValue="upload" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 h-11">
-                  <TabsTrigger value="upload" className="text-sm">
+                  <TabsTrigger value="upload" className="text-sm cursor-pointer">
                     Upload
                   </TabsTrigger>
-                  <TabsTrigger value="url" className="text-sm">
+                  <TabsTrigger value="url" className="text-sm cursor-pointer">
                     URL
                   </TabsTrigger>
                 </TabsList>
@@ -293,7 +293,7 @@ export default function FaceDetectionPage() {
                     />
                     <Button
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full h-11"
+                      className="w-full h-11 cursor-pointer"
                       variant="outline"
                     >
                       <Upload className="mr-2 h-4 w-4" />
@@ -312,7 +312,7 @@ export default function FaceDetectionPage() {
                 </TabsContent>
 
                 <TabsContent value="url" className="space-y-4 mt-6">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="imageUrl" className="text-sm font-medium">
                       Image URL
                     </Label>
@@ -325,7 +325,7 @@ export default function FaceDetectionPage() {
                       className="h-11"
                     />
                   </div>
-                  <Button onClick={handleUrlSubmit} className="w-full h-11">
+                  <Button onClick={handleUrlSubmit} className="w-full h-11 cursor-pointer">
                     Load Image
                   </Button>
                 </TabsContent>
@@ -333,7 +333,7 @@ export default function FaceDetectionPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-shadow hover-lift">
+          <Card className="card-shadow">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Settings className="h-5 w-5 text-primary" />
@@ -341,17 +341,21 @@ export default function FaceDetectionPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="model" className="text-sm font-medium">
                   Detection Model
                 </Label>
                 <Select value={selectedModel} onValueChange={handleModelChange}>
-                  <SelectTrigger className="h-11">
+                  <SelectTrigger className="h-11 cursor-pointer">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ssd_mobilenetv1">SSD MobileNet V1</SelectItem>
-                    <SelectItem value="tiny_face_detector">Tiny Face Detector</SelectItem>
+                    <SelectItem value="ssd_mobilenetv1" className="cursor-pointer">
+                      SSD MobileNet V1
+                    </SelectItem>
+                    <SelectItem value="tiny_face_detector" className="cursor-pointer">
+                      Tiny Face Detector
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -372,21 +376,33 @@ export default function FaceDetectionPage() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="inputSize" className="text-sm font-medium">
                       Input Size
                     </Label>
                     <Select value={inputSize} onValueChange={setInputSize}>
-                      <SelectTrigger className="h-11">
+                      <SelectTrigger className="h-11 cursor-pointer">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="160">160 x 160</SelectItem>
-                        <SelectItem value="224">224 x 224</SelectItem>
-                        <SelectItem value="320">320 x 320</SelectItem>
-                        <SelectItem value="416">416 x 416</SelectItem>
-                        <SelectItem value="512">512 x 512</SelectItem>
-                        <SelectItem value="608">608 x 608</SelectItem>
+                        <SelectItem value="160" className="cursor-pointer">
+                          160 x 160
+                        </SelectItem>
+                        <SelectItem value="224" className="cursor-pointer">
+                          224 x 224
+                        </SelectItem>
+                        <SelectItem value="320" className="cursor-pointer">
+                          320 x 320
+                        </SelectItem>
+                        <SelectItem value="416" className="cursor-pointer">
+                          416 x 416
+                        </SelectItem>
+                        <SelectItem value="512" className="cursor-pointer">
+                          512 x 512
+                        </SelectItem>
+                        <SelectItem value="608" className="cursor-pointer">
+                          608 x 608
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -421,7 +437,7 @@ export default function FaceDetectionPage() {
 
           {/* Results */}
           {detections.length > 0 && (
-            <Card className="card-shadow hover-lift">
+            <Card className="card-shadow ">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <CheckCircle className="h-5 w-5 text-green-500" />
@@ -469,9 +485,8 @@ export default function FaceDetectionPage() {
           )}
         </div>
 
-        {/* Image Display */}
         <div className="lg:col-span-2">
-          <Card className="card-shadow hover-lift">
+          <Card className="card-shadow ">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Image Preview</CardTitle>
               <CardDescription className="text-base">
@@ -513,14 +528,14 @@ export default function FaceDetectionPage() {
                   </div>
                 )}
 
-                {isProcessing && (
+                {isProcessing ? (
                   <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center rounded-lg">
                     <div className="bg-card border border-border p-6 rounded-lg shadow-lg">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-3"></div>
                       <p className="text-sm font-medium">Processing...</p>
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             </CardContent>
           </Card>

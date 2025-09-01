@@ -75,8 +75,8 @@
   --sidebar-foreground: #1a1a1a;
   --sidebar-primary: #3b82f6;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ffffff;
-  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-accent: #e2e8f0;
+  --sidebar-accent-foreground: #0f172a;
   --sidebar-border: #e5e7eb;
   --sidebar-ring: #3b82f6;
 }
@@ -112,8 +112,8 @@
   --sidebar-foreground: #fafafa;
   --sidebar-primary: #6366f1;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #fafafa;
+  --sidebar-accent: #2a2a2a;
+  --sidebar-accent-foreground: #f1f5f9;
   --sidebar-border: #2e2e2e;
   --sidebar-ring: #6366f1;
 }
@@ -157,17 +157,43 @@
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   }
 
-  /* Subtle hover effects */
-  .hover-lift {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  /* Custom scrollbar for sidebar */
+  .sidebar-scroll::-webkit-scrollbar {
+    width: 4px;
   }
 
-  .hover-lift:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+  .sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
   }
 
-  .dark .hover-lift:hover {
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
+  .sidebar-scroll::-webkit-scrollbar-thumb {
+    background: var(--sidebar-border);
+    border-radius: 2px;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--sidebar-foreground);
+    opacity: 0.3;
+  }
+
+  /* Pointer cursor for interactive elements */
+  button,
+  [role='button'],
+  [data-radix-select-trigger],
+  [data-radix-tabs-trigger],
+  [data-radix-accordion-trigger],
+  input[type='file'],
+  label[for],
+  .cursor-pointer {
+    cursor: pointer !important;
+  }
+
+  /* Proper spacing for form elements */
+  .form-item-spacing {
+    margin-top: 0.75rem; /* 3 units */
+  }
+
+  .select-with-label {
+    margin-top: 0.5rem; /* 2 units - space between label and select */
   }
 }

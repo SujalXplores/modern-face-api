@@ -122,18 +122,28 @@ export function AppSidebar({ className }: SidebarProps) {
       <Button
         variant={isActive ? 'default' : 'ghost'}
         className={cn(
-          'w-full justify-start h-10 px-3 transition-all duration-200',
-          isCollapsed ? 'px-2' : 'px-3',
+          'w-full h-10 transition-all duration-200 relative',
+          isCollapsed ? 'justify-center px-2' : 'justify-start px-3',
           isActive
-            ? 'bg-primary text-primary-foreground shadow-sm'
-            : 'hover:bg-sidebar-accent text-sidebar-foreground hover:text-sidebar-accent-foreground',
-          'group'
+            ? 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90'
+            : cn(
+                'text-sidebar-foreground',
+                'hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground',
+                'hover:shadow-sm'
+              ),
+          'group focus-visible:ring-2 focus-visible:ring-sidebar-ring'
         )}
         asChild
       >
         <Link href={item.url}>
-          <Icon className={cn('h-4 w-4 flex-shrink-0', isCollapsed ? 'mx-auto' : 'mr-3')} />
-          {!isCollapsed && <span className="truncate font-medium">{item.title}</span>}
+          <Icon
+            className={cn(
+              'h-4 w-4 flex-shrink-0 transition-all duration-200',
+              isCollapsed ? 'mx-0' : 'mr-3',
+              isActive ? 'text-primary-foreground' : 'text-current'
+            )}
+          />
+          {!isCollapsed && <span className="truncate font-medium text-sm">{item.title}</span>}
         </Link>
       </Button>
     );
@@ -143,9 +153,18 @@ export function AppSidebar({ className }: SidebarProps) {
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>{buttonContent}</TooltipTrigger>
-            <TooltipContent side="right" className="flex flex-col gap-1">
-              <span className="font-medium">{item.title}</span>
-              <span className="text-xs text-muted-foreground">{item.description}</span>
+            <TooltipContent
+              side="right"
+              className={cn(
+                'flex flex-col gap-1 max-w-xs z-50',
+                'bg-popover text-popover-foreground',
+                'border border-border shadow-lg',
+                'px-3 py-2 rounded-md'
+              )}
+              sideOffset={8}
+            >
+              <span className="font-medium text-sm">{item.title}</span>
+              <span className="text-xs opacity-70">{item.description}</span>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -158,44 +177,50 @@ export function AppSidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        'flex flex-col h-screen bg-sidebar border-r border-sidebar-border sidebar-transition',
+        'flex flex-col h-screen bg-sidebar border-r border-sidebar-border sidebar-transition relative',
         collapsed ? 'w-16' : 'w-64',
+        'shadow-sm',
         className
       )}
     >
-      <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
-        {!collapsed && (
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="flex items-center gap-2">
-              <Brain className="h-6 w-6 text-primary flex-shrink-0" />
+      <div className="flex items-center p-4 border-b border-sidebar-border relative">
+        <div
+          className={cn(
+            'flex items-center transition-all duration-300',
+            collapsed ? 'justify-center w-full' : 'gap-2 min-w-0 flex-1'
+          )}
+        >
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Brain className="h-6 w-6 text-primary flex-shrink-0" />
+            {!collapsed && (
               <div className="min-w-0">
                 <h1 className="font-semibold text-lg truncate text-sidebar-foreground">
                   Modern Face API
                 </h1>
               </div>
-            </div>
-          </div>
-        )}
-        {collapsed && (
-          <div className="flex justify-center w-full">
-            <Brain className="h-6 w-6 text-primary" />
-          </div>
-        )}
+            )}
+          </Link>
+        </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setCollapsed(!collapsed)}
-          className="h-8 w-8 p-0 hover:bg-sidebar-accent"
+          className={cn(
+            'h-8 w-8 p-0 flex-shrink-0 transition-colors cursor-pointer',
+            'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+            'text-sidebar-foreground/70 hover:text-sidebar-foreground',
+            collapsed ? 'absolute top-4 right-4' : 'ml-2'
+          )}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="space-y-6 p-4">
+      <div className="flex-1 overflow-y-auto sidebar-scroll">
+        <div className={cn('space-y-6', collapsed ? 'p-2' : 'p-4')}>
           <div className="space-y-2">
             {!collapsed && (
-              <h2 className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider px-2">
+              <h2 className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider px-2 mb-3">
                 Image Examples
               </h2>
             )}
@@ -206,11 +231,12 @@ export function AppSidebar({ className }: SidebarProps) {
             </div>
           </div>
 
-          <Separator className="bg-sidebar-border" />
+          {!collapsed && <Separator className="bg-sidebar-border" />}
+          {collapsed && <div className="h-px bg-sidebar-border mx-2" />}
 
           <div className="space-y-2">
             {!collapsed && (
-              <h2 className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider px-2">
+              <h2 className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider px-2 mb-3">
                 Real-time Examples
               </h2>
             )}
@@ -230,7 +256,11 @@ export function AppSidebar({ className }: SidebarProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start h-8 px-2 text-xs hover:bg-sidebar-accent"
+              className={cn(
+                'w-full justify-start h-8 px-2 text-xs transition-colors',
+                'hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground',
+                'text-sidebar-foreground/80 hover:text-sidebar-foreground'
+              )}
               asChild
             >
               <Link
@@ -238,8 +268,8 @@ export function AppSidebar({ className }: SidebarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github className="h-3 w-3 mr-2" />
-                View on GitHub
+                <Github className="h-3 w-3 mr-2 flex-shrink-0" />
+                <span className="truncate">View on GitHub</span>
               </Link>
             </Button>
           </div>

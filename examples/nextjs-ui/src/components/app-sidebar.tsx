@@ -89,10 +89,10 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex flex-col gap-2 p-4">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Brain className="h-6 w-6 text-primary" />
             <span className="font-semibold text-lg">Modern Face API</span>
-          </div>
+          </Link>
         </div>
       </SidebarHeader>
 

@@ -51,9 +51,11 @@ export function SampleImageSelector({
 
   return (
     <div className={className}>
-      <Label htmlFor="sample-image-select">{label}</Label>
+      <Label htmlFor="sample-image-select" className="text-sm font-medium">
+        {label}
+      </Label>
       <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger id="sample-image-select">
+        <SelectTrigger id="sample-image-select" className="mt-3 cursor-pointer">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
@@ -67,7 +69,7 @@ export function SampleImageSelector({
                     </div>
                   )}
                   {groupedImages[category].map(image => (
-                    <SelectItem key={image.url} value={image.url}>
+                    <SelectItem className="cursor-pointer" key={image.url} value={image.url}>
                       {image.name}
                     </SelectItem>
                   ))}
@@ -75,7 +77,7 @@ export function SampleImageSelector({
               ))
             : // Render flat list
               images.map(image => (
-                <SelectItem key={image.url} value={image.url}>
+                <SelectItem className="cursor-pointer" key={image.url} value={image.url}>
                   {image.name}
                 </SelectItem>
               ))}

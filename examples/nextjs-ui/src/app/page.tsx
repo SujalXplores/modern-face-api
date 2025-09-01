@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export default function Home() {
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-12">
-      {/* Hero Section */}
       <div className="text-center space-y-8">
         <div className="flex items-center justify-center gap-3 mb-6">
           <Brain className="h-12 w-12 text-primary" />
@@ -31,13 +30,13 @@ export default function Home() {
           </Badge>
         </div>
         <div className="flex gap-4 justify-center">
-          <Button asChild size="lg" className="h-12 px-6">
+          <Button asChild size="lg" className="h-12 px-6 cursor-pointer">
             <Link href="/face-detection">
               <Camera className="mr-2 h-4 w-4" />
               Try Face Detection
             </Link>
           </Button>
-          <Button variant="outline" size="lg" className="h-12 px-6" asChild>
+          <Button variant="outline" size="lg" className="h-12 px-6 cursor-pointer" asChild>
             <Link href="https://github.com/SujalXplores/modern-face-api" target="_blank">
               <Github className="mr-2 h-4 w-4" />
               View on GitHub
@@ -48,7 +47,7 @@ export default function Home() {
 
       {/* Features Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+        <Card className="card-shadow border-2 transition-all duration-300">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -70,7 +69,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+        <Card className="card-shadow border-2 transition-all duration-300">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -92,7 +91,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+        <Card className="card-shadow border-2 transition-all duration-300">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -114,7 +113,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+        <Card className="card-shadow border-2 transition-all duration-300">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -136,7 +135,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+        <Card className="card-shadow border-2 transition-all duration-300">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -158,7 +157,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="card-shadow hover-lift border-2 hover:border-primary/20 transition-all duration-300">
+        <Card className="card-shadow border-2 transition-all duration-300">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -182,7 +181,7 @@ export default function Home() {
       </div>
 
       {/* Quick Start Section */}
-      <Card className="card-shadow hover-lift">
+      <Card className="card-shadow ">
         <CardHeader className="pb-6">
           <CardTitle className="text-2xl">Quick Start Examples</CardTitle>
           <CardDescription className="text-lg">
@@ -222,7 +221,7 @@ export default function Home() {
                   <Button
                     key={item.title}
                     variant="ghost"
-                    className="w-full justify-start h-auto p-4 hover:bg-accent transition-colors"
+                    className="w-full justify-start h-auto p-4 hover:bg-accent transition-colors cursor-pointer"
                     asChild
                   >
                     <Link href={item.href}>
@@ -268,7 +267,7 @@ export default function Home() {
                   <Button
                     key={item.title}
                     variant="ghost"
-                    className="w-full justify-start h-auto p-4 hover:bg-accent transition-colors"
+                    className="w-full justify-start h-auto p-4 hover:bg-accent transition-colors cursor-pointer"
                     asChild
                   >
                     <Link href={item.href}>
@@ -286,7 +285,6 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      {/* Technical Details */}
       <div className="text-center space-y-6">
         <h2 className="text-2xl font-bold">Built with Modern Technologies</h2>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
