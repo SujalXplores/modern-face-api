@@ -20,7 +20,7 @@ export default function Home() {
         </p>
         <div className="flex items-center justify-center gap-4 mb-8">
           <Badge variant="secondary" className="text-sm px-3 py-1">
-            🚀 v0.22.4
+            🚀 v0.22.5
           </Badge>
           <Badge variant="outline" className="text-sm px-3 py-1">
             🧠 TensorFlow.js
