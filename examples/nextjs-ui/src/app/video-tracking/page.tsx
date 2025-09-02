@@ -474,7 +474,10 @@ export default function VideoTrackingPage() {
                     }
                   }}
                 />
-                <canvas ref={canvasRef} className="absolute top-0 left-0 pointer-events-none" />
+                <canvas
+                  ref={canvasRef}
+                  className="absolute top-0 left-0 pointer-events-none w-full h-full"
+                />
               </div>
             </CardContent>
           </Card>
