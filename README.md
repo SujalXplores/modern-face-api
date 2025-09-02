@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 [![Code Quality](https://img.shields.io/badge/code_quality-biome-60a5fa.svg)](https://biomejs.dev/)
-[![Issues Fixed](https://img.shields.io/badge/Original_Issues-452%2B_Fixed-green.svg)](https://github.com/justadudewhohacks/face-api.js/issues)
+[![Issues Fixed](https://img.shields.io/badge/Original_Issues-52%2B_Fixed-green.svg)](https://github.com/justadudewhohacks/face-api.js/issues)
 
 ## 🎯 The Challenge We Accepted
 
