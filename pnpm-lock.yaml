@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@tensorflow/tfjs-backend-cpu':
+        specifier: 4.22.0
+        version: 4.22.0(@tensorflow/tfjs-core@4.22.0)
+      '@tensorflow/tfjs-backend-webgl':
+        specifier: 4.22.0
+        version: 4.22.0(@tensorflow/tfjs-core@4.22.0)
       '@tensorflow/tfjs-core':
         specifier: 4.22.0
         version: 4.22.0
@@ -27,12 +33,6 @@ importers:
       '@rollup/plugin-terser':
         specifier: 0.4.4
         version: 0.4.4(rollup@4.50.0)
-      '@tensorflow/tfjs-backend-cpu':
-        specifier: 4.22.0
-        version: 4.22.0(@tensorflow/tfjs-core@4.22.0)
-      '@tensorflow/tfjs-backend-webgl':
-        specifier: 4.22.0
-        version: 4.22.0(@tensorflow/tfjs-core@4.22.0)
       '@types/jasmine':
         specifier: 5.1.9
         version: 5.1.9

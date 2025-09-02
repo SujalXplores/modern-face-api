@@ -1,6 +1,6 @@
 'use client';
 
-import { Activity, AlertCircle, Pause, Play, Settings, Webcam } from 'lucide-react';
+import { Activity, AlertCircle, Play, Settings, Webcam } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +24,6 @@ let faceapi: any = null;
 export default function WebcamDetectionPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState('tiny_face_detector');
@@ -41,15 +40,9 @@ export default function WebcamDetectionPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timesRef = useRef<number[]>([]);
+  const isDetectingRef = useRef(false);
 
-  useEffect(() => {
-    loadModels();
-    return () => {
-      stopWebcam();
-    };
-  }, [selectedModel]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const loadModels = async () => {
+  const loadModels = useCallback(async () => {
     try {
       setLoadingProgress(10);
       // Dynamic import to avoid SSR issues
@@ -72,7 +65,14 @@ export default function WebcamDetectionPage() {
       setError('Failed to load face detection models. Please refresh the page.');
       setIsLoading(false);
     }
-  };
+  }, [selectedModel]);
+
+  useEffect(() => {
+    loadModels();
+    return () => {
+      stopWebcam();
+    };
+  }, [loadModels]);
 
   const getFaceDetectorOptions = useCallback(() => {
     if (selectedModel === 'ssd_mobilenetv1') {
@@ -95,8 +95,8 @@ export default function WebcamDetectionPage() {
   };
 
   const detectFaces = useCallback(async () => {
-    if (!faceapi || !videoRef.current || !canvasRef.current || isPaused) {
-      if (!isPaused) {
+    if (!faceapi || !videoRef.current || !canvasRef.current || !isDetectingRef.current) {
+      if (isDetectingRef.current) {
         setTimeout(() => detectFaces(), 100);
       }
       return;
@@ -106,6 +106,12 @@ export default function WebcamDetectionPage() {
     const canvas = canvasRef.current;
 
     if (video.paused || video.ended || video.readyState !== 4) {
+      setTimeout(() => detectFaces(), 100);
+      return;
+    }
+
+    // Check if video has valid dimensions
+    if (video.videoWidth === 0 || video.videoHeight === 0) {
       setTimeout(() => detectFaces(), 100);
       return;
     }
@@ -128,7 +134,12 @@ export default function WebcamDetectionPage() {
         setDetectionCount(1);
         // Match canvas dimensions to video
         const dims = faceapi.matchDimensions(canvas, video, true);
-        faceapi.draw.drawDetections(canvas, faceapi.resizeResults(result, dims));
+
+        // Only draw if dimensions are valid (not zero)
+        if (dims.width > 0 && dims.height > 0) {
+          const resizedResult = faceapi.resizeResults(result, dims);
+          faceapi.draw.drawDetections(canvas, resizedResult);
+        }
       } else {
         setDetectionCount(0);
       }
@@ -136,10 +147,10 @@ export default function WebcamDetectionPage() {
       console.error('Face detection failed:', err);
     }
 
-    if (!isPaused) {
+    if (isDetectingRef.current) {
       setTimeout(() => detectFaces(), 100);
     }
-  }, [isPaused, getFaceDetectorOptions]);
+  }, [getFaceDetectorOptions]);
 
   const startWebcam = async () => {
     try {
@@ -152,6 +163,8 @@ export default function WebcamDetectionPage() {
         streamRef.current = stream;
         setIsStreaming(true);
         setError(null);
+        // Start detection automatically when video loads
+        isDetectingRef.current = true;
       }
     } catch (err) {
       console.error('Failed to access webcam:', err);
@@ -160,6 +173,9 @@ export default function WebcamDetectionPage() {
   };
 
   const stopWebcam = () => {
+    // Stop detection immediately
+    isDetectingRef.current = false;
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
@@ -169,17 +185,18 @@ export default function WebcamDetectionPage() {
       videoRef.current.srcObject = null;
     }
 
+    // Clear canvas immediately
+    if (canvasRef.current) {
+      const ctx = canvasRef.current.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      }
+    }
+
     setIsStreaming(false);
     setDetectionCount(0);
     setFps(0);
     setProcessingTime(0);
-  };
-
-  const togglePause = () => {
-    setIsPaused(!isPaused);
-    if (isPaused && isStreaming) {
-      setTimeout(() => detectFaces(), 100);
-    }
   };
 
   const handleModelChange = async (newModel: string) => {
@@ -272,28 +289,9 @@ export default function WebcamDetectionPage() {
                   Start Camera
                 </Button>
               ) : (
-                <div className="space-y-2">
-                  <Button
-                    onClick={togglePause}
-                    className="w-full"
-                    variant={isPaused ? 'default' : 'secondary'}
-                  >
-                    {isPaused ? (
-                      <>
-                        <Play className="mr-2 h-4 w-4" />
-                        Resume
-                      </>
-                    ) : (
-                      <>
-                        <Pause className="mr-2 h-4 w-4" />
-                        Pause
-                      </>
-                    )}
-                  </Button>
-                  <Button onClick={stopWebcam} className="w-full" variant="destructive">
-                    Stop Camera
-                  </Button>
-                </div>
+                <Button onClick={stopWebcam} className="w-full" variant="destructive">
+                  Stop Camera
+                </Button>
               )}
             </CardContent>
           </Card>
@@ -393,8 +391,8 @@ export default function WebcamDetectionPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Status:</span>
-                  <Badge variant={isStreaming ? (isPaused ? 'secondary' : 'default') : 'outline'}>
-                    {!isStreaming ? 'Stopped' : isPaused ? 'Paused' : 'Running'}
+                  <Badge variant={isStreaming ? 'default' : 'outline'}>
+                    {isStreaming ? 'Running' : 'Stopped'}
                   </Badge>
                 </div>
               </div>
@@ -419,12 +417,13 @@ export default function WebcamDetectionPage() {
                   muted
                   playsInline
                   className="max-w-full max-h-[600px] rounded-lg"
-                  style={{ display: isStreaming ? 'block' : 'none' }}
+                  style={{
+                    display: isStreaming ? 'block' : 'none',
+                  }}
                   onLoadedMetadata={() => {
                     if (videoRef.current && canvasRef.current) {
-                      // Match canvas size to video
-                      canvasRef.current.width = videoRef.current.videoWidth;
-                      canvasRef.current.height = videoRef.current.videoHeight;
+                      // Match canvas size to video using faceapi utility
+                      faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
                       // Start detection loop
                       setTimeout(() => detectFaces(), 100);
                     }
@@ -432,8 +431,10 @@ export default function WebcamDetectionPage() {
                 />
                 <canvas
                   ref={canvasRef}
-                  className="absolute top-0 left-0 pointer-events-none"
-                  style={{ display: isStreaming ? 'block' : 'none' }}
+                  className="absolute top-0 left-0 pointer-events-none w-full h-full"
+                  style={{
+                    display: isStreaming ? 'block' : 'none',
+                  }}
                 />
 
                 {!isStreaming && (
@@ -443,15 +444,6 @@ export default function WebcamDetectionPage() {
                     <p className="text-sm">
                       Click &quot;Start Camera&quot; to begin real-time face detection
                     </p>
-                  </div>
-                )}
-
-                {isStreaming && isPaused && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-                      <Pause className="h-8 w-8 mx-auto mb-2" />
-                      <p className="text-sm">Detection Paused</p>
-                    </div>
                   </div>
                 )}
               </div>
