@@ -77,7 +77,7 @@ We didn't just fix the original - **we transcended it.**
 
 ## 🔥 What Rose from the Digital Ashes
 
-We've not only **fixed every single issue** from the original repository but elevated the entire paradigm:
+We didn’t just **fix every problem** in the original repository we transformed the entire approach:
 
 - **🎯 Face Detection** - Enhanced SSD MobileNet V1 & Ultra-Fast Tiny Face Detector
 - **📍 Face Landmarks** - 68-point precision with mobile-optimized tiny model  
