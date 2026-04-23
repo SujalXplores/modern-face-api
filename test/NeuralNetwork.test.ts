@@ -43,11 +43,11 @@ class FakeNeuralNetwork extends NeuralNetwork<FakeNetParams> {
     throw new Error('FakeNeuralNetwork - extractParams not implemented');
   }
 
-  protected extractParamsFromWeigthMap(_: tf.NamedTensorMap): {
+  protected extractParamsFromWeightMap(_: tf.NamedTensorMap): {
     params: FakeNetParams;
     paramMappings: import('../src/common').ParamMapping[];
   } {
-    throw new Error('FakeNeuralNetwork - extractParamsFromWeigthMap not implemented');
+    throw new Error('FakeNeuralNetwork - extractParamsFromWeightMap not implemented');
   }
 }
 

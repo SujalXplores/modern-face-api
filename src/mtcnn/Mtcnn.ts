@@ -9,17 +9,25 @@ import { NeuralNetwork } from '../NeuralNetwork';
 import { bgrToRgbTensor } from './bgrToRgbTensor';
 import { CELL_SIZE } from './config';
 import { extractParams } from './extractParams';
-import { extractParamsFromWeigthMap } from './extractParamsFromWeigthMap';
+import { extractParamsFromWeightMap } from './extractParamsFromWeightMap';
 import { getSizesForScale } from './getSizesForScale';
 import { type IMtcnnOptions, MtcnnOptions } from './MtcnnOptions';
 import { pyramidDown } from './pyramidDown';
 import { stage1 } from './stage1';
 
+export type MtcnnStageStats = {
+  scale: number;
+  pnet?: number;
+  dispose?: number;
+  nms?: number;
+  numBoxes?: number;
+};
+
 export type MtcnnStats = {
   total?: number;
   scales?: number[];
   pyramid?: Array<{ width: number; height: number }>;
-  stage1?: Array<{ pnet: number; dispose: number; nms: number }>;
+  stage1?: MtcnnStageStats[];
   stage1_nms?: number;
   total_stage1?: number;
   stage2_numInputBoxes?: number;
@@ -163,7 +171,7 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
   public async forwardWithStats(
     input: TNetInput,
     forwardParams: IMtcnnOptions = {}
-  ): Promise<{ results: MtcnnResult[]; stats: any }> {
+  ): Promise<{ results: MtcnnResult[]; stats: MtcnnStats }> {
     return this.forwardInput(await toNetInput(input), forwardParams);
   }
 
@@ -171,8 +179,8 @@ export class Mtcnn extends NeuralNetwork<NetParams> {
     return 'mtcnn_model';
   }
 
-  protected extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap) {
-    return extractParamsFromWeigthMap(weightMap);
+  protected extractParamsFromWeightMap(weightMap: tf.NamedTensorMap) {
+    return extractParamsFromWeightMap(weightMap);
   }
 
   protected extractParams(weights: Float32Array) {

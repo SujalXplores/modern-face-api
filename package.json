@@ -5,8 +5,24 @@
   "module": "./build/es6/index.js",
   "main": "./build/commonjs/index.js",
   "typings": "./build/commonjs/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/commonjs/index.d.ts",
+      "import": "./build/es6/index.js",
+      "require": "./build/commonjs/index.js",
+      "default": "./build/commonjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "./build/commonjs/index.js",
+    "./build/es6/index.js",
+    "./dist/modern-face-api.js",
+    "./dist/modern-face-api.min.js"
+  ],
   "files": [
     "build/commonjs/",
+    "build/es6/",
     "dist/modern-face-api.min.js",
     "weights/"
   ],
@@ -15,17 +31,18 @@
     "rollup": "rollup -c rollup.config.mjs",
     "tsc": "tsc",
     "tsc-es6": "tsc --p tsconfig.es6.json",
-    "build": "npx rimraf build dist && npm run rollup && npm run rollup-min && npm run tsc && npm run tsc-es6",
-    "test": "npm run test-browser && npm run test-node",
+    "clean": "rimraf build dist",
+    "build": "pnpm run clean && pnpm run rollup && pnpm run rollup-min && pnpm run tsc && pnpm run tsc-es6",
+    "test": "pnpm run test-browser && pnpm run test-node",
     "test-browser": "karma start --single-run",
     "test-node": "ts-node -r ./test/env.node.ts node_modules/jasmine/bin/jasmine --config=jasmine-node.js",
-    "test-facelandmarknets": "npx cross-env UUT=faceLandmarkNet karma start",
-    "test-facerecognitionnet": "npx cross-env UUT=faceRecognitionNet karma start",
-    "test-agegendernet": "npx cross-env UUT=ageGenderNet karma start",
-    "test-ssdmobilenetv1": "npx cross-env UUT=ssdMobilenetv1 karma start",
-    "test-tinyfacedetector": "npx cross-env UUT=tinyFaceDetector karma start",
-    "test-globalapi": "npx cross-env UUT=globalApi karma start",
-    "test-cpu": "npx cross-env BACKEND_CPU=true karma start",
+    "test-facelandmarknets": "cross-env UUT=faceLandmarkNet karma start",
+    "test-facerecognitionnet": "cross-env UUT=faceRecognitionNet karma start",
+    "test-agegendernet": "cross-env UUT=ageGenderNet karma start",
+    "test-ssdmobilenetv1": "cross-env UUT=ssdMobilenetv1 karma start",
+    "test-tinyfacedetector": "cross-env UUT=tinyFaceDetector karma start",
+    "test-globalapi": "cross-env UUT=globalApi karma start",
+    "test-cpu": "cross-env BACKEND_CPU=true karma start",
     "docs": "typedoc --options ./typedoc.config.js ./src",
     "prepare": "husky",
     "lint": "biome check .",
@@ -33,9 +50,13 @@
     "format": "biome format --write .",
     "check": "biome check --write .",
     "check:ci": "biome ci .",
-    "check:all": "biome check --write . && npm run test",
-    "validate": "npm run check:ci && npm run test"
+    "check:all": "biome check --write . && pnpm test",
+    "validate": "pnpm run check:ci && pnpm test"
   },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.15.9",
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "biome check --write --no-errors-on-unmatched"
@@ -60,7 +81,6 @@
     "url": "https://github.com/SujalXplores/modern-face-api",
     "type": "git"
   },
-  "sideEffects": false,
   "license": "MIT",
   "dependencies": {
     "@tensorflow/tfjs-core": "4.22.0",
@@ -82,14 +102,12 @@
     "esbuild": "0.25.9",
     "husky": "9.1.7",
     "jasmine": "5.10.0",
-    "jasmine-core": "5.10.0",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",
     "karma-esbuild": "2.3.0",
     "karma-jasmine": "5.1.0",
     "karma-typescript": "5.5.4",
     "lint-staged": "16.1.5",
-    "mocha": "11.7.1",
     "rimraf": "6.0.1",
     "rollup": "4.50.0",
     "rollup-plugin-typescript2": "0.36.0",

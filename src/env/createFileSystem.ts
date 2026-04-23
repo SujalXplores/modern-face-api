@@ -7,31 +7,42 @@ interface NodeFS {
   ) => void;
 }
 
-export function createFileSystem(fs?: NodeFS): FileSystem {
-  let requireFsError = '';
+let cachedFs: NodeFS | null = null;
+let fsLoadPromise: Promise<NodeFS> | null = null;
+let fsLoadError: string | null = null;
 
-  if (!fs) {
-    try {
-      fs = require('node:fs');
-    } catch (err) {
-      requireFsError = err.toString();
-    }
+async function resolveFs(explicitFs?: NodeFS): Promise<NodeFS> {
+  if (explicitFs) return explicitFs;
+  if (cachedFs) return cachedFs;
+  if (fsLoadError !== null) {
+    throw new Error(
+      `readFile - failed to load fs in nodejs environment with error: ${fsLoadError}`
+    );
   }
-
-  const readFile = fs
-    ? (filePath: string) =>
-        new Promise<Buffer>((res, rej) => {
-          fs.readFile(filePath, (err: NodeJS.ErrnoException | null, buffer: Buffer) =>
-            err ? rej(err) : res(buffer)
-          );
-        })
-    : () => {
+  if (!fsLoadPromise) {
+    fsLoadPromise = import('node:fs')
+      .then(mod => {
+        cachedFs = mod as unknown as NodeFS;
+        return cachedFs;
+      })
+      .catch(err => {
+        fsLoadError = err instanceof Error ? err.message : String(err);
         throw new Error(
-          `readFile - failed to require fs in nodejs environment with error: ${requireFsError}`
+          `readFile - failed to load fs in nodejs environment with error: ${fsLoadError}`
         );
-      };
+      });
+  }
+  return fsLoadPromise;
+}
 
-  return {
-    readFile,
-  };
+export function createFileSystem(fs?: NodeFS): FileSystem {
+  const readFile = (filePath: string): Promise<Buffer> =>
+    resolveFs(fs).then(
+      f =>
+        new Promise<Buffer>((res, rej) => {
+          f.readFile(filePath, (err, buffer) => (err ? rej(err) : res(buffer)));
+        })
+    );
+
+  return { readFile };
 }

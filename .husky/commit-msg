@@ -1,8 +1,10 @@
-# Check if commit message is not empty and has minimum length
-message=$(cat "$1")
-if [ ${#message} -lt 10 ]; then
-  echo "❌ Commit message must be at least 10 characters long"
+#!/usr/bin/env sh
+# POSIX-compliant check for non-empty commit message at least 10 chars long.
+# Comment lines (starting with #) and blank lines are stripped before counting.
+msg_file=$1
+stripped=$(sed -e '/^#/d' -e '/^[[:space:]]*$/d' "$msg_file" | tr -d '\n')
+len=${#stripped}
+if [ "$len" -lt 10 ]; then
+  echo "commit-msg: message must be at least 10 characters of non-comment content (got $len)" >&2
   exit 1
 fi
-
-echo "✅ Commit message looks good!"

@@ -9,4 +9,5 @@ weights_unused
 docs
 out
 build
+dist
 temp

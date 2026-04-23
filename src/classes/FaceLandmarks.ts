@@ -54,11 +54,21 @@ export class FaceLandmarks implements IFaceLandmarks {
   }
 
   public forSize<T extends FaceLandmarks>(width: number, height: number): T {
-    return new (this.constructor as any)(this.relativePositions, { width, height });
+    const Ctor = this.constructor as new (
+      relativePositions: Point[],
+      imgDims: IDimensions,
+      shift?: Point
+    ) => T;
+    return new Ctor(this.relativePositions, { width, height });
   }
 
   public shiftBy<T extends FaceLandmarks>(x: number, y: number): T {
-    return new (this.constructor as any)(this.relativePositions, this._imgDims, new Point(x, y));
+    const Ctor = this.constructor as new (
+      relativePositions: Point[],
+      imgDims: IDimensions,
+      shift?: Point
+    ) => T;
+    return new Ctor(this.relativePositions, this._imgDims, new Point(x, y));
   }
 
   public shiftByPoint<T extends FaceLandmarks>(pt: Point): T {

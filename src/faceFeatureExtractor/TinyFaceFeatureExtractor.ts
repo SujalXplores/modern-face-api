@@ -4,7 +4,7 @@ import { type NetInput, type TNetInput, toNetInput } from '../dom';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { normalize } from '../ops';
 import { denseBlock3 } from './denseBlock';
-import { extractParamsFromWeigthMapTiny } from './extractParamsFromWeigthMapTiny';
+import { extractParamsFromWeightMapTiny } from './extractParamsFromWeightMapTiny';
 import { extractParamsTiny } from './extractParamsTiny';
 import type { IFaceFeatureExtractor, TinyFaceFeatureExtractorParams } from './types';
 
@@ -45,8 +45,8 @@ export class TinyFaceFeatureExtractor
     return 'face_feature_extractor_tiny_model';
   }
 
-  protected extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap) {
-    return extractParamsFromWeigthMapTiny(weightMap);
+  protected extractParamsFromWeightMap(weightMap: tf.NamedTensorMap) {
+    return extractParamsFromWeightMapTiny(weightMap);
   }
 
   protected extractParams(weights: Float32Array) {

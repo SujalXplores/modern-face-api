@@ -7,6 +7,8 @@ import type { ExtractWeightsFunction, ParamMapping } from '../common/types';
 import { range } from '../utils';
 import type { MainBlockParams, ReductionBlockParams, TinyXceptionParams } from './types';
 
+type MiddleFlowParams = Record<string, MainBlockParams>;
+
 function extractorsFactory(extractWeights: ExtractWeightsFunction, paramMappings: ParamMapping[]) {
   const extractConvParams = extractConvParamsFactory(extractWeights, paramMappings);
   const extractSeparableConvParams = extractSeparableConvParamsFactory(
@@ -100,7 +102,7 @@ export function extractParams(
     reduction_block_1: entry_flow_reduction_block_1,
   };
 
-  const middle_flow: any = {};
+  const middle_flow: MiddleFlowParams = {};
   range(numMainBlocks, 0, 1).forEach(idx => {
     middle_flow[`main_block_${idx}`] = extractMainBlockParams(128, `middle_flow/main_block_${idx}`);
   });

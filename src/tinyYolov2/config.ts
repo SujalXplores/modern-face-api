@@ -11,10 +11,14 @@ export type TinyYolov2Config = {
   isFirstLayerConv2d?: boolean;
 };
 
-const isNumber = (arg: any) => typeof arg === 'number';
+const isNumber = (arg: unknown): arg is number => typeof arg === 'number';
 
-export function validateConfig(config: any) {
-  if (!config) {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+export function validateConfig(config: unknown): asserts config is TinyYolov2Config {
+  if (!isRecord(config)) {
     throw new Error(`invalid config: ${config}`);
   }
 
@@ -33,7 +37,7 @@ export function validateConfig(config: any) {
   if (
     !Array.isArray(config.classes) ||
     !config.classes.length ||
-    !config.classes.every((c: any) => typeof c === 'string')
+    !config.classes.every((c): c is string => typeof c === 'string')
   ) {
     throw new Error(
       `config.classes has to be an array class names: string[], have: ${JSON.stringify(config.classes)}`
@@ -43,7 +47,9 @@ export function validateConfig(config: any) {
   if (
     !Array.isArray(config.anchors) ||
     !config.anchors.length ||
-    !config.anchors.map((a: any) => a || {}).every((a: any) => isNumber(a.x) && isNumber(a.y))
+    !config.anchors
+      .map(a => (isRecord(a) ? a : {}))
+      .every(a => isNumber((a as { x?: unknown }).x) && isNumber((a as { y?: unknown }).y))
   ) {
     throw new Error(
       `config.anchors has to be an array of { x: number, y: number }, have: ${JSON.stringify(config.anchors)}`
@@ -51,7 +57,7 @@ export function validateConfig(config: any) {
   }
 
   if (
-    config.meanRgb &&
+    config.meanRgb !== undefined &&
     (!Array.isArray(config.meanRgb) ||
       config.meanRgb.length !== 3 ||
       !config.meanRgb.every(isNumber))

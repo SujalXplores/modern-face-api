@@ -4,6 +4,7 @@ import { BoundingBox, Point } from '../classes';
 import { nonMaxSuppression } from '../ops';
 import { CELL_SIZE, CELL_STRIDE } from './config';
 import { getSizesForScale } from './getSizesForScale';
+import type { MtcnnStageStats, MtcnnStats } from './Mtcnn';
 import { MtcnnBox } from './MtcnnBox';
 import { normalize } from './normalize';
 import { PNet } from './PNet';
@@ -69,13 +70,13 @@ export function stage1(
   scales: number[],
   scoreThreshold: number,
   params: PNetParams,
-  stats: any
+  stats: MtcnnStats
 ) {
   stats.stage1 = [];
 
   const pnetOutputs = scales.map(scale =>
     tf.tidy(() => {
-      const statsForScale: any = { scale };
+      const statsForScale: MtcnnStageStats = { scale };
       const resized = rescaleAndNormalize(imgTensor, scale);
 
       const ts = Date.now();
@@ -101,7 +102,7 @@ export function stage1(
     regionsTensor.dispose();
 
     if (!boundingBoxes.length) {
-      stats.stage1.push(statsForScale);
+      stats.stage1?.push(statsForScale);
       return [];
     }
 
@@ -114,7 +115,7 @@ export function stage1(
     statsForScale.nms = Date.now() - ts;
     statsForScale.numBoxes = indices.length;
 
-    stats.stage1.push(statsForScale);
+    stats.stage1?.push(statsForScale);
     return indices.map(boxIdx => boundingBoxes[boxIdx]);
   });
 

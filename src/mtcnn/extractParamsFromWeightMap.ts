@@ -79,7 +79,7 @@ function extractorsFactory(weightMap: tf.NamedTensorMap, paramMappings: ParamMap
   };
 }
 
-export function extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap): {
+export function extractParamsFromWeightMap(weightMap: tf.NamedTensorMap): {
   params: NetParams;
   paramMappings: ParamMapping[];
 } {

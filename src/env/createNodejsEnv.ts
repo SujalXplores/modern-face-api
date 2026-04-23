@@ -1,10 +1,21 @@
 import { createFileSystem } from './createFileSystem';
 import type { Environment } from './types';
 
+type GlobalPolyfills = {
+  Canvas?: typeof HTMLCanvasElement;
+  HTMLCanvasElement?: typeof HTMLCanvasElement;
+  Image?: typeof HTMLImageElement;
+  HTMLImageElement?: typeof HTMLImageElement;
+  ImageData?: typeof ImageData;
+  CanvasRenderingContext2D?: typeof CanvasRenderingContext2D;
+  HTMLVideoElement?: typeof HTMLVideoElement;
+  fetch?: typeof fetch;
+};
+
 export function createNodejsEnv(): Environment {
-  const globalAny = global as any;
-  const Canvas = globalAny.Canvas || globalAny.HTMLCanvasElement;
-  const Image = globalAny.Image || globalAny.HTMLImageElement;
+  const globalPolyfills = globalThis as unknown as GlobalPolyfills;
+  const Canvas = globalPolyfills.Canvas || globalPolyfills.HTMLCanvasElement;
+  const Image = globalPolyfills.Image || globalPolyfills.HTMLImageElement;
 
   const createCanvasElement = () => {
     if (Canvas) {
@@ -21,7 +32,7 @@ export function createNodejsEnv(): Environment {
   };
 
   const fetch =
-    globalAny.fetch ||
+    globalPolyfills.fetch ||
     (() => {
       throw new Error('fetch - missing fetch implementation for nodejs environment');
     });
@@ -29,11 +40,13 @@ export function createNodejsEnv(): Environment {
   const fileSystem = createFileSystem();
 
   return {
-    Canvas: Canvas || class {},
-    CanvasRenderingContext2D: globalAny.CanvasRenderingContext2D || class {},
-    Image: Image || class {},
-    ImageData: globalAny.ImageData || class {},
-    Video: globalAny.HTMLVideoElement || class {},
+    Canvas: Canvas || (class {} as unknown as typeof HTMLCanvasElement),
+    CanvasRenderingContext2D:
+      globalPolyfills.CanvasRenderingContext2D ||
+      (class {} as unknown as typeof CanvasRenderingContext2D),
+    Image: Image || (class {} as unknown as typeof HTMLImageElement),
+    ImageData: globalPolyfills.ImageData || (class {} as unknown as typeof ImageData),
+    Video: globalPolyfills.HTMLVideoElement || (class {} as unknown as typeof HTMLVideoElement),
     createCanvasElement,
     createImageElement,
     fetch,
