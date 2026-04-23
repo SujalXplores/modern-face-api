@@ -1,15 +1,15 @@
-// import nodejs bindings to native tensorflow,
-// not required, but will speed up things drastically (python required)
-const loadTensorFlowBindings = async () => {
-  try {
-    await import('@tensorflow/tfjs-node');
-  } catch (_error) {}
-};
-
+import canvas from 'canvas';
 import * as faceapi from 'modern-face-api';
 
-// implements nodejs wrappers for HTMLCanvasElement, HTMLImageElement, ImageData
-const canvas = require('canvas');
+// import nodejs bindings to native tensorflow,
+// not required, but will speed up things drastically (python required)
+const loadTensorFlowBindings = async (): Promise<void> => {
+  try {
+    await import('@tensorflow/tfjs-node');
+  } catch (_error) {
+    // fall back to the pure-JS backend already bundled with modern-face-api
+  }
+};
 
 // patch nodejs environment, we need to provide an implementation of
 // HTMLCanvasElement and HTMLImageElement

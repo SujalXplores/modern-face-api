@@ -1,7 +1,23 @@
 {
+  "name": "modern-face-api-examples-nodejs",
+  "private": true,
   "author": "SujalXplores",
   "license": "MIT",
+  "scripts": {
+    "face-detection": "tsx faceDetection.ts",
+    "face-landmarks": "tsx faceLandmarkDetection.ts",
+    "face-expression": "tsx faceExpressionRecognition.ts",
+    "age-gender": "tsx ageAndGenderRecognition.ts",
+    "face-recognition": "tsx faceRecognition.ts"
+  },
   "dependencies": {
+    "@tensorflow/tfjs-node": "4.22.0",
+    "canvas": "^3.2.0",
     "modern-face-api": "../../"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.2"
   }
 }
