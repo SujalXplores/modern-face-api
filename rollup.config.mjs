@@ -11,7 +11,7 @@ export default {
     typescript({
       tsconfigOverride: {
         compilerOptions: {
-          module: 'ES2015',
+          module: 'ES2020',
           target: 'es2020',
           declaration: false,
           declarationMap: false,
