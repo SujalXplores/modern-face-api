@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    //"allowUnreachableCode": true,
-    //"noUnusedLocals": false,
-    //"noUnusedParameters": false,
     "removeComments": false,
     "preserveConstEnums": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": true,
+    "declarationMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -18,9 +16,9 @@
     "skipLibCheck": true,
     "outDir": "build/commonjs",
     "module": "commonjs",
-    "target": "es2017",
+    "target": "es2020",
     "moduleResolution": "node",
-    "lib": ["es2015", "dom"],
+    "lib": ["ES2020", "DOM"],
     "typeRoots": ["typings", "node_modules/@types"],
     "verbatimModuleSyntax": false
   },

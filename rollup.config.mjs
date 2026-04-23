@@ -12,8 +12,10 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           module: 'ES2015',
-          target: 'es2017',
+          target: 'es2020',
           declaration: false,
+          declarationMap: false,
+          sourceMap: true,
         },
       },
     }),
@@ -30,19 +32,11 @@ export default {
     globals: {
       crypto: 'crypto',
     },
-    sourcemap: false, // Disable source maps for smaller package
+    sourcemap: !minify,
   },
   external: ['crypto'],
-  onwarn: (warning) => {
-    const ignoreWarnings = [
-      'CIRCULAR_DEPENDENCY',
-      'CIRCULAR',
-      'THIS_IS_UNDEFINED',
-    ];
-    if (ignoreWarnings.some((w) => w === warning.code)) return;
-
+  onwarn: (warning, warn) => {
     if (warning.missing === 'alea') return;
-
-    console.warn(warning.message);
+    warn(warning);
   },
 };

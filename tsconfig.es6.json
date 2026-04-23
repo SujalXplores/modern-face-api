@@ -2,8 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "build/es6",
-    "module": "es6",
-    "target": "es2017",
+    "module": "es2020",
+    "target": "es2020",
     "verbatimModuleSyntax": false
   },
   "include": ["src"]
