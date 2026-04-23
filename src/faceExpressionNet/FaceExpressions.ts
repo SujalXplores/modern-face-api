@@ -13,13 +13,13 @@ export type FaceExpressionLabel = (typeof FACE_EXPRESSION_LABELS)[number];
 type ExpressionProbabilities = Record<FaceExpressionLabel, number>;
 
 export class FaceExpressions {
-  public neutral: number;
-  public happy: number;
-  public sad: number;
-  public angry: number;
-  public fearful: number;
-  public disgusted: number;
-  public surprised: number;
+  public neutral = 0;
+  public happy = 0;
+  public sad = 0;
+  public angry = 0;
+  public fearful = 0;
+  public disgusted = 0;
+  public surprised = 0;
 
   constructor(probabilities: number[] | Float32Array) {
     if (probabilities.length !== 7) {
