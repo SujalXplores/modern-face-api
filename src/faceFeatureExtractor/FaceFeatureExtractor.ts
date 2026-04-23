@@ -5,7 +5,7 @@ import { NeuralNetwork } from '../NeuralNetwork';
 import { normalize } from '../ops';
 import { denseBlock4 } from './denseBlock';
 import { extractParams } from './extractParams';
-import { extractParamsFromWeigthMap } from './extractParamsFromWeigthMap';
+import { extractParamsFromWeightMap } from './extractParamsFromWeightMap';
 import type { FaceFeatureExtractorParams, IFaceFeatureExtractor } from './types';
 
 export class FaceFeatureExtractor
@@ -46,8 +46,8 @@ export class FaceFeatureExtractor
     return 'face_feature_extractor_model';
   }
 
-  protected extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap) {
-    return extractParamsFromWeigthMap(weightMap);
+  protected extractParamsFromWeightMap(weightMap: tf.NamedTensorMap) {
+    return extractParamsFromWeightMap(weightMap);
   }
 
   protected extractParams(weights: Float32Array) {

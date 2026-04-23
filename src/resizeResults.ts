@@ -12,7 +12,7 @@ export function resizeResults<T>(results: T, dimensions: IDimensions): T {
   }
 
   if (Array.isArray(results)) {
-    return results.map(obj => resizeResults(obj, { width, height })) as any as T;
+    return results.map(obj => resizeResults(obj, { width, height })) as unknown as T;
   }
 
   if (isWithFaceLandmarks(results)) {
@@ -33,7 +33,7 @@ export function resizeResults<T>(results: T, dimensions: IDimensions): T {
   }
 
   if (results instanceof FaceLandmarks || results instanceof FaceDetection) {
-    return (results as any).forSize(width, height);
+    return (results as unknown as { forSize: (w: number, h: number) => T }).forSize(width, height);
   }
 
   return results;

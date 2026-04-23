@@ -15,7 +15,7 @@ import type {
   PredictionLayerParams,
 } from './types';
 
-function extractorsFactory(weightMap: any, paramMappings: ParamMapping[]) {
+function extractorsFactory(weightMap: tf.NamedTensorMap, paramMappings: ParamMapping[]) {
   const extractWeightEntry = extractWeightEntryFactory(weightMap, paramMappings);
 
   function extractPointwiseConvParams(
@@ -149,7 +149,7 @@ function extractorsFactory(weightMap: any, paramMappings: ParamMapping[]) {
   };
 }
 
-export function extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap): {
+export function extractParamsFromWeightMap(weightMap: tf.NamedTensorMap): {
   params: NetParams;
   paramMappings: ParamMapping[];
 } {

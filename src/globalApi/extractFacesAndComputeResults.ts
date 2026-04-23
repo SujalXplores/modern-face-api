@@ -1,10 +1,14 @@
 import * as tf from '@tensorflow/tfjs-core';
 
+import type { Box } from '../classes/Box';
 import type { FaceDetection } from '../classes/FaceDetection';
 import type { FaceLandmarks } from '../classes/FaceLandmarks';
+import type { Rect } from '../classes/Rect';
 import { extractFaces, extractFaceTensors, type TNetInput } from '../dom';
 import type { WithFaceDetection } from '../factories/WithFaceDetection';
 import { isWithFaceLandmarks, type WithFaceLandmarks } from '../factories/WithFaceLandmarks';
+
+type AlignmentRect = FaceDetection | Rect | Box;
 
 export async function extractAllFacesAndComputeResults<
   TSource extends WithFaceDetection<object>,
@@ -16,11 +20,14 @@ export async function extractAllFacesAndComputeResults<
   extractedFaces?: Array<HTMLCanvasElement | tf.Tensor3D> | null,
   getRectForAlignment: (
     parentResult: WithFaceLandmarks<TSource, FaceLandmarks>
-  ) => FaceDetection = ({ alignedRect }) => alignedRect
+  ) => AlignmentRect = ({ alignedRect }) => alignedRect
 ) {
-  const faceBoxes = parentResults.map(parentResult =>
-    isWithFaceLandmarks(parentResult) ? getRectForAlignment(parentResult) : parentResult.detection
-  );
+  const faceBoxes: Array<FaceDetection | Rect> = parentResults.map(parentResult => {
+    const rect: AlignmentRect = isWithFaceLandmarks(parentResult)
+      ? getRectForAlignment(parentResult)
+      : parentResult.detection;
+    return rect as FaceDetection | Rect;
+  });
   const faces: Array<HTMLCanvasElement | tf.Tensor3D> =
     extractedFaces ||
     (input instanceof tf.Tensor
@@ -46,7 +53,7 @@ export async function extractSingleFaceAndComputeResult<
   input: TNetInput,
   computeResult: (face: HTMLCanvasElement | tf.Tensor3D) => Promise<TResult>,
   extractedFaces?: Array<HTMLCanvasElement | tf.Tensor3D> | null,
-  getRectForAlignment?: (parentResult: WithFaceLandmarks<TSource, FaceLandmarks>) => FaceDetection
+  getRectForAlignment?: (parentResult: WithFaceLandmarks<TSource, FaceLandmarks>) => AlignmentRect
 ) {
   return extractAllFacesAndComputeResults<TSource, TResult>(
     [parentResult],

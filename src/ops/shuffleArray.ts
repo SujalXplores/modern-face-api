@@ -1,4 +1,4 @@
-export function shuffleArray(inputArray: any[]) {
+export function shuffleArray<T>(inputArray: readonly T[]): T[] {
   const array = inputArray.slice();
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

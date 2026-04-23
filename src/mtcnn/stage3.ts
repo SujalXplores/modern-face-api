@@ -3,6 +3,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import { type BoundingBox, type Box, Point } from '../classes';
 import { nonMaxSuppression } from '../ops';
 import { extractImagePatches } from './extractImagePatches';
+import type { MtcnnStats } from './Mtcnn';
 import { MtcnnBox } from './MtcnnBox';
 import { ONet } from './ONet';
 import type { ONetParams } from './types';
@@ -12,7 +13,7 @@ export async function stage3(
   inputBoxes: BoundingBox[],
   scoreThreshold: number,
   params: ONetParams,
-  stats: any
+  stats: MtcnnStats
 ) {
   let ts = Date.now();
   const onetInputs = await extractImagePatches(img, inputBoxes, { width: 48, height: 48 });

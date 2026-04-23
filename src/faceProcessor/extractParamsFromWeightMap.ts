@@ -8,7 +8,7 @@ import {
 } from '../common';
 import type { NetParams } from './types';
 
-export function extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap): {
+export function extractParamsFromWeightMap(weightMap: tf.NamedTensorMap): {
   params: NetParams;
   paramMappings: ParamMapping[];
 } {

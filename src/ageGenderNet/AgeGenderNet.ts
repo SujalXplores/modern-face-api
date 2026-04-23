@@ -6,7 +6,7 @@ import { seperateWeightMaps } from '../faceProcessor/util';
 import { NeuralNetwork } from '../NeuralNetwork';
 import { TinyXception } from '../xception/TinyXception';
 import { extractParams } from './extractParams';
-import { extractParamsFromWeigthMap } from './extractParamsFromWeigthMap';
+import { extractParamsFromWeightMap } from './extractParamsFromWeightMap';
 import { type AgeAndGenderPrediction, Gender, type NetOutput, type NetParams } from './types';
 
 export class AgeGenderNet extends NeuralNetwork<NetParams> {
@@ -104,12 +104,12 @@ export class AgeGenderNet extends NeuralNetwork<NetParams> {
     return extractParams(weights);
   }
 
-  protected extractParamsFromWeigthMap(weightMap: tf.NamedTensorMap) {
+  protected extractParamsFromWeightMap(weightMap: tf.NamedTensorMap) {
     const { featureExtractorMap, classifierMap } = seperateWeightMaps(weightMap);
 
     this.faceFeatureExtractor.loadFromWeightMap(featureExtractorMap);
 
-    return extractParamsFromWeigthMap(classifierMap);
+    return extractParamsFromWeightMap(classifierMap);
   }
 
   protected extractParams(weights: Float32Array) {

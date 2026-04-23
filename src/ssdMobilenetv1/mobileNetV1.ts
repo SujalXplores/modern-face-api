@@ -28,9 +28,12 @@ function getStridesForLayerIdx(layerIdx: number): [number, number] {
   return [2, 4, 6, 12].some(idx => idx === layerIdx) ? [2, 2] : [1, 1];
 }
 
-export function mobileNetV1(x: tf.Tensor4D, params: MobileNetV1.Params) {
+export function mobileNetV1(
+  x: tf.Tensor4D,
+  params: MobileNetV1.Params
+): { out: tf.Tensor4D; conv11: tf.Tensor4D } {
   return tf.tidy(() => {
-    let conv11 = null;
+    let conv11: tf.Tensor4D | null = null;
     let out = pointwiseConvLayer(x, params.conv_0, [2, 2]);
 
     const convPairParams = [
@@ -63,9 +66,6 @@ export function mobileNetV1(x: tf.Tensor4D, params: MobileNetV1.Params) {
       throw new Error('mobileNetV1 - output of conv layer 11 is null');
     }
 
-    return {
-      out,
-      conv11: conv11 as any,
-    };
+    return { out, conv11 };
   });
 }

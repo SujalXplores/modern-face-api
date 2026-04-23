@@ -34,7 +34,7 @@ export default {
     },
     sourcemap: !minify,
   },
-  external: ['crypto'],
+  external: ['crypto', 'node:fs'],
   onwarn: (warning, warn) => {
     if (warning.missing === 'alea') return;
     warn(warning);

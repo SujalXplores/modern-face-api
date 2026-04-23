@@ -3,6 +3,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import type { Box } from '../classes';
 import { nonMaxSuppression } from '../ops';
 import { extractImagePatches } from './extractImagePatches';
+import type { MtcnnStats } from './Mtcnn';
 import { MtcnnBox } from './MtcnnBox';
 import { RNet } from './RNet';
 import type { RNetParams } from './types';
@@ -12,7 +13,7 @@ export async function stage2(
   inputBoxes: Box[],
   scoreThreshold: number,
   params: RNetParams,
-  stats: any
+  stats: MtcnnStats
 ) {
   let ts = Date.now();
   const rnetInputs = await extractImagePatches(img, inputBoxes, { width: 24, height: 24 });
